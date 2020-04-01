@@ -1,0 +1,338 @@
+package gob.inei.ene2019v2.fragment;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.GridComponent;
+import gob.inei.dnce.components.IntegerField;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.MasterActivity;
+import gob.inei.dnce.components.RadioGroupOtherField;
+import gob.inei.dnce.components.RadioGroupOtherField.ORIENTATION;
+import gob.inei.dnce.components.TextField;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.model.Caratula;
+import gob.inei.ene2019v2.service.CuestionarioService;
+
+import java.sql.SQLException;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
+
+public class Caratula_Fragment_006 extends FragmentForm {
+	@FieldAnnotation(orderIndex = 1)
+	public TextField txtP26_NOMB;
+	@FieldAnnotation(orderIndex = 2)
+	public TextField txtP26_APAT;
+	@FieldAnnotation(orderIndex = 3)
+	public TextField txtP26_AMAT;
+	@FieldAnnotation(orderIndex = 4)
+	public RadioGroupOtherField rgP27;
+	@FieldAnnotation(orderIndex = 5)
+	public IntegerField txtP28;
+	@FieldAnnotation(orderIndex = 6)
+	public RadioGroupOtherField rgP29;
+	@FieldAnnotation(orderIndex = 7)
+	public RadioGroupOtherField rgP29_A;// Nuevo2018
+	@FieldAnnotation(orderIndex = 8)
+	public IntegerField txtP29_B;// Nuevo2018
+	
+
+	private CuestionarioService cuestionarioService;
+	private Caratula bean;
+	private LabelComponent lblTitulo, lblSec1, lbl4, lbl5, lbl6, lblP29a,
+			lblP29b, lblP29c;
+	private GridComponent grid2, grP29;
+	private LinearLayout q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10;
+
+	public Caratula_Fragment_006() {
+	}
+
+	public Caratula_Fragment_006 parent(MasterActivity parent) {
+		this.parent = parent;
+		return this;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = createUI();
+		initObjectsWithoutXML(this, rootView);
+		enlazarCajas();
+		listening();
+
+		return rootView;
+	}
+
+	@Override
+	protected void buildFields() {
+		lblTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text("DEL CONDUCTOR Y DEL INFORMANTE").textSize(21).centrar().negrita();
+		lblSec1 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.c1caratulasec2).textSize(20).centrar().negrita();
+
+		lbl4 = new LabelComponent(getActivity(), App.ESTILO).text(
+				R.string.c1c100p16_apat).size(altoComponente, 200);
+		lbl5 = new LabelComponent(getActivity(), App.ESTILO).text(
+				R.string.c1c100p16_amat).size(altoComponente, 200);
+		lbl6 = new LabelComponent(getActivity(), App.ESTILO).text(
+				R.string.c1c100p16_nomb).size(altoComponente, 200);
+
+		
+		lblP29b = new LabelComponent(getActivity()).text(R.string.c1c100p26B)
+				.size(altoComponente + 30, 600).negrita().textSize(18f);
+		lblP29c = new LabelComponent(getActivity()).text(R.string.c1c100p26C)
+				.size(altoComponente + 30, 600).negrita().textSize(18f);
+		txtP26_APAT = new TextField(this.getActivity(), false).size(
+				altoComponente, 450);
+		txtP26_AMAT = new TextField(this.getActivity(), false).size(
+				altoComponente, 450);
+		txtP26_NOMB = new TextField(this.getActivity(), false).size(
+				altoComponente, 450);
+
+		rgP29_A = new RadioGroupOtherField(this.getActivity(), R.string.si,
+				R.string.no).size(WRAP_CONTENT, WRAP_CONTENT).callback(
+				"FuncionP29B");
+
+		txtP29_B = new IntegerField(this.getActivity(), false).size(
+				altoComponente, 150).centrar();
+
+		rgP27 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100p18_1, R.string.c1c100p18_2).size(WRAP_CONTENT,
+				WRAP_CONTENT);
+
+		txtP28 = new IntegerField(this.getActivity(), false).size(
+				altoComponente, 150).centrar();
+		rgP29 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100p20_1, R.string.c1c100p20_2,
+				R.string.c1c100p20_3, R.string.c1c100p20_4,
+				R.string.c1c100p20_5, R.string.c1c100p20_6,
+				R.string.c1c100p20_7, R.string.c1c100p20_8,
+				R.string.c1c100p20_9, R.string.c1c100p20_10,
+				R.string.c1c100p20_11).size(WRAP_CONTENT, 600).orientation(
+				ORIENTATION.VERTICAL);
+
+		grid2 = new GridComponent(getActivity(), 2)
+				.colorFondo(FragmentForm.COLOR_LINEA_SECCION_PREGUNTA);
+		grid2.addComponent(lbl6);
+		grid2.addComponent(txtP26_NOMB);
+		grid2.addComponent(lbl4);
+		grid2.addComponent(txtP26_APAT);
+		grid2.addComponent(lbl5);
+		grid2.addComponent(txtP26_AMAT);
+
+		grP29 = new GridComponent(getActivity(), 2)
+				.colorFondo(R.color.transparente);
+		grP29.addComponent(lblP29b);
+		grP29.addComponent(rgP29_A);
+		grP29.addComponent(lblP29c);
+		grP29.addComponent(txtP29_B);
+
+		Filtros.setFiltro(txtP29_B, Filtros.TIPO.NUMBER, 4, -1, null, 1900,
+				2018, -1, 4);
+		Filtros.setFiltro(txtP28, Filtros.TIPO.NUMBER, 2, -1, null, 18, 98, -1,
+				2);
+		Filtros.setFiltro(txtP26_APAT, Filtros.TIPO.ALFA_U, 70, null);
+		Filtros.setFiltro(txtP26_AMAT, Filtros.TIPO.ALFA_U, 70, null);
+		Filtros.setFiltro(txtP26_NOMB, Filtros.TIPO.ALFA_U, 70, null);
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+		/* Aca creamos las preguntas */
+
+		q0 = createQuestionSection(lblTitulo/*, lblSec1*/);
+		q1 = createQuestionSection(R.string.c1c100p17, grid2.component());
+			
+		q2 = createQuestionSection(R.string.c1c100p18, rgP27);
+		q3 = createQuestionSection(R.string.c1c100p19, txtP28);
+		q4 = createQuestionSection(R.string.c1c100p20, rgP29);
+		q5 = createQuestionSection(grP29.component());
+
+		// ///////////////////////////
+		ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+		/* Aca agregamos las preguntas a la pantalla */
+		form.addView(q0);
+		form.addView(q1);
+		form.addView(q2);
+		form.addView(q3);
+		form.addView(q4);
+		form.addView(q5);
+		return contenedor;
+	}
+
+	@Override
+	public boolean grabar() {
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals("")) {
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+				if (view != null) {
+					view.requestFocus();
+				}
+			}
+			return false;
+		}
+
+		uiToEntity(bean);
+		try {
+			if (!getCuestionarioService().saveOrUpdate(bean,
+					bean.getSecCap(getListFields(this)))) {
+				ToastMessage.msgBox(this.getActivity(),
+						"Los datos no se guardaron",
+						ToastMessage.MESSAGE_ERROR, ToastMessage.DURATION_LONG);
+			}
+		} catch (SQLException e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean validar() {
+		String pregunta_no_vacia = getString(R.string.pregunta_no_vacia);
+		String especifique_no_vacio = getString(R.string.pregunta_especifique);
+		error = false;
+
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+
+		if (Util.esVacio(txtP26_NOMB)) {
+			mensaje = pregunta_no_vacia.replace("$", "Nombres;");
+			view = txtP26_NOMB;
+			return !(error = true);
+		}
+
+		if (Util.esVacio(txtP26_APAT)) {
+			mensaje = pregunta_no_vacia.replace("$", "Apellido Paterno;");
+			view = txtP26_APAT;
+			return !(error = true);
+		}
+		if (Util.esVacio(txtP26_AMAT)) {
+			mensaje = pregunta_no_vacia.replace("$", "Apellido Materno;");
+			view = txtP26_AMAT;
+			return !(error = true);
+		}
+
+
+
+		if (Util.esVacio(rgP27)) {
+			mensaje = pregunta_no_vacia.replace("$", "La pregunta 27;");
+			view = rgP27;
+			return !(error = true);
+		}
+		if (Util.esVacio(txtP28)) {
+			mensaje = pregunta_no_vacia.replace("$", "La pregunta 28;");
+			view = txtP28;
+			return !(error = true);
+		}
+		
+		
+		if ((2019 - Util.getInt(txtP28)) < 18) {
+			mensaje = "La edad ingresa no es correcta";
+			view = txtP28;
+			return !(error = true);
+		}
+		
+		
+		if (Util.esVacio(rgP29)) {
+			mensaje = pregunta_no_vacia.replace("$", "La pregunta 29;");
+			view = rgP29;
+			return !(error = true);
+		}
+		
+		
+		if (Util.esVacio(rgP29_A)) {
+			mensaje = pregunta_no_vacia.replace("$", "La pregunta P29B");
+			view = rgP29_A;
+			return !(error = true);
+		}
+		
+
+		if (rgP29_A.isTagSelected(2)) {
+
+			if (Util.esVacio(txtP29_B)) {
+				mensaje = pregunta_no_vacia.replace("$", "La pregunta P29C");
+				view = txtP29_B;
+				return !(error = true);
+			}else{
+				if(bean.funcionamiento > Util.getInt(txtP29_B)){
+					mensaje = "El año que empezo a ser responsable de la empresa no puede ser menor al inicio del funcionamiento de la empresa"  + bean.funcionamiento ;
+					view = txtP29_B;
+					return !(error = true);
+				}
+			}		
+		}
+		
+		if ((rgP29.isTagSelected(9) && Util.getInt(txtP28) < 16)
+				|| (rgP29.isTagSelectedBetween(10, 11) && Util.getInt(txtP28) < 21)) {
+			mensaje = "Error: No corresponde nivel educativo con la edad";
+			view = rgP29;
+			return !(error = true);
+		}
+		return true;
+	}
+
+	@Override
+	public void cargarDatos() {
+		bean = App.getInstance().getEmpresa();
+		entityToUI(bean);
+		inicio();
+	}
+
+	private void inicio() {
+		FuncionP29B();
+//		FuncionP29B();
+		txtP26_NOMB.requestFocus();
+	}
+
+
+
+	public void FuncionP29B() {
+		Integer valorB = Integer.parseInt(rgP29_A.getTagSelected("0")
+				.toString());
+		if (valorB == 2) {
+			Util.lockView(getActivity(), false,  txtP29_B);
+			txtP29_B.requestFocus();
+			
+		} else {
+			Util.cleanAndLockView(getActivity(), txtP29_B);
+		}
+	}
+
+	public CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+
+}

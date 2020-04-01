@@ -1,0 +1,175 @@
+package gob.inei.ene2019v2.model;
+
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.interfaces.IDetailEntityComponent;
+
+public class Caratula extends Entity implements IDetailEntityComponent { 
+
+	private static final long serialVersionUID = 1L;
+	public String ccdd = null;
+	public String nombreccdd = null;
+	public String ccpp = null;
+	public String nombreccpp = null;
+	public String ccdi = null;
+	public String nombreccdi = null;
+//	public String cccp = null;
+//	public String nombrecccp = null;
+	
+	public String gps_lat = null;
+	public String gps_lon = null;
+	public String sector = null;
+	public String area = null;
+	public String zona = null;
+	public String mza = null;
+	public String nempresa = null;
+//	public Integer frente = null;
+	public Integer tipovia = null;
+	public String tipovia_o = null;
+	public String nombrevia = null;
+	public String puerta = null;
+	public String block = null;
+	public String interior = null;
+	public String piso = null;
+	public String manzana = null;
+	public String lote = null;
+	public Integer kilometro = null;
+	
+	public Integer p9a  = null;
+	public String ccdd_n  = null;
+	public String nombreccdd_n  = null;
+	public String ccpp_n = null;
+	public String nombreccpp_n = null;
+	public String ccdi_n = null;
+	public String nombreccdi_n = null;
+	
+	public String referencia = null;
+	public String ruc = null;
+	public String rsocial = null;
+	public String ncomercial = null;
+	public Integer funcionamiento = null;
+	public Integer pagweb_no = null;
+	public String pagweb = null;
+	public Integer email_no = null;
+	public String email = null;
+	public Integer telfijo_no = null;
+	public String telfijo_ldn = null;
+	public String telfijo = null;
+	public Integer cel_no = null;
+	public String cel = null;
+	public Integer res_verif = null;
+	public String ciiu_cd = null;
+	public String ciiu_desc = null;
+	public String ciiu_cd_a = null;
+	public String ciiu_desc_b = null;
+	public String ciiu_desc_c = null;
+
+	public String ciiu_c = null;
+	public String ciiu_s1_cd = null;
+	public String ciiu_s1_desc = null;
+	public String ciiu_s2_cd = null;
+	public String ciiu_s2_desc = null;
+	public String ciiu_s3_cd = null;
+	public String ciiu_s3_desc = null;
+	public String ciiu_s4_cd = null;
+	public String ciiu_s4_desc = null;
+	public Integer p21 = null;
+	public String p21_esp = null;
+	public Integer p22 = null;
+	public Integer p23_1 = null;
+	public Integer p23_2 = null;
+	public Integer p23_3 = null;
+	public Integer p23_4 = null;
+	public Integer p23_5 = null;
+	public Integer p23_6 = null;
+	public String p23_6esp = null;
+	public Integer p23a_1 = null;
+	public Integer p23a_2 = null;
+	public Integer p23a_3 = null;
+	public Integer p23a_4 = null;
+	public Integer p23a_5 = null;
+	public Integer p23a_6 = null;
+	public Integer p23a_total = null;
+	public String p24_ccdd = null;
+	public String p24_dd = null;
+	public String p24_ccpp = null;
+	public String p24_pp = null;
+	public String p24_ccdi = null;
+	public String p24_di = null;
+	public Integer p24_tipo = null;
+	public Integer tipoviab = null;
+	public String tipoviab_o = null;
+	public String nombreviab = null;
+	public String puertab = null;
+	public String blockb = null;
+	public String interiorb = null;
+	public String pisob = null;
+	public String manzanab = null;
+	public String loteb = null;
+	public Integer kilometrob = null;
+	public String referenciab = null;
+	public Integer p25 = null;
+	public String p26_apat = null;
+	public String p26_amat = null;
+	public String p26_nomb = null;
+	public Integer p27 = null;
+	public Integer p28 = null;
+	public Integer p29 = null;
+	public Integer p29_a = null;
+	public Integer p29_b = null;
+	public Integer p30 = null;
+	public String p30_esp = null;
+	public String p31_apat = null;
+	public String p31_amat = null;
+	public String p31_nomb = null;		
+	public Integer p31_elmismo = null;
+	public Integer p32_email_no = null;
+	public String p32_email = null;
+	public Integer p33_cel_no = null;
+	public String p33_cel = null;
+	public Integer p34_telfijo_no = null;
+	public String p34_telfijo = null;	
+	public Integer resfec_dia = null;
+	public Integer resfec_mes = null;
+	public Integer resfec_anio = null;
+	public Integer resfin = null;
+	public String resfin_esp = null;
+	public String enc_dni = null;
+	public String enc_nom = null;
+	public String sup_dni = null;
+	public String sup_nom = null;
+	public Integer t_m0 = null;
+	public String m3_obs = null;
+	public String m4_obs = null;
+	public String m5_obs = null;
+	public String m9_obs = null;
+	
+	public Integer estado_envio = 1;
+    
+    public Caratula() {} 
+    
+    public Caratula(Integer id) {
+    	this.id = id;
+    } 
+	
+	@Override
+	public void cleanEntity() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean isTitle() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public String getPks() {
+		return "ID";
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString();
+	}
+} 

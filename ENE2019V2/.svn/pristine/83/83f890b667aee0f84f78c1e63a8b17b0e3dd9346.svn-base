@@ -1,0 +1,83 @@
+package gob.inei.ene2019v2.model;
+
+import gob.inei.dnce.annotations.FieldCalificacion;
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.interfaces.IDetailEntityComponent;
+
+import java.io.Serializable;
+
+public class ModuloIII_det extends Entity implements Serializable,IDetailEntityComponent  {
+
+	@FieldCalificacion(ignoreField = true)
+	private static final long serialVersionUID = 1L;
+	public Integer c3p301_id = null;
+	public Integer c3p301_id_etiq = null;
+
+	public Integer c3p301a = null;//	
+	public Integer c3p301a_1 = null;
+	public Integer c3p301a_2 = null;
+	public Integer c3p301a_tot = null;
+	public Integer c3p301e_1 = null;
+
+
+	public ModuloIII_det() {
+	}
+
+	public ModuloIII_det(Integer id , Integer c3p301_id,  Integer c3p301_id_etiq) {
+		this.id = id;
+		this.c3p301_id = c3p301_id;
+		this.c3p301_id_etiq = c3p301_id_etiq;
+	}
+
+//	public C2_Cap01_01_det(Integer id, Integer p2_1_03_id_tec) {
+//		this.id = id;
+//		this.p2_1_03_id_tec = p2_1_03_id_tec;
+//	}
+
+	@Override
+	public void cleanEntity() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean isTitle() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getPks() {
+		return "ID,C3P301_ID";
+	}
+
+	@Override
+	public String toString() {
+		return super.toString();
+	}
+	
+
+	
+	@Override
+	public boolean equalsToPractice(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof ModuloIII_det)) {
+			return false;
+		}
+		if (this.id == null) {
+			return false;
+		}
+		if (this.c3p301_id == null) {
+			return false;
+		}
+	
+		ModuloIII_det other = (ModuloIII_det) obj;
+		if (!this.id.equals(other.id) || !this.c3p301_id.equals(other.c3p301_id) ) {
+			return false;
+		}
+		return true;
+	}
+
+}

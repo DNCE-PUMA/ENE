@@ -1,0 +1,599 @@
+package gob.inei.ene2019v2.fragment.ModIV;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.components.Entity.SeccionCapitulo;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.GridComponent2;
+import gob.inei.dnce.components.IntegerField;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.MasterActivity;
+import gob.inei.dnce.components.RadioGroupOtherField;
+import gob.inei.dnce.components.RadioGroupOtherField.ORIENTATION;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.model.Caratula;
+import gob.inei.ene2019v2.model.Moduloiv01;
+import gob.inei.ene2019v2.model.Moduloiv02;
+import gob.inei.ene2019v2.service.CuestionarioService;
+
+import java.sql.SQLException;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
+
+public class Mod_IV_Fragment_012 extends FragmentForm {
+
+	@FieldAnnotation(orderIndex = 1)
+	public RadioGroupOtherField rgC4P440A;
+	@FieldAnnotation(orderIndex = 2)
+	public RadioGroupOtherField rgC4P440B_B_1;
+	@FieldAnnotation(orderIndex = 3)
+	public RadioGroupOtherField rgC4P440B_B_2;
+	
+	@FieldAnnotation(orderIndex = 4)
+	public RadioGroupOtherField rgC4P440B_A_3;
+	@FieldAnnotation(orderIndex = 5)
+	public RadioGroupOtherField rgC4P440B_B_3;
+	@FieldAnnotation(orderIndex = 6)
+	public RadioGroupOtherField rgC4P440B_A_4;
+	@FieldAnnotation(orderIndex = 7)
+	public RadioGroupOtherField rgC4P440B_B_4;
+	@FieldAnnotation(orderIndex = 8)
+	public RadioGroupOtherField rgC4P440B_A_5;
+	@FieldAnnotation(orderIndex = 9)
+	public RadioGroupOtherField rgC4P440B_B_5;
+	@FieldAnnotation(orderIndex = 10)
+	public RadioGroupOtherField rgC4P440B_A_6;
+	@FieldAnnotation(orderIndex = 11)
+	public RadioGroupOtherField rgC4P440B_B_6;
+	@FieldAnnotation(orderIndex = 12)
+	public RadioGroupOtherField rgC4P440B_A_7;
+	@FieldAnnotation(orderIndex = 13)
+	public RadioGroupOtherField rgC4P440B_A_8;
+	@FieldAnnotation(orderIndex = 14)
+	public RadioGroupOtherField rgC4P440B_A_9;
+	@FieldAnnotation(orderIndex = 15)
+	public RadioGroupOtherField rgC4P440B_A_10;
+	@FieldAnnotation(orderIndex = 16)
+	public RadioGroupOtherField rgC4P440B_A_11;
+	@FieldAnnotation(orderIndex = 17)
+	public RadioGroupOtherField rgC4P440B_A_12;
+	@FieldAnnotation(orderIndex = 18)
+	public RadioGroupOtherField rgC4P441A;
+	@FieldAnnotation(orderIndex = 19)
+	public IntegerField txtC4P441B;
+
+	private CuestionarioService cuestionarioService;
+	private Moduloiv01 bean;
+	private Caratula caratula;
+	SeccionCapitulo[] Mod04;
+	private LabelComponent lblTitulo, lblTitulo1, lblP1, lblP2, lblP3, lblP4,
+			lblP5, lblP6, lblP7, lblP8, lblcodigo, lbltitle, lblnota;
+
+	public LabelComponent lbl440a1, lbl440a2, lbl440a3, lbl440a4, lbl40b1,
+			lbl40b2, lbl40b3, lbl440b1, lblvacio1, lbl440b2, lblvacio2,
+			lbl440b3, lbl440b4, lbl440b5, lbl440b6, lbl440b7, lblvacio7,
+			lbl440b8, lblvacio8, lbl440b9, lblvacio9, lbl440b10, lblvacio10,
+			lbl440b11, lblvacio11, lbl440b12, lblvacio12;
+
+	LinearLayout q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10;
+	private GridComponent2 grP40, grP40b;
+
+	public Mod_IV_Fragment_012() {
+	}
+
+	public Mod_IV_Fragment_012 parent(MasterActivity parent) {
+		this.parent = parent;
+		return this;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = createUI();
+		initObjectsWithoutXML(this, rootView);
+		enlazarCajas();
+		listening();
+		return rootView;
+	}
+
+	@Override
+	protected void buildFields() {
+
+		lblTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.c1c100m400p).textSize(21).centrar().negrita();
+
+		lblTitulo1 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.c1c100m4p039title).textSize(20).centrar()
+				.negrita();
+
+		rgC4P440A = new RadioGroupOtherField(this.getActivity(),
+				R.string.c4R_solidos,
+				R.string.c4R_liquido,
+				R.string.c4ambas).size(150, 250)
+				.orientation(ORIENTATION.VERTICAL).callback("FuncionP440A");
+//		rgC4P440A_2 = new RadioGroupOtherField(this.getActivity(), R.string.si,
+//				R.string.no).size(altoComponente, 200)
+//				.orientation(ORIENTATION.HORIZONTAL).centrar()
+//				.callback("FuncionP440A");
+
+		rgC4P440B_A_3 = new RadioGroupOtherField(this.getActivity(),
+				R.string.si, R.string.no).size(60, 100)
+				.orientation(ORIENTATION.HORIZONTAL).centrar();
+		rgC4P440B_A_4 = new RadioGroupOtherField(this.getActivity(),
+				R.string.si, R.string.no).size(60, 100)
+				.orientation(ORIENTATION.HORIZONTAL).centrar();
+		rgC4P440B_A_5 = new RadioGroupOtherField(this.getActivity(),
+				R.string.si, R.string.no).size(60, 100)
+				.orientation(ORIENTATION.HORIZONTAL).centrar();
+		rgC4P440B_A_6 = new RadioGroupOtherField(this.getActivity(),
+				R.string.si, R.string.no).size(60, 100)
+				.orientation(ORIENTATION.HORIZONTAL).centrar();
+		rgC4P440B_A_7 = new RadioGroupOtherField(this.getActivity(),
+				R.string.si, R.string.no).size(60, 100)
+				.orientation(ORIENTATION.HORIZONTAL).centrar();
+		rgC4P440B_A_8 = new RadioGroupOtherField(this.getActivity(),
+				R.string.si, R.string.no).size(60, 100)
+				.orientation(ORIENTATION.HORIZONTAL).centrar();
+		rgC4P440B_A_9 = new RadioGroupOtherField(this.getActivity(),
+				R.string.si, R.string.no).size(60, 100)
+				.orientation(ORIENTATION.HORIZONTAL).centrar();
+		rgC4P440B_A_10 = new RadioGroupOtherField(this.getActivity(),
+				R.string.si, R.string.no).size(60, 100)
+				.orientation(ORIENTATION.HORIZONTAL).centrar();
+		rgC4P440B_A_11 = new RadioGroupOtherField(this.getActivity(),
+				R.string.si, R.string.no).size(60, 100)
+				.orientation(ORIENTATION.HORIZONTAL).centrar();
+		rgC4P440B_A_12 = new RadioGroupOtherField(this.getActivity(),
+				R.string.si, R.string.no).size(60, 100)
+				.orientation(ORIENTATION.HORIZONTAL).centrar();
+
+		rgC4P440B_B_1 = new RadioGroupOtherField(this.getActivity(),
+				R.string.si, R.string.no).size(60, 100)
+				.orientation(ORIENTATION.HORIZONTAL).centrar();
+		rgC4P440B_B_2 = new RadioGroupOtherField(this.getActivity(),
+				R.string.si, R.string.no).size(60, 100)
+				.orientation(ORIENTATION.HORIZONTAL).centrar();
+		rgC4P440B_B_3 = new RadioGroupOtherField(this.getActivity(),
+				R.string.si, R.string.no).size(60, 100)
+				.orientation(ORIENTATION.HORIZONTAL).centrar();
+		rgC4P440B_B_4 = new RadioGroupOtherField(this.getActivity(),
+				R.string.si, R.string.no).size(60, 100)
+				.orientation(ORIENTATION.HORIZONTAL).centrar();
+		rgC4P440B_B_5 = new RadioGroupOtherField(this.getActivity(),
+				R.string.si, R.string.no).size(60, 100)
+				.orientation(ORIENTATION.HORIZONTAL).centrar();
+		rgC4P440B_B_6 = new RadioGroupOtherField(this.getActivity(),
+				R.string.si, R.string.no).size(60, 100)
+				.orientation(ORIENTATION.HORIZONTAL).centrar();
+
+		rgC4P441A = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p040_1_1, R.string.c1c100m4p040_1_2,
+				R.string.c1c100m4p040_1_3, R.string.c1c100m4p040_1_4).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+
+		txtC4P441B = new IntegerField(this.getActivity(), false)
+				.size(altoComponente, 150).centrar().hint(R.string.soles);
+
+		lbl440a1 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(altoComponente + 5, 400).text(R.string.c1c100m4p440_1)
+				.textSize(15);
+		lbl440a2 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(altoComponente + 5, 400).text(R.string.c1c100m4p440_2)
+				.textSize(15);
+		lbl440a3 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(altoComponente + 5, 400).text(R.string.c1c100m4p440_3)
+				.textSize(15);
+		lbl440a4 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(altoComponente + 5, 400).text(R.string.c1c100m4p440_4)
+				.textSize(15);
+
+		lbl40b1 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(altoComponente + 20, 350).text("TRATAMIENTO/GESTIÓN")
+				.textSize(17).centrar();
+		lbl40b2 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(altoComponente + 20, 150).text("RESIDUOS SÓLIDOS")
+				.textSize(17).centrar();
+		lbl40b3 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(altoComponente + 20, 150).text("RESIDUOS LÍQUIDOS")
+				.textSize(17).centrar();
+
+		lbl440b1 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(altoComponente + 35, 450).text(R.string.c1c100m4p440b_1)
+				.textSize(16);
+		lbl440b2 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(altoComponente + 35, 450).text(R.string.c1c100m4p440b_2)
+				.textSize(16);
+		lbl440b3 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(altoComponente + 35, 450).text(R.string.c1c100m4p440b_3)
+				.textSize(16);
+		lbl440b4 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(altoComponente + 35, 450).text(R.string.c1c100m4p440b_4)
+				.textSize(16);
+		lbl440b5 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(altoComponente + 35, 450).text(R.string.c1c100m4p440b_5)
+				.textSize(16);
+		lbl440b6 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(altoComponente + 35, 450).text(R.string.c1c100m4p440b_6)
+				.textSize(16);
+		lbl440b7 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(altoComponente + 35, 450).text(R.string.c1c100m4p440b_7)
+				.textSize(16);
+		lbl440b8 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(altoComponente + 35, 450).text(R.string.c1c100m4p440b_8)
+				.textSize(16);
+		lbl440b9 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(altoComponente + 35, 450).text(R.string.c1c100m4p440b_9)
+				.textSize(16);
+		lbl440b10 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(altoComponente + 35, 450).text(R.string.c1c100m4p440b_10)
+				.textSize(16);
+		lbl440b11 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(altoComponente + 35, 450).text(R.string.c1c100m4p440b_11)
+				.textSize(16);
+		lbl440b12 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(altoComponente + 35, 450).text(R.string.c1c100m4p440b_12)
+				.textSize(16);
+
+		lblvacio1 = new LabelComponent(this.getActivity()).size(altoComponente,
+				100).colorFondo(R.color.achurado);
+		lblvacio2 = new LabelComponent(this.getActivity()).size(altoComponente,
+				100).colorFondo(R.color.achurado);
+		lblvacio7 = new LabelComponent(this.getActivity()).size(altoComponente,
+				100).colorFondo(R.color.achurado);
+		lblvacio8 = new LabelComponent(this.getActivity()).size(altoComponente,
+				100).colorFondo(R.color.achurado);
+		lblvacio9 = new LabelComponent(this.getActivity()).size(altoComponente,
+				100).colorFondo(R.color.achurado);
+		lblvacio10 = new LabelComponent(this.getActivity()).size(
+				altoComponente, 100).colorFondo(R.color.achurado);
+		lblvacio11 = new LabelComponent(this.getActivity()).size(
+				altoComponente, 100).colorFondo(R.color.achurado);
+		lblvacio12 = new LabelComponent(this.getActivity()).size(
+				altoComponente, 100).colorFondo(R.color.achurado);
+
+//		grP40 = new GridComponent2(this.getActivity(), 2);
+//		grP40.addComponent(lbl440a1);
+//		grP40.addComponent(rgC4P440A_1);
+//		grP40.addComponent(lbl440a2);
+//		grP40.addComponent(rgC4P440A_2);
+//		grP40.colorFondo(R.color.transparent);
+
+		grP40b = new GridComponent2(this.getActivity(), 3);
+		grP40b.addComponent(lbl40b1);
+		grP40b.addComponent(lbl40b2);
+		grP40b.addComponent(lbl40b3);
+		
+		grP40b.addComponent(lbl440b1);
+		grP40b.addComponent(lblvacio1);
+		grP40b.addComponent(rgC4P440B_B_1);
+		grP40b.addComponent(lbl440b2);
+		grP40b.addComponent(lblvacio2);
+		grP40b.addComponent(rgC4P440B_B_2);
+		grP40b.addComponent(lbl440b3);
+		grP40b.addComponent(rgC4P440B_A_3);
+		grP40b.addComponent(rgC4P440B_B_3);
+		grP40b.addComponent(lbl440b4);
+		grP40b.addComponent(rgC4P440B_A_4);
+		grP40b.addComponent(rgC4P440B_B_4);
+		grP40b.addComponent(lbl440b5);
+		grP40b.addComponent(rgC4P440B_A_5);
+		grP40b.addComponent(rgC4P440B_B_5);
+		grP40b.addComponent(lbl440b6);
+		grP40b.addComponent(rgC4P440B_A_6);
+		grP40b.addComponent(rgC4P440B_B_6);
+		grP40b.addComponent(lbl440b7);
+		grP40b.addComponent(rgC4P440B_A_7);
+		grP40b.addComponent(lblvacio7);
+		grP40b.addComponent(lbl440b8);
+		grP40b.addComponent(rgC4P440B_A_8);
+		grP40b.addComponent(lblvacio8);
+		grP40b.addComponent(lbl440b9);
+		grP40b.addComponent(rgC4P440B_A_9);
+		grP40b.addComponent(lblvacio9);
+		grP40b.addComponent(lbl440b10);
+		grP40b.addComponent(rgC4P440B_A_10);
+		grP40b.addComponent(lblvacio10);
+		grP40b.addComponent(lbl440b11);
+		grP40b.addComponent(rgC4P440B_A_11);
+		grP40b.addComponent(lblvacio11);
+		grP40b.addComponent(lbl440b12);
+		grP40b.addComponent(rgC4P440B_A_12);
+		grP40b.addComponent(lblvacio12);
+
+		Filtros.setFiltro(txtC4P441B, Filtros.TIPO.NUMBER, 9, -1, null, 1,999999998,999999999);
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+
+		q0 = createQuestionSection(lblTitulo, lblTitulo1);
+		q1 = createQuestionSection(R.string.c1c100m4p440a, rgC4P440A);
+		q2 = createQuestionSection(R.string.c1c100m4p440b, grP40b.component());
+		q3 = createQuestionSection(R.string.c1c100m4p441a, rgC4P441A);
+		q4 = createQuestionSection(R.string.c1c100m4p441b, txtC4P441B);
+
+		ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+
+		form.addView(q0);
+		form.addView(q1);
+		form.addView(q2);
+		form.addView(q3);
+		form.addView(q4);
+		return contenedor;
+	}
+
+	@Override
+	public boolean grabar() {
+
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals("")) {
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+				if (view != null) {
+					view.requestFocus();
+				}
+			}
+			return false;
+		}
+		uiToEntity(bean);
+		try {
+			if (!getCuestionarioService().saveOrUpdate(bean,
+					bean.getSecCap(getListFields(this)))) {
+				ToastMessage.msgBox(this.getActivity(),
+						"Los datos no se guardaron",
+						ToastMessage.MESSAGE_ERROR, ToastMessage.DURATION_LONG);
+			}
+		} catch (SQLException e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean validar() {
+		String pregunta_no_vacia = getString(R.string.pregunta_no_vacia);
+		String especifique_no_vacio = getString(R.string.pregunta_especifique);
+		error = false;
+
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+
+
+
+		if (Util.esVacio(rgC4P440A)) {
+			mensaje = pregunta_no_vacia.replace("$", "La pregunta 440A");
+			view = rgC4P440A;
+			return !(error = true);
+		}
+
+
+//		for (int i = 3; i <= 12; i++) {
+//			RadioGroupOtherField x = ((RadioGroupOtherField) getView("rgC4P440B_A_"+ (i)));
+//			if (rgC4P440A.isTagSelected(1) ) {
+//				if (Util.esVacio(x)) {
+//					mensaje = pregunta_no_vacia.replace("$",
+//							"La pregunta P440B - Residuos Solidos.");
+//					view = x;
+//					return !(error = true);
+//				}
+//			}
+//
+//		}
+//		for (int i = 1; i <= 6; i++) {
+//			RadioGroupOtherField x = ((RadioGroupOtherField) getView("rgC4P440B_B_"+ (i)));
+//			if (rgC4P440A.isTagSelected(2)) {
+//				if (Util.esVacio(x)) {
+//					mensaje = pregunta_no_vacia.replace("$",
+//							"La pregunta P440B - Residuos Líquidos.");
+//					view = x;
+//					return !(error = true);
+//				}
+//			}
+//		}
+		if(rgC4P440A.isTagSelected(1)){
+			for (int i = 3; i <= 12; i++) {
+				RadioGroupOtherField x = ((RadioGroupOtherField) getView("rgC4P440B_A_"+ (i)));
+					if (Util.esVacio(x)) {
+						mensaje = pregunta_no_vacia.replace("$",
+								"La pregunta P440B - Residuos Solidos.");
+						view = x;
+						return !(error = true);
+					}
+				}
+			
+			if (rgC4P440B_A_3.isTagSelected(2)
+					&& rgC4P440B_A_4.isTagSelected(2)
+					&& rgC4P440B_A_5.isTagSelected(2)
+					&& rgC4P440B_A_6.isTagSelected(2)
+					&& rgC4P440B_A_7.isTagSelected(2)
+					&& rgC4P440B_A_8.isTagSelected(2)
+					&& rgC4P440B_A_9.isTagSelected(2)
+					&& rgC4P440B_A_10.isTagSelected(2)
+					&& rgC4P440B_A_11.isTagSelected(2)
+					&& rgC4P440B_A_12.isTagSelected(2)) {
+					mensaje = "Error: Debe existir información positiva en alguna de las alternativas";
+					view = rgC4P440B_A_3;
+					error = true;
+					return false;
+				}
+		}
+		if(rgC4P440A.isTagSelected(2)){
+			for (int i = 1; i <= 6; i++) {
+				RadioGroupOtherField x = ((RadioGroupOtherField) getView("rgC4P440B_B_"+ (i)));
+					if (Util.esVacio(x)) {
+						mensaje = pregunta_no_vacia.replace("$",
+								"La pregunta P440B - Residuos Líquidos.");
+						view = x;
+						return !(error = true);
+					}
+			}
+			if (rgC4P440B_B_1.isTagSelected(2)
+					&& rgC4P440B_B_2.isTagSelected(2)
+					&& rgC4P440B_B_3.isTagSelected(2)
+					&& rgC4P440B_B_4.isTagSelected(2)
+					&& rgC4P440B_B_5.isTagSelected(2)
+					&& rgC4P440B_B_6.isTagSelected(2)) {
+				mensaje = "Error: Debe existir información positiva en alguna de las alternativas";
+				view = rgC4P440B_B_1;
+				error = true;
+				return false;
+			}
+			
+		}
+	if(rgC4P440A.isTagSelected(3)){
+		for (int i = 3; i <= 12; i++) {
+			RadioGroupOtherField x = ((RadioGroupOtherField) getView("rgC4P440B_A_"+ (i)));
+				if (Util.esVacio(x)) {
+					mensaje = pregunta_no_vacia.replace("$",
+							"La pregunta P440B - Residuos Solidos.");
+					view = x;
+					return !(error = true);
+				}
+		}
+		for (int i = 1; i <= 6; i++) {
+			RadioGroupOtherField x = ((RadioGroupOtherField) getView("rgC4P440B_B_"+ (i)));
+				if (Util.esVacio(x)) {
+					mensaje = pregunta_no_vacia.replace("$",
+							"La pregunta P440B - Residuos Líquidos.");
+					view = x;
+					return !(error = true);
+				}
+		   }
+		if (rgC4P440B_A_3.isTagSelected(2)
+			&& rgC4P440B_A_4.isTagSelected(2)
+			&& rgC4P440B_A_5.isTagSelected(2)
+			&& rgC4P440B_A_6.isTagSelected(2)
+			&& rgC4P440B_A_7.isTagSelected(2)
+			&& rgC4P440B_A_8.isTagSelected(2)
+			&& rgC4P440B_A_9.isTagSelected(2)
+			&& rgC4P440B_A_10.isTagSelected(2)
+			&& rgC4P440B_A_11.isTagSelected(2)
+			&& rgC4P440B_A_12.isTagSelected(2)) {
+			mensaje = "Error: Debe existir información positiva en alguna de las alternativas";
+			view = rgC4P440B_A_3;
+			error = true;
+			return false;
+		}	
+		if (rgC4P440B_B_1.isTagSelected(2)
+				&& rgC4P440B_B_2.isTagSelected(2)
+				&& rgC4P440B_B_3.isTagSelected(2)
+				&& rgC4P440B_B_4.isTagSelected(2)
+				&& rgC4P440B_B_5.isTagSelected(2)
+				&& rgC4P440B_B_6.isTagSelected(2)) {
+			mensaje = "Error: Debe existir información positiva en alguna de las alternativas";
+			view = rgC4P440B_B_1;
+			error = true;
+			return false;
+		}
+		
+	}
+			if (Util.esVacio(rgC4P441A)) {
+				mensaje = pregunta_no_vacia.replace("$", "La pregunta P441A.");
+				view = rgC4P441A;
+				error = true;
+				return false;
+			}
+
+			if (Util.esVacio(txtC4P441B)) {
+				mensaje = pregunta_no_vacia.replace("$", "La pregunta P441B.");
+				view = txtC4P441B;
+				error = true;
+				return false;
+			}
+			if(txtC4P441B.getText().length()>0 && Util.getInt(txtC4P441B.getText().toString())==0){
+				mensaje = "Error: El valor del gasto en la gestión de residuos sólidos debe ser mayor a 0";
+				view = txtC4P441B;
+				error = true;
+				return false;
+				
+			}
+
+		return true;
+	}
+
+	@Override
+	public void cargarDatos() {
+		bean = getCuestionarioService().getModuloiv01(
+				App.getInstance().getEmpresa(),
+				new Moduloiv01().getSecCap(getListFields(this)));
+
+		caratula = App.getInstance().getEmpresa();
+		if (bean == null) {
+			bean = new Moduloiv01();
+			bean.id = App.getInstance().getEmpresa().id;
+		}
+
+		entityToUI(bean);
+		inicio();
+	}
+
+	private void inicio() {
+		FuncionP440A();
+		rgC4P440A.requestFocus();
+	}
+
+	public void FuncionP440A() {
+		Integer valor1 = Integer.parseInt(rgC4P440A.getTagSelected("0").toString());
+
+		if (valor1 == 1) {
+			Util.cleanAndLockView(getActivity(), rgC4P440B_B_1, rgC4P440B_B_2,
+					rgC4P440B_B_3, rgC4P440B_B_4, rgC4P440B_B_5, rgC4P440B_B_6);
+		} else{
+			Util.lockView(getActivity(), false, rgC4P440B_B_1, rgC4P440B_B_2,
+					rgC4P440B_B_3, rgC4P440B_B_4, rgC4P440B_B_5, rgC4P440B_B_6);
+		}
+		if ( valor1 == 2) {
+			Util.cleanAndLockView(getActivity(),rgC4P440B_A_3,
+					rgC4P440B_A_4, rgC4P440B_A_5, rgC4P440B_A_6,
+					rgC4P440B_A_7, rgC4P440B_A_8, rgC4P440B_A_9,
+					rgC4P440B_A_10, rgC4P440B_A_11, rgC4P440B_A_12);
+			} else  {
+				Util.lockView(getActivity(), false,  rgC4P440B_A_3,
+						rgC4P440B_A_4, rgC4P440B_A_5, rgC4P440B_A_6,
+						rgC4P440B_A_7, rgC4P440B_A_8, rgC4P440B_A_9,
+						rgC4P440B_A_10, rgC4P440B_A_11, rgC4P440B_A_12);
+			}
+   
+	}
+
+	public CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+	
+	@Override
+	public Caratula getEntity() {
+		return App.getInstance().getEmpresa();
+	}
+}

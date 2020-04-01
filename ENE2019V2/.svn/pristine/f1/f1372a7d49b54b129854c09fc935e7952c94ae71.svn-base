@@ -1,0 +1,132 @@
+package gob.inei.ene2019v2.model;
+
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.interfaces.IDetailEntityComponent;
+
+public class Modulov02 extends Entity implements IDetailEntityComponent {
+
+	private static final long serialVersionUID = 1L;
+
+//	public Integer c5p511_1 = null;
+//	public Integer c5p511_2 = null;
+//	public Integer c5p511_3 = null;
+//	public Integer c5p511_4 = null;
+//	public Integer c5p511_5 = null;
+//	public Integer c5p511_6 = null;
+//	public Integer c5p511_7 = null;
+//	public Integer c5p511_8 = null;
+//	public Integer c5p511_9 = null;
+//	public String c5p511_9esp = null;
+//	public Integer c5p511_10 = null;
+	
+	public Integer c5p512 = null;
+
+	public Integer c5p512a = null;
+	public String c5p512a_esp = null;
+	
+	public Integer c5p513 = null;
+	public String c4p513_esp = null;
+
+	public Integer c5p513a_1 = null;
+	public Integer c5p513a_2 = null;
+	public Integer c5p513a_3 = null;
+	public String c5p513a_3esp = null;
+
+	public Integer c5p514_1 = null;
+	public Integer c5p514_2 = null;
+	public Integer c5p514_3 = null;
+	public Integer c5p514_4 = null;
+	
+	public Integer c5p514a_1 = null;
+	public Integer c5p514a_2 = null;
+	public Integer c5p514a_3 = null;
+	public Integer c5p514a_4 = null;
+	public Integer c5p514a_5 = null;
+	public Integer c5p514a_6 = null;
+	public Integer c5p514a_7 = null;
+	public String c5p514a_7esp = null;
+
+	public Integer c5p515 = null;
+	
+	public Integer c5p516_1 = null;
+	public Integer c5p516_2 = null;
+	public Integer c5p516_3 = null;
+	public Integer c5p516_4 = null;
+	public Integer c5p516_5 = null;
+	public Integer c5p517_1 = null;
+	public Integer c5p517_2 = null;
+	public Integer c5p517_3 = null;
+	public Integer c5p517_4 = null;
+	public Integer c5p517_5 = null;
+	public Integer c5p517_6 = null;
+	public Integer c5p517_7 = null;
+	public Integer c5p517_8 = null;
+	public Integer c5p517_9 = null;
+	public String c5p517_9esp = null;
+
+	public Integer c5p518 = null;
+	public Integer cc5p519_1 = null;
+	public Integer cc5p519_2 = null;
+	public Integer cc5p519_3 = null;
+	public Integer cc5p519_4 = null;
+	public Integer cc5p519_5 = null;
+	public String c5p519_5esp = null;
+	
+	public Integer c5p520_1 = null;
+	public Integer c5p520_2 = null;
+	public Integer c5p520_3 = null;
+	public Integer c5p520_4 = null;
+	public Integer c5p520_5 = null;
+		
+	public Integer c5p521 = null;
+	public String c5p521_esp = null;
+	public Integer c5p522 = null;
+	public String c5p522_esp = null;
+	public Integer c5p523_1 = null;
+	public Integer c5p523_2 = null;
+	public Integer c5p523_3 = null;
+	public Integer c5p523_4 = null;
+	public Integer c5p524_1 = null;
+	public Integer c5p524_2 = null;
+	public Integer c5p524_3 = null;
+	public Integer c5p524_4 = null;
+	public Integer c5p525_a_1 = null;
+	public Integer c5p525_a_2 = null;
+	public Integer c5p525_a_3 = null;
+	public Integer c5p525_a_4 = null;
+	public Integer c5p525_b_1 = null;
+	public Integer c5p525_c_1 = null;
+	public Integer c5p525_c_2 = null;
+	public Integer c5p525_c_3 = null;
+	public Integer c5p525_d_1 = null;
+	public Integer c5p525_d_2 = null;
+	public Integer c5p525_e_1 = null;
+	
+	public String c5_obs = null;
+	public Integer t_c5 = null;
+
+	public Modulov02() {
+	}
+
+	@Override
+	public void cleanEntity() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean isTitle() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getPks() {
+		return "ID";
+	}
+
+	@Override
+	public String toString() {
+		return super.toString();
+	}
+}

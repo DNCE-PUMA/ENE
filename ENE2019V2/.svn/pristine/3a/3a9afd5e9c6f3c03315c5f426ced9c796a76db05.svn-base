@@ -1,0 +1,211 @@
+package gob.inei.ene2019v2.fragment.ModIX.dialog;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.components.ButtonComponent;
+import gob.inei.dnce.components.DialogFragmentComponent;
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.TextAreaField;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.util.Caretaker;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.fragment.ModIX.Mod_IX_Fragment_007;
+import gob.inei.ene2019v2.fragment.ModIX.Mod_IX_Fragment_007.ModulooIX;
+import gob.inei.ene2019v2.model.ModuloixDet04;
+import gob.inei.ene2019v2.service.CuestionarioService;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+
+// 
+public class Mod_IX_Fragment_007_02 extends DialogFragmentComponent {
+	@FieldAnnotation(orderIndex = 1)
+	public TextAreaField txtC9B_OBS;
+	@FieldAnnotation(orderIndex = 2)
+	public ButtonComponent btnAceptar;
+	@FieldAnnotation(orderIndex = 3)
+	public ButtonComponent btnCancelar;
+
+	private static Mod_IX_Fragment_007_02 _container;
+	ModulooIX detalle;
+	private List<ModuloixDet04> lstClone;
+	LinearLayout q0, q1, q2, q3, q4, q5;
+	private static Mod_IX_Fragment_007 caller;
+	private LabelComponent lbltitulo;
+	private static CuestionarioService cuestionarioService;
+
+	public Mod_IX_Fragment_007_02() {
+		super();
+	}
+
+	public static Mod_IX_Fragment_007_02 newInstance(FragmentForm pagina,
+			ModulooIX detalle) {
+		caller = (Mod_IX_Fragment_007) pagina;
+		Filtros.clear();
+		Mod_IX_Fragment_007_02 f = new Mod_IX_Fragment_007_02();
+		f.setParent(pagina);
+		Bundle args = new Bundle();
+		args.putSerializable("detalle", detalle);
+		f.setArguments(args);
+		return f;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		detalle = (ModulooIX) getArguments().getSerializable("detalle");
+		caretaker = new Caretaker<Entity>();
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+		final View rootView = createUI();
+		initObjectsWithoutXML(this, rootView);
+		cargarDatos();
+
+		enlazarCajas();
+		listening();
+
+		return rootView;
+
+	}
+
+	@Override
+	public void onDismiss(DialogInterface dialog) {
+		setContainerContext(this);
+		super.onDismiss(dialog);
+	}
+
+	@Override
+	protected void buildFields() {
+
+		lbltitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(MATCH_PARENT, MATCH_PARENT).text(R.string.OBS)
+				.textSize(21).centrar().negrita();
+
+		txtC9B_OBS = new TextAreaField(this.getActivity()).size(400, 750)
+				.maxLength(2000);
+
+		replaceText(lbltitulo, Util.getListHashMap("$", detalle.nombre
+				.substring(0, detalle.nombre.length() - 1).toUpperCase()));
+		btnAceptar = new ButtonComponent(getParent().getActivity(),
+				App.ESTILO_BOTON).text(R.string.btnAceptar).size(200, 60);
+		btnCancelar = new ButtonComponent(getParent().getActivity(),
+				App.ESTILO_BOTON).text(R.string.btnCancelar).size(200, 60);
+		btnCancelar.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dismiss();
+			}
+		});
+		btnAceptar.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				boolean flag = grabar();
+				if (!flag) {
+					return;
+				}
+				dismiss();
+			}
+		});
+
+		Filtros.setFiltro(txtC9B_OBS, Filtros.TIPO.ALFAN_U, 3000, null);
+
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+		q1 = createQuestionSection(lbltitulo, txtC9B_OBS);
+
+		LinearLayout botones = createButtonSection(btnAceptar, btnCancelar);
+		ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+		form.addView(q1);
+		form.addView(botones);
+		return contenedor;
+	}
+
+	public boolean grabar() {
+
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals("")) {
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+				if (view != null) {
+					view.requestFocus();
+				}
+			}
+			return false;
+		}
+
+		uiToEntity(detalle.detalle);
+		try {
+			if (!getCuestionarioService().saveOrUpdate(detalle.detalle,
+					getSecCap2(new String[] { "C9P967_COD" }))) {
+				ToastMessage.msgBox(this.getActivity(),
+						"Los datos no se guardaron",
+						ToastMessage.MESSAGE_ERROR, ToastMessage.DURATION_LONG);
+			}
+		} catch (SQLException e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+			return false;
+		}
+		return true;
+
+	}
+
+	private boolean validar() {
+		String pregunta_no_vacia = getString(R.string.pregunta_no_vacia);
+		error = false;
+
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+		return true;
+	}
+
+	private void cargarDatos() {
+		lstClone = new ArrayList<ModuloixDet04>();
+		lstClone.add((ModuloixDet04) detalle.detalle);
+		entityToUI(detalle.detalle);
+		inicio();
+
+	}
+
+	private void inicio() {
+	}
+
+	public CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+
+}

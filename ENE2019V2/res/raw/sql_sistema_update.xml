@@ -1,0 +1,4 @@
+<sql> 
+  
+    <sql_sistema>UPDATE T_SISTEMA SET VALUE1 ='http://proyectos.inei.gob.pe/WebEne2019/pagweb/transdataxmlenemobile.asp' WHERE ID= 1</sql_sistema>
+</sql> 

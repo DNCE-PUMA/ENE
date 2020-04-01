@@ -1,0 +1,686 @@
+package gob.inei.ene2019v2.fragment.ModVI;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.components.DialogComponent;
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.components.Entity.SeccionCapitulo;
+import gob.inei.dnce.components.CheckBoxField;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.GridComponent;
+import gob.inei.dnce.components.IntegerField;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.MasterActivity;
+import gob.inei.dnce.components.RadioGroupOtherField;
+import gob.inei.dnce.components.TextField;
+import gob.inei.dnce.components.RadioGroupOtherField.ORIENTATION;
+import gob.inei.dnce.components.TableComponent;
+import gob.inei.dnce.components.TableComponent.ALIGN;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.interfaces.IDetailEntityComponent;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.model.Modulovi01;
+import gob.inei.ene2019v2.service.CuestionarioService;
+
+import java.lang.reflect.Field;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
+
+public class Mod_VI_Fragment_006 extends FragmentForm  {
+
+	@FieldAnnotation(orderIndex = 1)
+	public IntegerField txtC6P617;
+	@FieldAnnotation(orderIndex = 2)
+	public CheckBoxField chbC6P617_1;
+	
+	private TableComponent tcSecIII;
+	private List<String> data = new ArrayList<String>();
+	private List<Map<Field, Object>> lmap;
+	public static int ESPECIFIQUE = 5;
+	private DialogComponent dc;
+	private SeccionCapitulo[] secCap;
+	TC_ClickListener listener;
+	private List<Detalle> lstDetalle;
+	private int cont;
+	private CuestionarioService cuestionarioService;
+	private Modulovi01 bean;
+	private LabelComponent lblTitulo, lblSubTitulo,lblporcentaje;
+	private GridComponent gridM6P016, gridM6P018,griP617;
+	LinearLayout q0, q1, q2, q3, q4, q5;
+	SeccionCapitulo[] seccionesCargado , seccionesGrabado;
+	
+	public Mod_VI_Fragment_006() {
+	}
+
+	public Mod_VI_Fragment_006 parent(MasterActivity parent) {
+		this.parent = parent;
+		return this;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = createUI();
+		initObjectsWithoutXML(this, rootView);
+		enlazarCajas();
+		listening();
+		seccionesCargado = new SeccionCapitulo[] { new SeccionCapitulo(0, -1,
+				-1, "ID", "C6P613A_1","C6P613A_2","C6P613A_3","C6P613A_4_1","C6P613A_4_2","C6P613A_4_3","C6P613A_4_4",
+				"C6P613A_4_5","C6P613A_4_6","C6P613A_4_7","C6P613A_4_8","C6P613A_4_9","C6P613A_4_10","C6P613A_4_10_O",
+				"C6P613B_1","C6P613B_2","C6P613B_3","C6P613B_4_1","C6P613B_4_2","C6P613B_4_3","C6P613B_4_4",
+				"C6P613B_4_5","C6P613B_4_6","C6P613B_4_7","C6P613B_4_8","C6P613B_4_9","C6P613B_4_10","C6P613B_4_10_O",
+				"C6P613C_1","C6P613C_2","C6P613C_3","C6P613C_4_1","C6P613C_4_2","C6P613C_4_3","C6P613C_4_4",
+				"C6P613C_4_5","C6P613C_4_6","C6P613C_4_7","C6P613C_4_8","C6P613C_4_9","C6P613C_4_10","C6P613C_4_10_O",
+				"C6P613D_1","C6P613D_2","C6P613D_3","C6P613D_4_1","C6P613D_4_2","C6P613D_4_3","C6P613D_4_4",
+				"C6P613D_4_5","C6P613D_4_6","C6P613D_4_7","C6P613D_4_8","C6P613D_4_9","C6P613D_4_10","C6P613D_4_10_O",
+				"C6P613E_1ESP","C6P613E_1","C6P613E_2","C6P613E_3","C6P613E_4_1","C6P613E_4_2","C6P613E_4_3","C6P613E_4_4",
+				"C6P613E_4_5","C6P613E_4_6","C6P613E_4_7","C6P613E_4_8","C6P613E_4_9","C6P613E_4_10","C6P613E_4_10_O",
+				"C6P617","C6P617_1") };
+		
+				
+		
+		seccionesGrabado = new SeccionCapitulo[] { new SeccionCapitulo(0, -1,
+				-1, "C6P613A_1","C6P613A_2","C6P613A_3","C6P613A_4_1","C6P613A_4_2","C6P613A_4_3","C6P613A_4_4",
+				"C6P613A_4_5","C6P613A_4_6","C6P613A_4_7","C6P613A_4_8","C6P613A_4_9","C6P613A_4_10","C6P613A_4_10_O",
+				"C6P613B_1","C6P613B_2","C6P613B_3","C6P613B_4_1","C6P613B_4_2","C6P613B_4_3","C6P613B_4_4",
+				"C6P613B_4_5","C6P613B_4_6","C6P613B_4_7","C6P613B_4_8","C6P613B_4_9","C6P613B_4_10","C6P613B_4_10_O",
+				"C6P613C_1","C6P613C_2","C6P613C_3","C6P613C_4_1","C6P613C_4_2","C6P613C_4_3","C6P613C_4_4",
+				"C6P613C_4_5","C6P613C_4_6","C6P613C_4_7","C6P613C_4_8","C6P613C_4_9","C6P613C_4_10","C6P613C_4_10_O",
+				"C6P613D_1","C6P613D_2","C6P613D_3","C6P613D_4_1","C6P613D_4_2","C6P613D_4_3","C6P613D_4_4",
+				"C6P613D_4_5","C6P613D_4_6","C6P613D_4_7","C6P613D_4_8","C6P613D_4_9","C6P613D_4_10","C6P613D_4_10_O",
+				"C6P613E_1ESP","C6P613E_1","C6P613E_2","C6P613E_3","C6P613E_4_1","C6P613E_4_2","C6P613E_4_3","C6P613E_4_4",
+				"C6P613E_4_5","C6P613E_4_6","C6P613E_4_7","C6P613E_4_8","C6P613E_4_9","C6P613E_4_10","C6P613E_4_10_O",
+				"C6P617","C6P617_1") };
+		
+		listener = new TC_ClickListener();
+		tcSecIII.getListView().setOnItemClickListener(listener);
+		return rootView;
+	}
+
+
+	
+	
+	@Override
+	protected void buildFields() {
+		lblTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.moduloVI).textSize(21).centrar().negrita();
+		lblSubTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(MATCH_PARENT, MATCH_PARENT).text(R.string.c1c100m6p_2)
+				.textSize(21).centrar().negrita();
+
+		lblporcentaje = new LabelComponent(this.getActivity()).size(35, 180)
+				.text(R.string.c1c100m4p004_1).textSize(14).centrar().negrita();
+		
+		txtC6P617 = new IntegerField(this.getActivity(), false)
+				.size(altoComponente, 150).centrar().negrita()
+				.hint(R.string.porcentaje);
+		txtC6P617.addTextChangedListener(twP617);
+		chbC6P617_1 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m6p009_1, "1:0").callback("FuncionCHECK617")
+				.size(WRAP_CONTENT, 180);
+		
+		tcSecIII = new TableComponent(getActivity(), this, App.ESTILO)
+				.size(540, 540).headerHeight(100).dataColumHeight(85);
+		tcSecIII.setHeaderTextSize(15);
+		tcSecIII.addHeader(R.string.c1c100m6p016_t1, 2.5f, ALIGN.LEFT);
+		tcSecIII.addHeader(R.string.c1c100m6p016_t2, 1f,
+				RadioGroupOtherField.class, R.string.c2c300inf302_1_1,
+				R.string.c2c300inf302_1_2);
+	//	tcSecIII.setCellColor(-1, 0, true);
+		tcSecIII.addCallback(1, "onSeleccionadoChangeValue");
+		
+		
+		griP617 = new GridComponent(this.getActivity(), 1);
+		griP617.addComponent(txtC6P617);
+		griP617.addComponent(lblporcentaje);
+		griP617.colorFondo(R.color.transparent);
+	
+		Filtros.setFiltro(txtC6P617, Filtros.TIPO.NUMBER, 3, -1, null, 1, 100);
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+
+		q0 = createQuestionSection(lblTitulo, lblSubTitulo);
+		q1 = createQuestionSection(R.string.c1c100m6p015, tcSecIII.getTableView() );
+		q2 = createQuestionSection(R.string.c1c100m6p016, griP617.component(),chbC6P617_1);
+		
+		ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+
+		form.addView(q0);
+		form.addView(q1);
+		form.addView(q2);
+
+		return contenedor;
+	}
+
+	@Override
+	public boolean grabar() {
+		uiToEntity(bean);
+		Log.e ("x", "xx");
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals(""))
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				if (view != null)
+					view.requestFocus();
+			}
+			return false;
+		}
+		// SQLiteDatabase dbTX = getCuestionarioService().startTX();
+		boolean flag = true;
+
+		llenarBean();
+		try {
+
+			Log.e ("grabar" ,"normal");
+			flag = getCuestionarioService().saveOrUpdate(bean,	seccionesGrabado);
+			if (!flag) {
+				throw new SQLException("Los datos no pudieron ser guardados.");	
+			}
+			// getCuestionarioService().commitTX(dbTX);
+		} catch (SQLException e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+			return false;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
+	private boolean validar() {
+
+		if (!isInRange())
+			return false;
+		String preguntaVacia = this.getResources().getString(
+				R.string.pregunta_no_vacia);
+
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+
+
+
+		for (int i = 0; i < lstDetalle.size(); i++) {
+			Detalle cc = (Detalle) lstDetalle.get(i);
+			if (Util.esVacio(cc.c6p616a)) {
+				ToastMessage.msgBox(this.getActivity(), "Falta llenar "
+						+ cc.label, ToastMessage.MESSAGE_INFO,
+						ToastMessage.DURATION_LONG);
+				return false;
+			}
+			if (!Util.esDiferente(cc.c6p616a, 1)) {
+				if (Util.esVacio(cc.c6p616b)) {
+					ToastMessage.msgBox(this.getActivity(), "Falta llenar "
+							+ cc.label, ToastMessage.MESSAGE_INFO,
+							ToastMessage.DURATION_LONG);
+					return false;
+				}
+			}
+
+		}		
+		
+		if (Util.esVacio(txtC6P617) && !chbC6P617_1.isChecked()) {
+			mensaje = preguntaVacia.replace("$", "La pregunta P617");
+			view = txtC6P617;
+			error = true;
+			return false;
+		}
+
+		return true;
+	}
+
+
+	
+	private class TC_ClickListener implements OnItemClickListener {
+
+		public TC_ClickListener() {
+		}
+
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+				long arg3) {
+			Detalle det1528 = (Detalle) lstDetalle.get(arg2);
+			
+			Log.e ("c6p616a",  det1528.c6p616a + "");
+			
+			if (Util.esDiferente(det1528.c6p616a, 1)) {
+				 return;
+			 }
+			abrirDetalle(det1528, arg2);
+		}
+	}
+	
+
+	public void abrirDetalle(Detalle bean, Integer position) {
+		FragmentManager fm = Mod_VI_Fragment_006.this.getFragmentManager();
+		Mod_VI_Fragment_006_01 aperturaDialog = Mod_VI_Fragment_006_01
+				.newInstance(this, bean,position);
+		aperturaDialog.setAncho(LinearLayout.LayoutParams.MATCH_PARENT);
+		aperturaDialog.show(fm, "aperturaDialog");
+	}
+
+	@Override
+	public void cargarDatos() {
+		
+		lstDetalle = new ArrayList<Detalle>();
+		for (cont = 0; cont < 5; cont++) {
+			lstDetalle.add(new Detalle(getResources().getStringArray(R.array.array_616)[cont]));
+		}
+				
+		bean = getCuestionarioService().getModulovi01(
+				App.getInstance().getEmpresa(), seccionesCargado);
+
+		if (bean == null) {
+			bean = new Modulovi01();
+			bean.id =App.getInstance().getEmpresa().id;
+		}
+
+		
+//		bean = getCuestionarioService().getModulovi01(
+//				App.getInstance().getEmpresa(), secCap);
+//
+//		if (bean == null) {
+//			bean = new Modulovi01();
+//			bean.id = App.getInstance().getEmpresa().id;
+//		}
+		
+		llenarUI();
+		entityToUI(bean);
+		refrescarTabla();
+		inicio();
+		
+		
+	}
+
+
+
+	private void inicio() {
+		FuncionCHECK617();
+		tcSecIII.requestFocus();
+	}
+
+
+	public void refrescarTabla() {
+//		llenarUI();
+		tcSecIII.setData(lstDetalle, "label", "c6p616a");
+		for (int row2 = 0; row2 < lstDetalle.size(); row2++) {
+			tcSecIII.setBorderRow(row2, obtenerEstado(lstDetalle.get(row2)));
+		}
+	}
+	
+	
+	
+	private boolean obtenerEstado(Detalle detalle) {
+		// Azul al completar el No.
+
+		if (!Util.esDiferente(detalle.c6p616a, 1)) {
+			if (detalle.c6p616b != null) {
+				return true;
+			}
+		}
+
+		if (!Util.esDiferente(detalle.c6p616a, 2)) {
+				return true;
+		}
+		return false;
+	}
+	
+	private void llenarUI() {
+
+		lstDetalle = new ArrayList<Detalle>();
+		Detalle tmp = new Detalle(getResources().getStringArray(
+				R.array.array_616)[0]);
+		
+		tmp.c6p616a = bean.c6p613a_1;
+		tmp.c6p616b = bean.c6p613a_2;
+		tmp.c6p616c = bean.c6p613a_3;
+		tmp.c6p616d_1 = bean.c6p613a_4_1;
+		tmp.c6p616d_2 = bean.c6p613a_4_2;
+		tmp.c6p616d_3 = bean.c6p613a_4_3;
+		tmp.c6p616d_4 = bean.c6p613a_4_4;
+		tmp.c6p616d_5 = bean.c6p613a_4_5;
+		tmp.c6p616d_6 = bean.c6p613a_4_6;
+		tmp.c6p616d_7 = bean.c6p613a_4_7;
+		tmp.c6p616d_8 = bean.c6p613a_4_8;
+		tmp.c6p616d_9 = bean.c6p613a_4_9;
+		tmp.c6p616d_10 = bean.c6p613a_4_10;
+		tmp.c6p616d_10_o = bean.c6p613a_4_10_o;		
+		lstDetalle.add(tmp);
+
+		tmp = new Detalle(getResources().getStringArray(
+				R.array.array_616)[1]);
+		tmp.c6p616a = bean.c6p613b_1;
+		tmp.c6p616b = bean.c6p613b_2;
+		tmp.c6p616c = bean.c6p613b_3;
+		tmp.c6p616d_1 = bean.c6p613b_4_1;
+		tmp.c6p616d_2 = bean.c6p613b_4_2;
+		tmp.c6p616d_3 = bean.c6p613b_4_3;
+		tmp.c6p616d_4 = bean.c6p613b_4_4;
+		tmp.c6p616d_5 = bean.c6p613b_4_5;
+		tmp.c6p616d_6 = bean.c6p613b_4_6;
+		tmp.c6p616d_7 = bean.c6p613b_4_7;
+		tmp.c6p616d_8 = bean.c6p613b_4_8;
+		tmp.c6p616d_9 = bean.c6p613b_4_9;
+		tmp.c6p616d_10 = bean.c6p613b_4_10;
+		tmp.c6p616d_10_o = bean.c6p613b_4_10_o;	
+		lstDetalle.add(tmp);
+
+		tmp = new Detalle(getResources().getStringArray(
+				R.array.array_616)[2]);
+		tmp.c6p616a = bean.c6p613c_1;
+		tmp.c6p616b = bean.c6p613c_2;
+		tmp.c6p616c = bean.c6p613c_3;
+		tmp.c6p616d_1 = bean.c6p613c_4_1;
+		tmp.c6p616d_2 = bean.c6p613c_4_2;
+		tmp.c6p616d_3 = bean.c6p613c_4_3;
+		tmp.c6p616d_4 = bean.c6p613c_4_4;
+		tmp.c6p616d_5 = bean.c6p613c_4_5;
+		tmp.c6p616d_6 = bean.c6p613c_4_6;
+		tmp.c6p616d_7 = bean.c6p613c_4_7;
+		tmp.c6p616d_8 = bean.c6p613c_4_8;
+		tmp.c6p616d_9 = bean.c6p613c_4_9;
+		tmp.c6p616d_10 = bean.c6p613c_4_10;
+		tmp.c6p616d_10_o = bean.c6p613c_4_10_o;
+		lstDetalle.add(tmp);
+		
+		tmp = new Detalle(getResources().getStringArray(
+				R.array.array_616)[3]);
+		tmp.c6p616a = bean.c6p613d_1;
+		tmp.c6p616b = bean.c6p613d_2;
+		tmp.c6p616c = bean.c6p613d_3;
+		tmp.c6p616d_1 = bean.c6p613d_4_1;
+		tmp.c6p616d_2 = bean.c6p613d_4_2;
+		tmp.c6p616d_3 = bean.c6p613d_4_3;
+		tmp.c6p616d_4 = bean.c6p613d_4_4;
+		tmp.c6p616d_5 = bean.c6p613d_4_5;
+		tmp.c6p616d_6 = bean.c6p613d_4_6;
+		tmp.c6p616d_7 = bean.c6p613d_4_7;
+		tmp.c6p616d_8 = bean.c6p613d_4_8;
+		tmp.c6p616d_9 = bean.c6p613d_4_9;
+		tmp.c6p616d_10 = bean.c6p613d_4_10;
+		tmp.c6p616d_10_o = bean.c6p613d_4_10_o;
+		lstDetalle.add(tmp);
+		
+		tmp = new Detalle(getResources().getStringArray(R.array.array_616)[4] +  bean.c6p613e_1esp == "" ||  bean.c6p613e_1esp == null   ? "5. Otro?"  :    " 5. Otro? [ "	+ bean.c6p613e_1esp + " ]" );
+		tmp.c6p616a = bean.c6p613e_1;
+		tmp.c6p613e_1esp = bean.c6p613e_1esp;
+		tmp.c6p616b = bean.c6p613e_2;
+		tmp.c6p616c = bean.c6p613e_3;
+		tmp.c6p616d_1 = bean.c6p613e_4_1;
+		tmp.c6p616d_2 = bean.c6p613e_4_2;
+		tmp.c6p616d_3 = bean.c6p613e_4_3;
+		tmp.c6p616d_4 = bean.c6p613e_4_4;
+		tmp.c6p616d_5 = bean.c6p613e_4_5;
+		tmp.c6p616d_6 = bean.c6p613e_4_6;
+		tmp.c6p616d_7 = bean.c6p613e_4_7;
+		tmp.c6p616d_8 = bean.c6p613e_4_8;
+		tmp.c6p616d_9 = bean.c6p613e_4_9;
+		tmp.c6p616d_10 = bean.c6p613e_4_10;
+		tmp.c6p616d_10_o = bean.c6p613e_4_10_o;
+		lstDetalle.add(tmp);
+	}
+
+	private void llenarBean() {
+		Detalle tmp;
+		tmp = (Detalle) lstDetalle.get(0);
+		bean.c6p613a_1 = tmp.c6p616a;
+		bean.c6p613a_2 = tmp.c6p616b;
+		bean.c6p613a_3 = tmp.c6p616c;
+		bean.c6p613a_4_1 = tmp.c6p616d_1;
+		bean.c6p613a_4_2 = tmp.c6p616d_2;
+		bean.c6p613a_4_3 = tmp.c6p616d_3;
+		bean.c6p613a_4_4 = tmp.c6p616d_4;
+		bean.c6p613a_4_5 = tmp.c6p616d_5;
+		bean.c6p613a_4_6 = tmp.c6p616d_6;
+		bean.c6p613a_4_7 = tmp.c6p616d_7;
+		bean.c6p613a_4_8 = tmp.c6p616d_8;
+		bean.c6p613a_4_9 = tmp.c6p616d_9;
+		bean.c6p613a_4_10 = tmp.c6p616d_10;
+		bean.c6p613a_4_10_o = tmp.c6p616d_10_o;		
+		
+
+		tmp = (Detalle) lstDetalle.get(1);
+		bean.c6p613b_1 = tmp.c6p616a;
+		bean.c6p613b_2 = tmp.c6p616b;
+		bean.c6p613b_3 = tmp.c6p616c;
+		bean.c6p613b_4_1 = tmp.c6p616d_1;
+		bean.c6p613b_4_2 = tmp.c6p616d_2;
+		bean.c6p613b_4_3 = tmp.c6p616d_3;
+		bean.c6p613b_4_4 = tmp.c6p616d_4;
+		bean.c6p613b_4_5 = tmp.c6p616d_5;
+		bean.c6p613b_4_6 = tmp.c6p616d_6;
+		bean.c6p613b_4_7 = tmp.c6p616d_7;
+		bean.c6p613b_4_8 = tmp.c6p616d_8;
+		bean.c6p613b_4_9 = tmp.c6p616d_9;
+		bean.c6p613b_4_10 = tmp.c6p616d_10;
+		bean.c6p613b_4_10_o = tmp.c6p616d_10_o;
+
+		tmp = (Detalle) lstDetalle.get(2);
+		bean.c6p613c_1 = tmp.c6p616a;
+		bean.c6p613c_2 = tmp.c6p616b;
+		bean.c6p613c_3 = tmp.c6p616c;
+		bean.c6p613c_4_1 = tmp.c6p616d_1;
+		bean.c6p613c_4_2 = tmp.c6p616d_2;
+		bean.c6p613c_4_3 = tmp.c6p616d_3;
+		bean.c6p613c_4_4 = tmp.c6p616d_4;
+		bean.c6p613c_4_5 = tmp.c6p616d_5;
+		bean.c6p613c_4_6 = tmp.c6p616d_6;
+		bean.c6p613c_4_7 = tmp.c6p616d_7;
+		bean.c6p613c_4_8 = tmp.c6p616d_8;
+		bean.c6p613c_4_9 = tmp.c6p616d_9;
+		bean.c6p613c_4_10 = tmp.c6p616d_10;
+		bean.c6p613c_4_10_o = tmp.c6p616d_10_o;
+		
+		tmp = (Detalle) lstDetalle.get(3);
+		bean.c6p613d_1 = tmp.c6p616a;
+		bean.c6p613d_2 = tmp.c6p616b;
+		bean.c6p613d_3 = tmp.c6p616c;
+		bean.c6p613d_4_1 = tmp.c6p616d_1;
+		bean.c6p613d_4_2 = tmp.c6p616d_2;
+		bean.c6p613d_4_3 = tmp.c6p616d_3;
+		bean.c6p613d_4_4 = tmp.c6p616d_4;
+		bean.c6p613d_4_5 = tmp.c6p616d_5;
+		bean.c6p613d_4_6 = tmp.c6p616d_6;
+		bean.c6p613d_4_7 = tmp.c6p616d_7;
+		bean.c6p613d_4_8 = tmp.c6p616d_8;
+		bean.c6p613d_4_9 = tmp.c6p616d_9;
+		bean.c6p613d_4_10 = tmp.c6p616d_10;
+		bean.c6p613d_4_10_o = tmp.c6p616d_10_o;
+		
+		tmp = (Detalle) lstDetalle.get(4);
+		bean.c6p613e_1 = tmp.c6p616a;
+		bean.c6p613e_1esp = tmp.c6p613e_1esp;
+		bean.c6p613e_2 = tmp.c6p616b;
+		bean.c6p613e_3 = tmp.c6p616c;
+		bean.c6p613e_4_1 = tmp.c6p616d_1;
+		bean.c6p613e_4_2 = tmp.c6p616d_2;
+		bean.c6p613e_4_3 = tmp.c6p616d_3;
+		bean.c6p613e_4_4 = tmp.c6p616d_4;
+		bean.c6p613e_4_5 = tmp.c6p616d_5;
+		bean.c6p613e_4_6 = tmp.c6p616d_6;
+		bean.c6p613e_4_7 = tmp.c6p616d_7;
+		bean.c6p613e_4_8 = tmp.c6p616d_8;
+		bean.c6p613e_4_9 = tmp.c6p616d_9;
+		bean.c6p613e_4_10 = tmp.c6p616d_10;
+		bean.c6p613e_4_10_o = tmp.c6p616d_10_o;
+	}
+
+	
+	public void llenaDetalle(Detalle data, Integer pos) {
+		Detalle tmp;
+		tmp = (Detalle) lstDetalle.get(pos);
+		tmp.c6p616a= data.c6p616a;
+		tmp.c6p613e_1esp = data.c6p613e_1esp;
+		tmp.c6p616b = data.c6p616b;
+		tmp.c6p616c = data.c6p616c;
+		tmp.c6p616d_1 = data.c6p616d_1;
+		tmp.c6p616d_2 = data.c6p616d_2;
+		tmp.c6p616d_3 = data.c6p616d_3;
+		tmp.c6p616d_4 = data.c6p616d_4;
+		tmp.c6p616d_5 = data.c6p616d_5;
+		tmp.c6p616d_6 = data.c6p616d_6;
+		tmp.c6p616d_7 = data.c6p616d_7;
+		tmp.c6p616d_8 = data.c6p616d_8;
+		tmp.c6p616d_9 = data.c6p616d_9;
+		tmp.c6p616d_10 = data.c6p616d_10;
+		tmp.c6p616d_10_o = data.c6p616d_10_o;
+		
+		lstDetalle.set(pos,tmp);
+		
+		refrescarTabla();
+	}
+	
+	public static class Detalle extends Entity implements IDetailEntityComponent {
+		private static final long serialVersionUID = 1L;
+
+		public String label = null;
+		public Integer c6p616a = null;
+		public String c6p613e_1esp = null;
+		public Integer c6p616b = null;
+		public Integer c6p616c = null;
+		public Integer c6p616d_1 = null;
+		public Integer c6p616d_2 = null;
+		public Integer c6p616d_3 = null;
+		public Integer c6p616d_4 = null;
+		public Integer c6p616d_5 = null;
+		public Integer c6p616d_6 = null;
+		public Integer c6p616d_7 = null;
+		public Integer c6p616d_8 = null;
+		public Integer c6p616d_9 = null;
+		public Integer c6p616d_10 = null;
+		public String c6p616d_10_o = null;
+		
+		
+
+		
+		public Detalle(String label) {
+			super();
+			this.label = label;
+		}
+
+		@Override
+		public void cleanEntity() {		
+			c6p613e_1esp = null;
+			c6p616b = null;
+			c6p616c = null;
+			c6p616d_1 = null;
+			c6p616d_2 = null;
+			c6p616d_3 = null;
+			c6p616d_4 = null;
+			c6p616d_5 = null;
+			c6p616d_6 = null;
+			c6p616d_7 = null;
+			c6p616d_8 = null;
+			c6p616d_9 = null;
+			c6p616d_10 = null;
+			c6p616d_10_o = null;
+		}
+		
+		@Override
+		public boolean isTitle() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+	}
+
+	public CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+
+
+	public void onSeleccionadoChangeValue(Object entity, Integer row, Integer opcion) {
+		if (entity != null) {
+			Detalle tmp = (Detalle) entity;
+			tmp.c6p616a = opcion;
+			if (row.intValue() >= 0) {
+
+				Log.e ("opcion",opcion + "");		
+				Log.e ("tmp.c6p616a",tmp.c6p616a + "");
+				
+				tmp.c6p616a = opcion;
+				if (opcion == 2) {
+					tmp.cleanEntity();
+				}
+				refrescarTabla();
+			}
+		}
+	}
+
+	
+	@Override
+	public Entity getEntity() {
+		return bean;
+	}
+
+	public void FuncionCHECK617() {
+		if (chbC6P617_1.isChecked()) {
+			Util.cleanAndLockView(getActivity(), txtC6P617);
+		} else {
+			Util.lockView(getActivity(), false, txtC6P617);
+			txtC6P617.requestFocus();
+		}
+	}
+	
+	private TextWatcher twP617 = new TextWatcher() {
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before,
+				int count) {
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+		}
+
+		@Override
+		public void afterTextChanged(Editable s) {
+
+			if (Util.getInt(txtC6P617) > 0 && Util.getInt(txtC6P617) <= 100) {
+				Util.cleanAndLockView(getActivity(), chbC6P617_1);
+			} else if (Util.esVacio(txtC6P617)) {
+				Util.lockView(getActivity(), false, chbC6P617_1);
+			}
+
+		}
+
+	};
+}

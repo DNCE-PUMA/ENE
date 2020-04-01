@@ -1,0 +1,370 @@
+package gob.inei.ene2019v2.fragment.ModIII;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.components.CheckBoxField;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.GridComponent2;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.MasterActivity;
+import gob.inei.dnce.components.RadioGroupOtherField;
+import gob.inei.dnce.components.RadioGroupOtherField.ORIENTATION;
+import gob.inei.dnce.components.TextField;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.activity.CuestionarioFragmentActivity;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.model.Moduloiii02;
+import gob.inei.ene2019v2.service.CuestionarioService;
+
+import java.sql.SQLException;
+
+import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
+
+public class Mod_III_Fragment_008 extends FragmentForm {
+
+	@FieldAnnotation(orderIndex = 1)
+	public RadioGroupOtherField rgC3P320;
+	@FieldAnnotation(orderIndex = 2)
+	public CheckBoxField chbC3P321_1;
+	@FieldAnnotation(orderIndex = 3)
+	public CheckBoxField chbC3P321_2;
+	@FieldAnnotation(orderIndex = 4)
+	public CheckBoxField chbC3P321_3;
+	@FieldAnnotation(orderIndex = 5)
+	public CheckBoxField chbC3P321_4;
+	@FieldAnnotation(orderIndex = 6)
+	public CheckBoxField chbC3P321_5;
+	@FieldAnnotation(orderIndex = 7)
+	public CheckBoxField chbC3P321_6;
+	@FieldAnnotation(orderIndex = 8)
+	public CheckBoxField chbC3P321_7;
+	@FieldAnnotation(orderIndex = 9)
+	public CheckBoxField chbC3P321_8;
+	@FieldAnnotation(orderIndex = 10)
+	public CheckBoxField chbC3P321_9;
+	@FieldAnnotation(orderIndex = 11)
+	public CheckBoxField chbC3P321_10;
+	@FieldAnnotation(orderIndex = 12)
+	public CheckBoxField chbC3P321_11;
+	@FieldAnnotation(orderIndex = 13)
+	public CheckBoxField chbC3P321_12;
+	@FieldAnnotation(orderIndex = 14)
+	public CheckBoxField chbC3P321_13;
+	@FieldAnnotation(orderIndex = 15)
+	public CheckBoxField chbC3P321_14;
+	@FieldAnnotation(orderIndex = 16)
+	public TextField txtC3P321_14ESP;
+	@FieldAnnotation(orderIndex = 17)
+	public RadioGroupOtherField rgC3P322;
+
+	private CuestionarioService cuestionarioService;
+	private Moduloiii02 bean;
+	private LabelComponent lblTitulo, lblTitulo1;
+	private GridComponent2 gridpreg21;
+	LinearLayout q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10;
+
+	public Mod_III_Fragment_008() {
+	}
+
+	public Mod_III_Fragment_008 parent(MasterActivity parent) {
+		this.parent = parent;
+		return this;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = createUI();
+		initObjectsWithoutXML(this, rootView);
+		enlazarCajas();
+		listening();
+
+		return rootView;
+	}
+
+	@Override
+	protected void buildFields() {
+		lblTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.mod3_titulo).textSize(21).centrar().negrita();
+
+		lblTitulo1 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.mod3_subtitulo).textSize(20).centrar().negrita();
+
+		rgC3P320 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m3p020_1, R.string.c1c100m3p020_2)
+				.size(WRAP_CONTENT, 180).orientation(ORIENTATION.HORIZONTAL)
+				.callback("onM3P020ChangeValue");
+		chbC3P321_1 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m3p021_1, "1:0").size(altoComponente, 700);
+		chbC3P321_2 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m3p021_2, "1:0").size(altoComponente, 700);
+		chbC3P321_3 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m3p021_3, "1:0").size(altoComponente, 700);
+		chbC3P321_4 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m3p021_4, "1:0").size(altoComponente, 700);
+		chbC3P321_5 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m3p021_5, "1:0").size(altoComponente, 700);
+		chbC3P321_6 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m3p021_6, "1:0").size(altoComponente, 700)
+				.callback("onFuncionCHECK");
+		chbC3P321_7 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m3p021_7, "1:0").size(altoComponente, 700);
+		chbC3P321_8 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m3p021_8, "1:0").size(altoComponente, 700);
+		chbC3P321_9 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m3p021_9, "1:0").size(altoComponente, 700);
+		chbC3P321_10 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m3p021_10, "1:0").size(altoComponente, 700);
+		chbC3P321_11 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m3p021_11, "1:0").size(altoComponente, 700);
+		chbC3P321_12 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m3p021_12, "1:0").size(altoComponente, 700);
+		chbC3P321_13 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m3p021_13, "1:0").size(altoComponente, 700);
+		chbC3P321_14 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m3p021_14, "1:0").size(altoComponente, 150)
+				.callback("onFuncionCHECK");
+		txtC3P321_14ESP = new TextField(this.getActivity(), false)
+				.size(altoComponente, 550).hint(R.string.especifique)
+				.soloTextoNumero();
+
+		rgC3P322 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m3p022_1, R.string.c1c100m3p022_2,
+				R.string.c1c100m3p022_3).size(WRAP_CONTENT, 650)
+				.orientation(ORIENTATION.HORIZONTAL).centrar();
+
+		gridpreg21 = new GridComponent2(this.getActivity(),
+				Gravity.CENTER_VERTICAL, 2);
+		gridpreg21.addComponent(chbC3P321_14);
+		gridpreg21.addComponent(txtC3P321_14ESP);
+		gridpreg21.colorFondo(R.color.WhiteSmoke);
+		gridpreg21.component();
+
+		Filtros.setFiltro(txtC3P321_14ESP, Filtros.TIPO.ALFAN_U, 300, null);
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+
+		q0 = createQuestionSection(lblTitulo, lblTitulo1);
+		q1 = createQuestionSection(R.string.c1c100m3p020, rgC3P320);
+		q2 = createQuestionSection(R.string.c1c100m3p021, chbC3P321_1,
+				chbC3P321_2, chbC3P321_3, chbC3P321_4, chbC3P321_5,
+				chbC3P321_6, chbC3P321_7, chbC3P321_8, chbC3P321_9,
+				chbC3P321_10, chbC3P321_11, chbC3P321_12, chbC3P321_13,
+				gridpreg21);
+		q4 = createQuestionSection(R.string.c1c100m3p022, rgC3P322);
+
+		ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+		form.addView(q0);
+		form.addView(q1);
+		form.addView(q2);
+		form.addView(q4);
+		return contenedor;
+	}
+
+	@Override
+	public boolean grabar() {
+
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals("")) {
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+				if (view != null) {
+					view.requestFocus();
+				}
+			}
+			return false;
+		}
+		uiToEntity(bean);
+		try {
+			if (rgC3P320.getTagSelected("0").toString().equals("2")) {
+				if (!getCuestionarioService().saveOrUpdate(
+						bean,
+						bean.getSecCap(getListFields(this, new String[] {
+								"C3P323", "C3P324", "C3P325", "C3P326_1",
+								"C3P326_2", "C3P326_3", "C3P326_4", "C3P326_5",
+								"C3P326_6", "C3P326_7", "C3P326_8", "C3P326_9",
+								"C3P326_10", "C3P326_10ESP", "C3P326_A1",
+								"C3P326_A2", "C3P326_A3", "C3P326_A4",
+								"C3P326_A5", "C3P326_A6", "C3P326_A7",
+								"C3P326_A8", "C3P326_A9", "C3P326_A10",
+								"C3P326_B1", "C3P326_B2", "C3P326_B3",
+								"C3P326_B4", "M3P026B_5", "C3P326_B6",
+								"C3P326_B7", "C3P326_B8", "C3P326_B9",
+								"C3P326_B10", "C3P326_C1", "C3P326_C2", "C3P326_C3",
+								"C3P326_C4", "M3P026B_5", "C3P326_C6",
+								"C3P326_C7", "C3P326_C8", "C3P326_C9",
+								"C3P326_C10" })))) {
+					ToastMessage.msgBox(this.getActivity(),
+							"Los datos no se guardaron",
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+			} else {
+				if (!getCuestionarioService().saveOrUpdate(bean,
+						bean.getSecCap(getListFields(this, new String[] {
+								"C3P329", "C3P329_ESP", "C3P330", "C3P331"})))) {
+					ToastMessage.msgBox(this.getActivity(),
+							"Los datos no se guardaron",
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+			}
+		} catch (SQLException e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean validar() {
+		String pregunta_no_vacia = getString(R.string.pregunta_no_vacia);
+		String especifique_no_vacio = getString(R.string.pregunta_especifique);
+		error = false;
+
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+
+		if (Util.esVacio(rgC3P320)) {
+			mensaje = pregunta_no_vacia.replace("$", "La pregunta P320");
+			view = rgC3P320;
+			return !(error = true);
+		}
+
+		if (rgC3P320.getTagSelected("0").toString().equals("1")) {
+			if (!chbC3P321_1.isChecked() && !chbC3P321_2.isChecked()
+					&& !chbC3P321_3.isChecked() && !chbC3P321_4.isChecked()
+					&& !chbC3P321_5.isChecked() && !chbC3P321_6.isChecked()
+					&& !chbC3P321_7.isChecked() && !chbC3P321_8.isChecked()
+					&& !chbC3P321_9.isChecked() && !chbC3P321_10.isChecked()
+					&& !chbC3P321_11.isChecked() && !chbC3P321_12.isChecked()
+					&& !chbC3P321_13.isChecked() && !chbC3P321_14.isChecked()) {
+				mensaje = "DEBE MARCAR AL MENOS UNA ALTERNATIVA EN P321";
+				view = chbC3P321_1;
+				return !(error = true);
+			}
+			if (chbC3P321_14.isChecked()) {
+				if (Util.esVacio(txtC3P321_14ESP)) {
+					mensaje = pregunta_no_vacia.replace("$",
+							"La Preg.321 (Especifique)");
+					view = txtC3P321_14ESP;
+					return !(error = true);
+				} else {
+					if (txtC3P321_14ESP.getText().length() < 3) {
+						mensaje = "Ingrese la información correcta";
+						view = txtC3P321_14ESP;
+						error = true;
+						return false;
+					}
+				}
+			}
+
+			if (Util.esVacio(rgC3P322)) {
+				mensaje = pregunta_no_vacia.replace("$", "La pregunta P322");
+				view = rgC3P322;
+				return !(error = true);
+			}
+		}
+
+		return true;
+	}
+
+	@Override
+	public void cargarDatos() {
+		bean = getCuestionarioService().getModuloiii02(
+				App.getInstance().getEmpresa(),
+				new Moduloiii02().getSecCap(getListFields(this)));
+		if (bean == null) {
+			bean = new Moduloiii02();
+			bean.id = App.getInstance().getEmpresa().id;
+		}
+
+		entityToUI(bean);
+		inicio();
+	}
+
+	private void inicio() {
+		onM3P020ChangeValue();
+		onFuncionCHECK();
+		rgC3P320.requestFocus();
+	}
+
+	public CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+
+	public void onM3P020ChangeValue() {
+		RadioGroupOtherField crg = ((RadioGroupOtherField) rgC3P320);
+		if (crg.getTagSelected("0").toString().equals("1")) {
+			Util.lockView(getActivity(), false, chbC3P321_1, chbC3P321_2,
+					chbC3P321_3, chbC3P321_4, chbC3P321_5, chbC3P321_6,
+					chbC3P321_7, chbC3P321_8, chbC3P321_9, chbC3P321_10,
+					chbC3P321_11, chbC3P321_12, chbC3P321_13, chbC3P321_14,
+					rgC3P322);
+			chbC3P321_1.requestFocus();
+		} else {
+			Util.cleanAndLockView(getActivity(), chbC3P321_1, chbC3P321_2,
+					chbC3P321_3, chbC3P321_4, chbC3P321_5, chbC3P321_6,
+					chbC3P321_7, chbC3P321_8, chbC3P321_9, chbC3P321_10,
+					chbC3P321_11, chbC3P321_12, chbC3P321_13, chbC3P321_14,
+					txtC3P321_14ESP, rgC3P322);
+			if (crg.getCheckedRadioButtonId() != -1
+					&& crg.findViewById(crg.getCheckedRadioButtonId())
+							.isPressed()) {
+				if (!grabar()) {
+					return;
+				}
+				parent.nextFragment(CuestionarioFragmentActivity.MODULO_III + 9);
+			}
+		}
+	}
+
+	public void onFuncionCHECK() {
+		if (chbC3P321_14.isChecked()) {
+			Util.lockView(getActivity(), false, txtC3P321_14ESP);
+			txtC3P321_14ESP.requestFocus();
+		} else {
+			Util.cleanAndLockView(getActivity(), txtC3P321_14ESP);
+		}
+
+		// if (chbC3P321_6.isChecked()) {
+		// Util.lockView(getActivity(), false, rgC3P321A);
+		// } else {
+		// Util.cleanAndLockView(getActivity(), rgC3P321A);
+		// }
+
+	}
+}

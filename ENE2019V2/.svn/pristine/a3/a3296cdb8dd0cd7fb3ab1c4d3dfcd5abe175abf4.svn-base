@@ -1,0 +1,245 @@
+package gob.inei.ene2019v2.model;
+
+import gob.inei.dnce.annotations.FieldEntity;
+import gob.inei.dnce.components.Entity;
+
+import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+public class Moduloiv03 extends Entity implements Serializable { 
+
+	private static final long serialVersionUID = 1L;
+	public Integer c4p476 = null;
+	public Integer c4p476a = null;
+	public Integer c4p476a_1 = null;
+	public Integer c4p477_1 = null;
+	public Integer c4p478_1 = null;
+	public String c4p479_1 = null;
+	public Integer c4p480_1 = null;
+	public Integer c4p481_1 = null;
+	public Integer c4p482_1 = null;
+	public Integer c4p483_1 = null;
+	public Integer c4p476a_2 = null;
+	public Integer c4p477_2 = null;
+	public Integer c4p478_2 = null;
+	public String c4p479_2 = null;
+	public Integer c4p480_2 = null;
+	public Integer c4p481_2 = null;
+	public Integer c4p482_2 = null;
+	public Integer c4p483_2 = null;
+	public Integer c4p476a_3 = null;
+	public Integer c4p477_3 = null;
+	public Integer c4p478_3 = null;
+	public String c4p479_3 = null;
+	public Integer c4p480_3 = null;
+	public Integer c4p481_3 = null;
+	public Integer c4p482_3 = null;
+	public Integer c4p483_3 = null;
+	public Integer c4p476a_4 = null;
+	public Integer c4p477_4 = null;
+	public Integer c4p478_4 = null;
+	public String c4p479_4 = null;
+	public Integer c4p480_4 = null;
+	public Integer c4p481_4 = null;
+	public Integer c4p482_4 = null;
+	public Integer c4p483_4 = null;
+	public Integer c4p476a_5 = null;
+	public Integer c4p477_5 = null;
+	public Integer c4p478_5 = null;
+	public String c4p479_5 = null;
+	public Integer c4p480_5 = null;
+	public Integer c4p481_5 = null;
+	public Integer c4p482_5 = null;
+	public Integer c4p483_5 = null;
+	public Integer c4p476a_6 = null;
+	public Integer c4p477_6 = null;
+	public Integer c4p478_6 = null;
+	public String c4p479_6 = null;
+	public Integer c4p480_6 = null;
+	public Integer c4p481_6 = null;
+	public Integer c4p482_6 = null;
+	public Integer c4p483_6 = null;
+	
+	public String c4p484 = null;
+	public Integer c4p484_1 = null;
+	
+	public String c4p484a = null;
+	public Integer c4p485 = null;
+	public Integer c4p485a = null;
+	
+	public Integer c4p485b_1  = null;
+	public Integer c4p485b_2 = null;
+	public Integer c4p485b_3 = null;
+	public Integer c4p485b_4 = null;
+	public Integer c4p485b_5 = null;
+	public Integer c4p485b_6 = null;
+	public Integer c4p485b_7 = null;
+	public Integer c4p485b_8 = null;
+	public String  c4p485b_8esp = null;
+	public Integer c4p485b_9 = null;
+
+	
+	public Integer c4p486_1 = null;
+	public Integer c4p486_2 = null;
+	public Integer c4p486_3 = null;
+	public Integer c4p486_4 = null;
+	public Integer c4p486_5 = null;
+	public Integer c4p486_6 = null;
+	public String c4p486_6esp = null;
+	public Integer c4p486_7 = null;
+	
+	public Integer c4p487 = null;
+	public Integer c4p488 = null;	
+	public Integer c4p490_1 = null;
+	public Integer c4p490_2 = null;
+	public Integer c4p490_3 = null;
+	public Integer c4p490_4 = null;
+	public Integer c4p490_5 = null;
+	public Integer c4p490_6 = null;
+	public Integer c4p490_7 = null;
+	public Integer c4p490_8 = null;
+	public Integer c4p490_9 = null;
+	public Integer c4p490_10 = null;
+	public Integer c4p490_11 = null;
+	public Integer c4p490_12 = null;
+	public Integer c4p490_13 = null;
+	public Integer c4p490_14 = null;
+	public Integer c4p490_15 = null;
+	public Integer c4p490_16 = null;
+	public Integer c4p490_17 = null;
+	public String c4p490_17esp = null;
+	
+	public Integer c4p491_1 = null;
+	public Integer c4p491_2 = null;
+	public Integer c4p491_3 = null;
+	public Integer c4p491_4 = null;
+	public Integer c4p491_5 = null;
+	public Integer c4p491_6 = null;
+	public Integer c4p491_7 = null;
+	public String c4p491_7esp = null;
+	public Integer c4p492 = null;
+	public Integer c4p493 = null;
+	public Integer c4p494 = null;
+	public Integer c4p495 = null;
+	public String c4p495_esp = null;
+	public Integer c4p496 = null;
+	public Integer c4p497 = null;
+	public String c4p497_esp = null;
+	public Integer c4p498 = null;
+	public String c4p498_esp = null;
+	
+	public Integer c4p498a = null;
+	
+	public Integer c4p498b = null;
+	public String  c4p498b_esp = null;
+	
+	@FieldEntity(markF = 1, orderIndex = 1)
+	public Integer c4p499a_1 = null;
+	@FieldEntity(markF = 1, orderIndex = 2)
+	public Integer c4p499b_1 = null;
+	@FieldEntity(markF = 1, orderIndex = 3)
+	public Integer c4p499c_1 = null;
+	@FieldEntity(markF = 1, orderIndex = 4)
+	public Integer c4p499d_1 = null;	
+
+	@FieldEntity(markF = 2, orderIndex = 1)
+	public Integer c4p499a_2 = null;
+	@FieldEntity(markF = 2, orderIndex = 2)
+	public Integer c4p499b_2 = null;
+	@FieldEntity(markF = 2, orderIndex = 3)
+	public Integer c4p499c_2 = null;
+	@FieldEntity(markF = 2, orderIndex = 4)
+	public Integer c4p499d_2 = null;
+		
+	@FieldEntity(markF = 3, orderIndex = 1)
+	public Integer c4p499a_3 = null;
+	@FieldEntity(markF = 3, orderIndex = 2)
+	public Integer c4p499b_3 = null;
+	@FieldEntity(markF = 3, orderIndex = 3)
+	public Integer c4p499c_3 = null;
+	@FieldEntity(markF = 3, orderIndex = 4)
+	public Integer c4p499d_3 = null;
+		
+	@FieldEntity(markF = 4, orderIndex = 1)
+	public Integer c4p499a_4 = null;
+	@FieldEntity(markF = 4, orderIndex = 2)
+	public Integer c4p499b_4 = null;
+	@FieldEntity(markF = 4, orderIndex = 3)
+	public Integer c4p499c_4 = null;
+	@FieldEntity(markF = 4, orderIndex = 4)
+	public Integer c4p499d_4 = null;
+		
+	@FieldEntity(markF = 5, orderIndex = 1)
+	public Integer c4p499a_5 = null;
+	@FieldEntity(markF = 5, orderIndex = 2)
+	public Integer c4p499b_5 = null;
+	@FieldEntity(markF = 5, orderIndex = 3)
+	public Integer c4p499c_5 = null;
+	@FieldEntity(markF = 5, orderIndex = 4)
+	public Integer c4p499d_5 = null;
+
+	@FieldEntity(markF = 6, orderIndex = 1)
+	public Integer c4p499a_6 = null;
+	@FieldEntity(markF = 6, orderIndex = 2)
+	public String c4p499a_6esp = null;
+	@FieldEntity(markF = 6, orderIndex = 3)
+	public Integer c4p499b_6 = null;
+	@FieldEntity(markF = 6, orderIndex = 4)
+	public Integer c4p499c_6 = null;
+	@FieldEntity(markF = 6, orderIndex = 5)
+	public Integer c4p499d_6 = null;
+
+
+	public String c4_obs = null;
+	public Integer t_c4 = null;
+    
+    public Moduloiv03() {} 
+    
+    public Map<Field, Object> getGroup(Field[] fields, Integer group, Integer to){
+    	Map<Field, Object> m = new LinkedHashMap<Field, Object>();
+    	for (int i = 1; i <= to; i++) {
+    		for(int y=0;y<fields.length;y++){
+        		FieldEntity n = fields[y].getAnnotation(FieldEntity.class);
+        		if(n != null){
+        			int f = n.markF();
+        			int o = n.orderIndex();
+        			if(f == group && o == i){
+        				try {
+							m.put(fields[y], fields[y].get(this));
+							break;
+						} catch (IllegalArgumentException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IllegalAccessException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+        			}
+    			}
+        	}
+		}
+    	return m;
+    }
+	
+	public void cleanEntity() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean isTitle() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public String getPks() {
+		return "ID";
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString();
+	}
+} 

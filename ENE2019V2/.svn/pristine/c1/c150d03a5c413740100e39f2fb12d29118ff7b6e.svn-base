@@ -1,0 +1,568 @@
+package gob.inei.ene2019v2.fragment.ModIV;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.components.CheckBoxField;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.GridComponent;
+import gob.inei.dnce.components.GridComponent2;
+import gob.inei.dnce.components.RadioGroupOtherField;
+import gob.inei.dnce.components.TextField;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.components.RadioGroupOtherField.ORIENTATION;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.MasterActivity;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.model.Caratula;
+import gob.inei.ene2019v2.model.Moduloiv02;
+import gob.inei.ene2019v2.model.Moduloiv03;
+import gob.inei.ene2019v2.service.CuestionarioService;
+
+import java.sql.SQLException;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
+
+public class Mod_IV_Fragment_026 extends FragmentForm {
+   
+	@FieldAnnotation(orderIndex = 1)
+	public RadioGroupOtherField rgC4P495;
+	@FieldAnnotation(orderIndex = 2)
+	public TextField txtC4P495_ESP;
+	@FieldAnnotation(orderIndex = 3)
+	public RadioGroupOtherField rgC4P496;	
+	@FieldAnnotation(orderIndex = 4)
+	public RadioGroupOtherField rgC4P497;
+	@FieldAnnotation(orderIndex = 5)
+	public TextField txtC4P497_ESP;
+	@FieldAnnotation(orderIndex = 6)
+	public RadioGroupOtherField rgC4P498;
+	@FieldAnnotation(orderIndex = 7)
+	public TextField txtC4P498_ESP;
+//	@FieldAnnotation(orderIndex = 8)
+//	public RadioGroupOtherField rgC4P498A;
+//	@FieldAnnotation(orderIndex = 9)
+//	public RadioGroupOtherField rgC4P498B;
+//	@FieldAnnotation(orderIndex = 10)
+//	public TextField txtC4P498B_ESP;
+//	@FieldAnnotation(orderIndex = 9)
+//	public CheckBoxField chbC4P498B_1;
+//	@FieldAnnotation(orderIndex = 10)
+//	public CheckBoxField chbC4P498B_2;
+//	@FieldAnnotation(orderIndex = 11)
+//	public CheckBoxField chbC4P498B_3;
+//	@FieldAnnotation(orderIndex = 12)
+//	public CheckBoxField chbC4P498B_4;
+//	@FieldAnnotation(orderIndex = 13)
+//	public CheckBoxField chbC4P498B_5;
+//	@FieldAnnotation(orderIndex = 14)
+//	public CheckBoxField chbC4P498B_6;
+//	@FieldAnnotation(orderIndex = 15)
+//	public CheckBoxField chbC4P498B_7;
+//	@FieldAnnotation(orderIndex = 16)
+//	public TextField txtC4P498B_7ESP;
+//	@FieldAnnotation(orderIndex = 17)
+//	public CheckBoxField chbC4P498B_8;
+//	@FieldAnnotation(orderIndex = 18)
+//	public CheckBoxField chbC4P498B_9;
+//	@FieldAnnotation(orderIndex = 19)
+//	public RadioGroupOtherField rgC4P498C;
+//	@FieldAnnotation(orderIndex = 20)
+//	public TextField txtC4P498C_ESP;
+
+	private CuestionarioService cuestionarioService;
+	private Moduloiv03 bean;
+	public GridComponent grEspe;
+	private LabelComponent lblTitulo, lblTitulo2;
+	LinearLayout q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10;
+
+	public Mod_IV_Fragment_026() {
+	}
+
+	public Mod_IV_Fragment_026 parent(MasterActivity parent) {
+		this.parent = parent;
+		return this;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = createUI();
+		initObjectsWithoutXML(this, rootView);
+		enlazarCajas();
+		listening();
+
+		return rootView;
+	}
+
+	@Override
+	protected void buildFields() {
+
+		lblTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text("CERTIFICACIONES").textSize(21).centrar().negrita();
+		lblTitulo2 = new LabelComponent(this.getActivity(), App.ESTILO)
+		.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+		.text("HERRAMIENTAS DE GESTION O MEJORAS DE PROCESOS ").textSize(21).centrar().negrita();
+		rgC4P495 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p495_1, R.string.c1c100m4p495_2,
+				R.string.c1c100m4p495_3, R.string.c1c100m4p495_4,
+				R.string.c1c100m4p495_5, R.string.c1c100m4p495_6).size(
+				WRAP_CONTENT, WRAP_CONTENT).orientation(ORIENTATION.VERTICAL);
+		txtC4P495_ESP = new TextField(this.getActivity(), false)
+				.size(altoComponente, 400).hint(R.string.especifique)
+				.soloTextoNumero();
+		rgC4P495.agregarEspecifique(5, txtC4P495_ESP);
+
+		rgC4P496 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p496_1, R.string.c1c100m4p496_2)
+				.size(WRAP_CONTENT, WRAP_CONTENT)
+				.orientation(ORIENTATION.HORIZONTAL).callback("FuncionP96");
+
+		rgC4P497 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p497_1, R.string.c1c100m4p497_2,
+				R.string.c1c100m4p497_3, R.string.c1c100m4p497_4,
+				R.string.c1c100m4p497_5, R.string.c1c100m4p497_6,
+				R.string.c1c100m4p497_7).size(WRAP_CONTENT, WRAP_CONTENT)
+				.orientation(ORIENTATION.VERTICAL).callback("FuncionP97");
+		txtC4P497_ESP = new TextField(this.getActivity(), false)
+				.size(altoComponente, 400).hint(R.string.especifique)
+				.soloTextoNumero();
+		rgC4P497.agregarEspecifique(5, txtC4P497_ESP);
+
+		rgC4P498 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p498_1, R.string.c1c100m4p498_2,
+				R.string.c1c100m4p498_3, R.string.c1c100m4p498_4).size(
+				WRAP_CONTENT, WRAP_CONTENT).orientation(ORIENTATION.VERTICAL);
+		txtC4P498_ESP = new TextField(this.getActivity(), false)
+				.size(altoComponente, 400).hint(R.string.especifique)
+				.soloTextoNumero();
+		rgC4P498.agregarEspecifique(3, txtC4P498_ESP);		
+		
+		
+//		rgC4P498A = new RadioGroupOtherField(this.getActivity(), R.string.si,
+//				R.string.no).size(WRAP_CONTENT, WRAP_CONTENT).orientation(
+//				ORIENTATION.HORIZONTAL);
+//		
+//		rgC4P498B = new RadioGroupOtherField(this.getActivity(), R.string.c2c300inf498b_1,
+//				R.string.c2c300inf498b_2,R.string.c2c300inf498b_3,R.string.c2c300inf498b_4,R.string.c2c300inf498b_5).size(WRAP_CONTENT, WRAP_CONTENT).orientation(
+//				ORIENTATION.VERTICAL);
+//		txtC4P498B_ESP = new TextField(this.getActivity(), false)
+//		.size(altoComponente, 400).hint(R.string.especifique)
+//		.soloTextoNumero();
+//		rgC4P498B.agregarEspecifique(3, txtC4P498B_ESP);	
+		
+//		chbC4P498B_1  = new CheckBoxField(this.getActivity(),
+//				R.string.c2c300inf498b_1, "1:0").size(WRAP_CONTENT, 550).callback("FuncionP498B");
+//		chbC4P498B_2  = new CheckBoxField(this.getActivity(),
+//				R.string.c2c300inf498b_2, "1:0").size(WRAP_CONTENT, 550).callback("FuncionP498B");
+//		chbC4P498B_3  = new CheckBoxField(this.getActivity(),
+//				R.string.c2c300inf498b_3, "1:0").size(WRAP_CONTENT, 550).callback("FuncionP498B");
+//		chbC4P498B_4  = new CheckBoxField(this.getActivity(),
+//				R.string.c2c300inf498b_4, "1:0").size(WRAP_CONTENT, 550).callback("FuncionP498B");
+//		chbC4P498B_5  = new CheckBoxField(this.getActivity(),
+		
+//				R.string.c2c300inf498b_5, "1:0").size(WRAP_CONTENT, 550).callback("FuncionP498B");
+//		chbC4P498B_6  = new CheckBoxField(this.getActivity(),
+//				R.string.c2c300inf498b_6, "1:0").size(WRAP_CONTENT, 550).callback("FuncionP498B");
+//		chbC4P498B_7  = new CheckBoxField(this.getActivity(),
+//				R.string.c2c300inf498b_7, "1:0").size(WRAP_CONTENT, 150).callback("FuncionP498B");
+//		
+//		txtC4P498B_7ESP = new TextField(this.getActivity(), false)
+//		.size(altoComponente, 400).hint(R.string.especifique)
+//		.soloTextoNumero();
+//		chbC4P498B_8  = new CheckBoxField(this.getActivity(),
+//				R.string.c2c300inf498b_8, "1:0").size(WRAP_CONTENT, 550).callback("FuncionP498B");
+//		chbC4P498B_9  = new CheckBoxField(this.getActivity(),
+//				R.string.c2c300inf498b_9, "1:0").size(WRAP_CONTENT, 550).callback("FuncionP498B");
+		
+		
+//		grEspe = new GridComponent(this.getActivity(), 2);
+//		grEspe.colorFondo(android.R.color.transparent);
+//		grEspe.addComponent(chbC4P498B_7);
+//		grEspe.addComponent(txtC4P498B_7ESP);
+		
+//		rgC4P498C = new RadioGroupOtherField(this.getActivity(),
+//				R.string.c1c100m4p498c_1, R.string.c1c100m4p498c_2,
+//				R.string.c1c100m4p498c_3, R.string.c1c100m4p498c_4, R.string.c1c100m4p498c_5).size(
+//				WRAP_CONTENT, WRAP_CONTENT).orientation(ORIENTATION.VERTICAL);
+		
+	
+		
+//		txtC4P498C_ESP = new TextField(this.getActivity(), false)
+//				.size(altoComponente, 400).hint(R.string.especifique)
+//				.soloTextoNumero();
+//		rgC4P498C.agregarEspecifique(3, txtC4P498C_ESP);
+
+		Filtros.setFiltro(txtC4P495_ESP, Filtros.TIPO.ALFAN_U, 300, null);
+		Filtros.setFiltro(txtC4P497_ESP, Filtros.TIPO.ALFAN_U, 300, null);
+    	Filtros.setFiltro(txtC4P498_ESP, Filtros.TIPO.ALFAN_U, 300, null);
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+		q0 = createQuestionSection(lblTitulo);
+		q1 = createQuestionSection(R.string.c1c100m4p495, rgC4P495);
+		q2 = createQuestionSection(R.string.c1c100m4p496, rgC4P496);
+		q3 = createQuestionSection(R.string.c1c100m4p497, rgC4P497);
+		q4 = createQuestionSection(R.string.c1c100m4p498, rgC4P498);
+//		q5 = createQuestionSection(R.string.c1c100m4p498a, rgC4P498A);
+//		q6 = createQuestionSection(lblTitulo2);
+//		q7 = createQuestionSection(R.string.c1c100m4p498b, rgC4P498B);
+//		q8 = createQuestionSection(R.string.c1c100m4p498c, rgC4P498C);
+
+		ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+
+		form.addView(q0);
+		form.addView(q1);
+		form.addView(q2);
+		form.addView(q3);
+		form.addView(q4);
+//		form.addView(q5);
+//		form.addView(q6);
+//     	form.addView(q7);
+//		form.addView(q8);
+		return contenedor;
+	}
+
+	@Override
+	public boolean grabar() {
+		uiToEntity(bean);
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals("")) {
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+				if (view != null) {
+					view.requestFocus();
+				}
+			}
+			return false;
+		}
+
+		try {
+			if (!getCuestionarioService().saveOrUpdate(bean,
+					bean.getSecCap(getListFields(this)))) {
+				ToastMessage.msgBox(this.getActivity(),
+						"Los datos no se guardaron",
+						ToastMessage.MESSAGE_ERROR, ToastMessage.DURATION_LONG);
+			}
+		} catch (SQLException e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean validar() {
+		String pregunta_no_vacia = getString(R.string.pregunta_no_vacia);
+		String especifique_no_vacio = getString(R.string.pregunta_especifique);
+		error = false;
+
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+		
+		//2310
+		if (!Util.esDiferente(bean.c4p487, 1)) {
+			if (Util.esVacio(rgC4P495)) {
+				mensaje = pregunta_no_vacia.replace("$", "La pregunta P495");
+				view = rgC4P495;
+				error = true;
+				return false;
+			}
+			if (rgC4P495.isTagSelected(6) && Util.esVacio(txtC4P495_ESP)) {
+				mensaje = pregunta_no_vacia.replace("$",
+						"La Preg.495 (Especifique)");
+				view = txtC4P495_ESP;
+				error = true;
+				return false;
+			}
+			if (rgC4P495.isTagSelected(6) && txtC4P495_ESP.getText().length() < 3) {
+				mensaje = "Ingrese la información correcta";
+				view = txtC4P495_ESP;
+				error = true;
+				return false;
+			}
+		}
+		
+//		if (!Util.esDiferente(bean.c4p489, 2)) {
+		if (Util.esVacio(rgC4P496)) {
+			mensaje = pregunta_no_vacia.replace("$", "La pregunta P496");
+			view = rgC4P496;
+			error = true;
+			return false;
+		}
+//
+		if (rgC4P496.isTagSelected(2)) {
+
+			if (Util.esVacio(rgC4P497)) {
+				mensaje = pregunta_no_vacia.replace("$", "La pregunta P497");
+				view = rgC4P497;
+				error = true;
+				return false;
+			}
+			if (rgC4P497.isTagSelected(6)) {
+				if (Util.esVacio(txtC4P497_ESP)) {
+					mensaje = pregunta_no_vacia.replace("$",
+							"La Preg.497 (Especifique)");
+					view = txtC4P497_ESP;
+					error = true;
+					return false;
+				}else{
+					if (txtC4P497_ESP.getText().length() < 3) {
+						mensaje = "Ingrese la información correcta";
+						view = txtC4P497_ESP;
+						error = true;
+						return false;
+					}
+				}
+			}
+		}else{
+			if (Util.esVacio(rgC4P498)) {
+				mensaje = pregunta_no_vacia.replace("$", "La pregunta P498");
+				view = rgC4P498;
+				error = true;
+				return false;
+			}
+			if (rgC4P498.getTagSelected("").toString().equals("4")) {
+				if (Util.esVacio(txtC4P498_ESP)) {
+					mensaje = pregunta_no_vacia.replace("$",
+							"La Preg.498 (Especifique)");
+					view = txtC4P498_ESP;
+					error = true;
+					return false;
+				} else {
+					if (txtC4P498_ESP.getText().length() < 3) {
+						mensaje = "Ingrese la información correcta";
+						view = txtC4P498_ESP;
+						error = true;
+						return false;
+					}
+				}
+			}	
+		}
+
+//					if (Util.esVacio(rgC4P498A)) {
+//						mensaje = pregunta_no_vacia.replace("$", "La pregunta P498A");
+//						view = rgC4P498A;
+//						error = true;
+//						return false;
+//					}
+				
+			
+			
+
+		
+//		if (!chbC4P498B_1.isChecked() && !chbC4P498B_2.isChecked()
+//				&& !chbC4P498B_3.isChecked() && !chbC4P498B_4.isChecked()
+//				&& !chbC4P498B_5.isChecked() && !chbC4P498B_6.isChecked()
+//				&& !chbC4P498B_7.isChecked() && !chbC4P498B_8.isChecked()
+//				&& !chbC4P498B_9.isChecked()) {
+//			mensaje = "DEBE MARCAR AL MENOS UNA ALTERNATIVA EN P498B";
+//			view = chbC4P498B_1;
+//			error = true;
+//			return false;
+//		}
+//		if (chbC4P498B_7.isChecked()) {
+//			if (Util.esVacio(txtC4P498B_7ESP)) {
+//				mensaje = pregunta_no_vacia.replace("$",
+//						"La Preg.498B (Especifique)");
+//				view = txtC4P498B_7ESP;
+//				error = true;
+//				return false;
+//			} else {
+//				if (txtC4P498B_7ESP.getText().length() < 3) {
+//					mensaje = "Ingrese la información correcta";
+//					view = txtC4P498B_7ESP;
+//					error = true;
+//					return false;
+//				}
+//			}
+//		}
+
+//		if (Util.esVacio(rgC4P498C)) {
+//			mensaje = pregunta_no_vacia.replace("$", "La pregunta P498C");
+//			view = rgC4P498C;
+//			error = true;
+//			return false;
+//		}
+//		if (Util.esVacio(rgC4P498B)) {
+//						mensaje = pregunta_no_vacia.replace("$", "La pregunta P498B");
+//						view = rgC4P498B;
+//						error = true;
+//						return false;
+//					}
+//		if (rgC4P498B.getTagSelected("").toString().equals("4")) {
+//			if (Util.esVacio(txtC4P498B_ESP)) {
+//				mensaje = pregunta_no_vacia.replace("$",
+//						"La Preg. P498C  (especifique)");
+//				view = txtC4P498B_ESP;
+//				error = true;
+//				return false;
+//			} else {
+//				if (txtC4P498B_ESP.getText().length() < 3) {
+//					mensaje = "Ingrese la información correcta";
+//					view = txtC4P498B_ESP;
+//					error = true;
+//					return false;
+//				}
+//			}
+//	}
+		
+		return true;
+	}
+
+	@Override
+	public void cargarDatos() {
+
+		bean = getCuestionarioService().getModuloiv03(
+				App.getInstance().getEmpresa(),
+				new Moduloiv03().getSecCap(getListFields(this,
+						new String[] { "C4P487", })));
+
+		if (bean == null) {
+			bean = new Moduloiv03();
+			bean.id = App.getInstance().getEmpresa().id;
+		}
+
+		entityToUI(bean);
+		inicio();
+	}
+
+	private void inicio() {
+		//2310
+//		if (!Util.esDiferente(bean.c4p489, 2)) {
+//			Util.cleanAndLockView(getActivity(), rgC4P495, txtC4P495_ESP);
+//			Util.lockView(getActivity(), false, rgC4P496);
+			FuncionP96();
+    		FuncionP97();
+//			rgC4P496.requestFocus();
+//		} else if (!Util.esDiferente(bean.c4p489, 1)) {
+//			Util.lockView(getActivity(), false, rgC4P495);
+//			Util.cleanAndLockView(getActivity(), rgC4P496, rgC4P497,rgC4P498);
+//			rgC4P495.requestFocus();
+//		}
+	   if(Util.getInt(bean.c4p487)==2){
+			Util.cleanAndLockView(getActivity(), rgC4P495, txtC4P495_ESP);
+			rgC4P496.requestFocus();
+	   }else{
+		   Util.lockView(getActivity(), false, rgC4P495/*, txtC4P495_ESP*/);
+	   }
+		Log.e("aquuiiiii: " + bean.c4p487, "aquiiiiiiiiiii");
+	//	FuncionP498B();
+//		if (rgC4P495.isEnabled())
+//			rgC4P495.requestFocus();
+//		else if (rgC4P496.isEnabled())
+//			rgC4P496.requestFocus();
+		rgC4P495.requestFocus();
+	}
+
+	public CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+
+	public void FuncionP96() {
+		Integer valor = Integer.parseInt(rgC4P496.getTagSelected("0").toString());
+		if (valor == 1 ) {
+			Util.cleanAndLockView(getActivity(), rgC4P497, txtC4P497_ESP);	
+			Util.lockView(getActivity(), false, rgC4P498);
+			rgC4P498.requestFocus();
+		}  else if (valor == 2) {
+			Util.lockView(getActivity(), false, rgC4P497);
+			rgC4P497.requestFocus();
+		}
+	}
+
+	public void FuncionP97() {
+		Integer valor = Integer.parseInt(rgC4P497.getTagSelected("0").toString());
+		if (valor >0) {
+			Util.cleanAndLockView(getActivity(), rgC4P498, txtC4P498_ESP);
+		//	rgC4P498A.requestFocus();
+		}else{
+			Util.lockView(getActivity(), false, rgC4P498);
+			rgC4P498.requestFocus();
+		}
+
+	}
+
+//	public void FuncionP498B() {
+//		if (chbC4P498B_8.isChecked() || chbC4P498B_9.isChecked()) {
+//			Util.cleanAndLockView(getActivity(), chbC4P498B_1, chbC4P498B_2,
+//					chbC4P498B_3, chbC4P498B_4, chbC4P498B_5, chbC4P498B_6,
+//					chbC4P498B_7, txtC4P498B_7ESP);
+//		} else {
+//			Util.lockView(getActivity(), false, chbC4P498B_1, chbC4P498B_2,
+//					chbC4P498B_3, chbC4P498B_4, chbC4P498B_5, chbC4P498B_6,
+//					chbC4P498B_7);
+//			
+//			if (chbC4P498B_7.isChecked()) {
+//				Util.lockView(getActivity(), false, txtC4P498B_7ESP);
+//				txtC4P498B_7ESP.requestFocus();
+//			} else {
+//				Util.cleanAndLockView(getActivity(), txtC4P498B_7ESP);
+//			}
+//
+//		}
+		
+//		if(chbC4P498B_8.isChecked()){
+//			Util.cleanAndLockView(getActivity(), chbC4P498B_1, chbC4P498B_2,
+//					chbC4P498B_3, chbC4P498B_4, chbC4P498B_5, chbC4P498B_6,
+//					chbC4P498B_7, txtC4P498B_7ESP,chbC4P498B_9);
+//		}else{
+//			Util.lockView(getActivity(), false, chbC4P498B_1, chbC4P498B_2,
+//					chbC4P498B_3, chbC4P498B_4, chbC4P498B_5, chbC4P498B_6,
+//					chbC4P498B_7,chbC4P498B_8);
+//			if(chbC4P498B_9.isChecked()){
+//				Util.cleanAndLockView(getActivity(), chbC4P498B_1, chbC4P498B_2,
+//						chbC4P498B_3, chbC4P498B_4, chbC4P498B_5, chbC4P498B_6,
+//						chbC4P498B_7, txtC4P498B_7ESP,chbC4P498B_8);
+//			}else{
+//				Util.lockView(getActivity(), false, chbC4P498B_1, chbC4P498B_2,
+//						chbC4P498B_3, chbC4P498B_4, chbC4P498B_5, chbC4P498B_6,
+//						chbC4P498B_7,chbC4P498B_9);
+//				if (chbC4P498B_7.isChecked()) {
+//					Util.lockView(getActivity(), false, txtC4P498B_7ESP);
+//					txtC4P498B_7ESP.requestFocus();
+//				} else {
+//					Util.cleanAndLockView(getActivity(), txtC4P498B_7ESP);
+//				}
+//				
+//			}
+//		}
+//	}
+	
+
+	
+	@Override
+	public Caratula getEntity() {
+		return App.getInstance().getEmpresa();
+	}
+}

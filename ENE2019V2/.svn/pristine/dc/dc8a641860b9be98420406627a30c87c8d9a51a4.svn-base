@@ -1,0 +1,518 @@
+package gob.inei.ene2019v2.common;
+
+import gob.inei.dnce.adapter.EntitySpinnerAdapter;
+import gob.inei.dnce.components.DialogFragmentComponent;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.ImportacionGPX;
+import gob.inei.dnce.components.IntegerField;
+import gob.inei.dnce.components.RadioGroupOtherField;
+import gob.inei.dnce.components.SpinnerField;
+import gob.inei.dnce.components.TextBoxField;
+import gob.inei.dnce.core.ZipFile;
+import gob.inei.dnce.dao.xml.XMLDataObject;
+import gob.inei.dnce.dao.xml.XMLWriter;
+import gob.inei.dnce.dao.xml.XMLWriter.Atributo;
+import gob.inei.dnce.exception.ZipException;
+import gob.inei.dnce.interfaces.ILeerArchivosGPX;
+import gob.inei.dnce.model.ZipParameters;
+import gob.inei.dnce.util.DnceZipConstants;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.dao.CuestionarioDAO;
+import gob.inei.ene2019v2.dao.SegmentacionDAO;
+import gob.inei.ene2019v2.dao.SegmentacionDAO.Periodo;
+import gob.inei.ene2019v2.dao.SegmentacionDAO.Ruta;
+import gob.inei.ene2019v2.interfaces.Exportable;
+import gob.inei.ene2019v2.interfaces.IExportacion;
+import gob.inei.ene2019v2.model.Marco;
+import gob.inei.ene2019v2.model.Ubigeo;
+import gob.inei.ene2019v2.model.Usuario;
+import gob.inei.ene2019v2.service.ImpExpService;
+import gob.inei.ene2019v2.service.SegmentacionService;
+import gob.inei.ene2019v2.service.UbigeoService;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Observer;
+
+import android.app.Activity;
+import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+
+
+public class MyUtil {
+	
+	private static Ubigeo vacio = null;
+	private static Usuario vaciouser = null;
+	private static Periodo vacioper = null;
+	private static Ruta vacioRuta = null;
+	private static Ruta todaRuta = null;
+	private MyUtil() {}
+	
+	public static Ubigeo getVacio(String tipo) {
+		Ubigeo vacio = new Ubigeo();
+		vacio.ubigeo = null;
+		vacio.ccdd = null;
+		vacio.ccpp = null;
+		vacio.ccdi = null;
+		if (tipo.equals("CCDD")) {
+			vacio.departamento = "-- DEPARTAMENTO --";
+		} else if (tipo.equals("CCPP")) {
+			vacio.departamento = "-- PROVINCIA --";
+		} else if (tipo.equals("CCDI")) {
+			vacio.departamento = "-- DISTRITO --";
+		}			 
+		return vacio;
+	}
+	
+	public static Periodo getVacioPer(String text) {
+		if (vacioper == null) {
+			vacioper = new Periodo();
+			vacioper.periodo = null;
+		}
+		vacioper.periodo_desc = "-- "+(text==null?"SELECCIONE":text)+" --";
+		return vacioper;
+	}
+	
+	private static Ruta getVacioRuta(String codigoSede, String equipo) {
+		vacioRuta = new Ruta();
+		vacioRuta.codigoSede = codigoSede;
+		vacioRuta.equipo = equipo;
+		vacioRuta.ruta = "-- RUTA --";
+		vacioRuta.rutaCodigo = Ruta.NINGUNA;
+		return vacioRuta;
+	}
+	
+	private static Ruta getTodaRuta(String codigoSede, String equipo) {
+		todaRuta = new Ruta();
+		todaRuta.codigoSede = codigoSede;
+		todaRuta.equipo = equipo;
+		todaRuta.ruta = "-- TODAS --";
+		todaRuta.rutaCodigo = Ruta.TODOS;
+		return todaRuta;
+	}
+	
+	private static Ubigeo getVacio() {
+		if (vacio == null) {
+			vacio = new Ubigeo();
+			vacio.ubigeo = null;
+			vacio.ccdd = null;
+			vacio.ccpp = null;
+			vacio.ccdi = null;
+			vacio.departamento = "-- SELECCIONE --";
+			vacio.provincia = "-- SELECCIONE --";
+			vacio.distrito = "-- SELECCIONE --";
+		}
+		return vacio;
+	}
+	
+	public static Usuario getVacioUSER() {
+		return getVacioUSER(null);
+	}
+	
+	public static Usuario getVacioUSER(String text) {
+		if (vaciouser == null) {
+			vaciouser = new Usuario();
+			vaciouser.id = null;
+		}
+		vaciouser.usuario = "-- "+(text==null?"SELECCIONE":text)+" --";
+		return vaciouser;
+	}
+	
+	public static void llenarPeriodo(Activity activity, SegmentacionService service, SpinnerField spinner) {
+		List<Periodo> lista = service.getPeriodos();
+		if(spinner.gettitle()!=null) lista.set(0, (Periodo)spinner.gettitle());
+		EntitySpinnerAdapter<Periodo> spinnerAdapter = new EntitySpinnerAdapter<Periodo>(
+				activity, android.R.layout.simple_spinner_item, lista);
+		List<Object> keysAdapter = new ArrayList<Object>();
+		for (int i = 0; i < lista.size(); i++) {
+			Periodo d = (Periodo) lista.get(i);
+			keysAdapter.add(d.periodo);
+		}
+		spinner.setAdapterWithKey(spinnerAdapter, keysAdapter);
+	}
+	
+	public static void llenarRuta(Activity activity, SegmentacionService service, SpinnerField spinner, String codigoSede, String equipo) {
+		List<Ruta> lista = new ArrayList<SegmentacionDAO.Ruta>();
+		lista.add(getVacioRuta(codigoSede, equipo));
+		lista.addAll(service.getRutas(codigoSede, equipo));
+		lista.add(getTodaRuta(codigoSede, equipo));
+		EntitySpinnerAdapter<Ruta> spinnerAdapter = new EntitySpinnerAdapter<Ruta>(
+				activity, android.R.layout.simple_spinner_item, lista);
+		List<Object> keysAdapter = new ArrayList<Object>();
+		for (int i = 0; i < lista.size(); i++) {
+			Ruta d = (Ruta) lista.get(i);
+			keysAdapter.add(d.rutaCodigo);
+		}
+		spinner.setAdapterWithKey(spinnerAdapter, keysAdapter);
+	}
+	
+	public static void llenarPeriodo(Activity activity, SegmentacionService service, SpinnerField spinner, Integer usuarioID) {
+		List<Periodo> lista = service.getPeriodos(usuarioID);
+		if(spinner.gettitle()!=null) lista.set(0, (Periodo)spinner.gettitle());
+		EntitySpinnerAdapter<Periodo> spinnerAdapter = new EntitySpinnerAdapter<Periodo>(
+				activity, android.R.layout.simple_spinner_item, lista);
+		List<Object> keysAdapter = new ArrayList<Object>();
+		for (int i = 0; i < lista.size(); i++) {
+			Periodo d = (Periodo) lista.get(i);
+			keysAdapter.add(d.periodo);
+		}
+		spinner.setAdapterWithKey(spinnerAdapter, keysAdapter);
+	}
+	
+	public static void llenarDepartamento(Activity activity, UbigeoService service, SpinnerField spinner, String cod_sede) {	
+		List<Ubigeo> departamentos = new ArrayList<Ubigeo>();
+		departamentos.add(getVacio());
+		departamentos.addAll(service.getDepartamentos(cod_sede));
+		EntitySpinnerAdapter<Ubigeo> spinnerAdapter = new EntitySpinnerAdapter<Ubigeo>(
+				activity, android.R.layout.simple_spinner_item, departamentos);
+		List<Object> keysAdapter = new ArrayList<Object>();
+		for (Ubigeo u : departamentos) {
+			keysAdapter.add(u.ccdd);
+		}
+		spinner.setAdapterWithKey(spinnerAdapter, keysAdapter);
+	}
+	
+	public static void llenarProvincia(Activity activity, UbigeoService service, SpinnerField spinner, String cod_sede, String ccdd) {	
+		if (ccdd == null) {
+			return;
+		}
+		List<Ubigeo> provincias = new ArrayList<Ubigeo>();
+		provincias.add(getVacio());
+		provincias.addAll(service.getProvincias(cod_sede, ccdd));
+		EntitySpinnerAdapter<Ubigeo> spinnerAdapter = new EntitySpinnerAdapter<Ubigeo>(
+				activity, android.R.layout.simple_spinner_item, provincias);
+		List<Object> keysAdapter = new ArrayList<Object>();
+		for (Ubigeo u : provincias) {
+			keysAdapter.add(u.ccpp);
+		}
+		spinner.setAdapterWithKey(spinnerAdapter, keysAdapter);
+	}
+	
+	public static void llenarDistrito(Activity activity, UbigeoService service, SpinnerField spinner, String cod_sede, String ccdd, String ccpp) {
+		if (ccdd == null || ccpp == null) {
+			return;
+		}
+		List<Ubigeo> distritos = new ArrayList<Ubigeo>();
+		distritos.add(getVacio());
+		distritos.addAll(service.getDistritos(cod_sede, ccdd, ccpp));
+		EntitySpinnerAdapter<Ubigeo> spinnerAdapter = new EntitySpinnerAdapter<Ubigeo>(
+				activity, android.R.layout.simple_spinner_item, distritos);
+		List<Object> keysAdapter = new ArrayList<Object>();
+		for (Ubigeo u : distritos) {
+			keysAdapter.add(u.ccdi);
+		}
+		spinner.setAdapterWithKey(spinnerAdapter, keysAdapter);
+	}
+	
+	public static void llenarDistrito(Activity activity, UbigeoService service, SpinnerField spinner, Integer periodo, String cod_sede, String ccdd, String ccpp, Integer usuarioId) {
+		if (ccdd == null || ccpp == null) {
+			return;
+		}
+		List<Ubigeo> distritos = new ArrayList<Ubigeo>();
+		distritos.add(spinner.gettitle()==null?getVacio():(Ubigeo)spinner.gettitle());
+		distritos.addAll(service.getDistritos(periodo, cod_sede, ccdd, ccpp, usuarioId));
+		EntitySpinnerAdapter<Ubigeo> spinnerAdapter = new EntitySpinnerAdapter<Ubigeo>(
+				activity, android.R.layout.simple_spinner_item, distritos);
+		List<Object> keysAdapter = new ArrayList<Object>();
+		for (Ubigeo u : distritos) {
+			keysAdapter.add(u.ccdi);
+		}
+		spinner.setAdapterWithKey(spinnerAdapter, keysAdapter);
+	}
+	
+	public static void llenarUser(Activity activity, UbigeoService service, SpinnerField spinner, String ccdd, String ccpp, String ccdi, String codccpp,String zonaid) {
+		if (ccdd == null || ccpp == null || ccdi == null || codccpp == null || zonaid == null) {
+			return;
+		}
+		List<Usuario> user = new ArrayList<Usuario>();
+		user.add(spinner.gettitle()==null?getVacioUSER():(Usuario)spinner.gettitle());
+//		user.addAll(service.getUser(ccdd, ccpp,ccdi,codccpp,zonaid));
+		EntitySpinnerAdapter<Usuario> spinnerAdapter = new EntitySpinnerAdapter<Usuario>(
+				activity, android.R.layout.simple_spinner_item, user);
+		List<Object> keysAdapter = new ArrayList<Object>();
+		for (Usuario u : user) {
+			keysAdapter.add(u.id);
+		}
+		spinner.setAdapterWithKey(spinnerAdapter, keysAdapter);
+	}
+	
+	public static void leerYCargarTracks(ILeerArchivosGPX activity, ArrayList<File> archivos) {
+		Log.e("MyUtil", "leerYCargarGPX:" + archivos.size());
+		ImportacionGPX r = new ImportacionGPX(activity, activity.getActivity().getResources().getString(gob.inei.ene2019v2.R.string.app_name), ImportacionGPX.TIPO.TRACKS);
+		r.setArchivos(archivos);
+		r.execute();
+	}
+	
+	public static List<String> crearArchivo(IExportacion controller, String version, ImpExpService service, String ruta, Exportable... exportable) throws Exception {
+		String proyecto =  "ENE2019"; // controller.getFragmentForm().getResources().getString(gob.inei.ene2019v2.R.string.app_name);
+		List<File> xmlregistros = null;
+		List<String> rutas = new ArrayList<String>();
+		String rutaZip=null, rutaImg = "";
+		for (Exportable ex : exportable) {
+			if (ex instanceof Marco) {
+				xmlregistros = exportarCenso((Observer) controller, version, service, ruta, proyecto, (Marco)ex);
+			} 
+			//Zip con CLAVE
+			if(xmlregistros != null){
+				String nombreBase = "";
+				for (File file : xmlregistros) {
+					rutaZip = "";
+					nombreBase = file.getAbsolutePath();
+					
+					try {
+						if (!file.getName().endsWith("jpg")) {
+							rutaImg = nombreBase.replace(file.getName(), "");
+							rutaZip = file.getAbsolutePath().replace(".xml", ".zip");
+						} else {
+							if (!nombreBase.isEmpty()) {
+								rutaZip = rutaImg + file.getName().replace(".jpg", ".zip");
+							}
+						}
+						ZipFile mcompri = new ZipFile(rutaZip);
+						ArrayList<File> lstarchivos = new ArrayList<File>();
+						lstarchivos.add(new File(nombreBase));
+						ZipParameters params = new ZipParameters();
+						params.setCompressionMethod(DnceZipConstants.COMP_DEFLATE);
+						params.setCompressionLevel(DnceZipConstants.DEFLATE_LEVEL_NORMAL);
+						params.setEncryptFiles(true);
+						params.setEncryptionMethod(DnceZipConstants.ENC_METHOD_AES);
+						params.setAesKeyStrength(DnceZipConstants.AES_STRENGTH_256);
+						params.setPassword(App.BOARGINGPASS);
+						mcompri.addFiles(lstarchivos, params);
+					} catch (ZipException e) {
+						e.printStackTrace();
+					}
+					
+					if (!file.getName().endsWith("jpg")) {
+						file.delete();
+					}
+					
+					if (!rutaZip.isEmpty()) {
+						rutas.add(rutaZip);					
+					}
+				}
+			}
+			
+			
+			//Sin CLave
+//			if(xmlregistros != null){
+//				for (File file : xmlregistros) {
+//					rutaZip = "";
+//					if (file.getName().endsWith("xml")) {
+//						rutaZip = file.getAbsolutePath().replace(".xml", ".zip");
+//						Util.zip(rutaZip, file);
+//						file.delete();					
+//					} 
+//					if (!rutaZip.isEmpty()) {
+//						rutas.add(rutaZip);					
+//					}
+//				}
+//			}
+		}
+		return rutas;
+	}
+	
+//	private static List<File> exportarSedapar(Observer controller, String version, String tipo_exp, ImpExpService service, String ruta, String proyecto, Ubigeo ubigeo, CentroPoblado cp) throws Exception {
+//		String nombreArchivo = ubigeo.ubigeo+cp.codccpp+App.getInstance().getPersonal().dni;
+//		if(tipo_exp.equals("Registro")){
+//			nombreArchivo = "R01"+nombreArchivo+"0";
+//		}
+//		File xmlregistros = new File(ruta + "/"+ nombreArchivo +".xml");
+//		if (xmlregistros.exists()) {
+//			xmlregistros.delete();
+//		}		
+//		List<File> archivos = new ArrayList<File>();
+//		xmlregistros.createNewFile();
+//		XMLWriter.getInstance().deleteObservers();
+//		XMLWriter.getInstance().addObserver(controller);
+////		Atributo atributoFoto = new Atributo("archivo", "C");
+//		
+//		XMLWriter.getInstance().putMaps(xmlregistros, proyecto, null, //infraestructura, 
+//				new XMLDataObject(CuestionarioDAO.TABLA_CARGA, "Carga", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_CARGA, "ID=? AND CODCCPP=?", cp.id.toString(), cp.codccpp)),
+//				new XMLDataObject(CuestionarioDAO.TABLA_CARATULA, "Caratula", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_CARATULA, "ID=? AND CODCCPP=?", cp.id.toString(), cp.codccpp)),
+//				new XMLDataObject(CuestionarioDAO.TABLA_VISITA, "Visita", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_VISITA, "ID=? AND CODCCPP=?", cp.id.toString(), cp.codccpp)),
+//				new XMLDataObject(CuestionarioDAO.TABLA_PERSONA, "Persona", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_PERSONA, "ID=? AND CODCCPP=?", cp.id.toString(), cp.codccpp)),
+//				new XMLDataObject(CuestionarioDAO.TABLA_CUEST, "Cuest", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_CUEST, "ID=? AND CODCCPP=?", cp.id.toString(), cp.codccpp)),
+//				new XMLDataObject(CuestionarioDAO.TABLA_CUESTDET, "CuestDet", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_CUESTDET, "ID=? AND CODCCPP=?", cp.id.toString(), cp.codccpp))
+//		);
+//		
+//		archivos.add(xmlregistros);
+//		
+//		/*INI FOTOS FILE*/
+//		File conexiones = new File(App.RUTA_IMAGENES + "conexiones");        
+//		File file[] = conexiones.listFiles();
+//		for (int i=0; i < file.length; i++){
+//		    if (file[i].getName().equals(nombreArchivo.subSequence(0, nombreArchivo.length()-1)+"1.jpg")) {
+//				archivos.add(file[i]);
+//			}
+//		}
+//		/*FIN FOTOS FILE*/
+//		return archivos;
+//	}
+	
+	public static List<File> exportarCenso(Observer controller, String version, ImpExpService service, String ruta, String proyecto, Marco cp) throws Exception {
+		String nombreArchivo = cp.ccdd+cp.ccpp+cp.ccdi+cp.ruc;
+		File xmlregistros = new File(ruta + "/R01" + nombreArchivo +".xml");
+		
+		Atributo[] atributo = new  Atributo[]{new Atributo("archivo", "R01"), new Atributo("id", cp.id.toString()), new Atributo("fechaexpo", Util.getFechaActualToString()), new Atributo("appversion", version)};;
+		if (xmlregistros.exists()) {
+			xmlregistros.delete();
+		}		
+		List<File> archivos = new ArrayList<File>();
+		xmlregistros.createNewFile();
+		XMLWriter.getInstance().deleteObservers();
+		XMLWriter.getInstance().addObserver(controller);
+		
+		XMLWriter.getInstance().putMaps(xmlregistros, proyecto, atributo,
+				new XMLDataObject(CuestionarioDAO.TABLA_CARATULA, "Caratula", XMLDataObject.BORRAR_PRIMERO, inMap(service.getRegistros(CuestionarioDAO.TABLA_CARATULA, "ID=?", cp.id.toString()), Util.getHMObject("VERSION_EXPORTACION",version))),
+				new XMLDataObject(CuestionarioDAO.TABLA_VISITA, "Visita", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_VISITA, "ID=?", cp.id.toString())),
+				new XMLDataObject(CuestionarioDAO.TABLA_MODULOI, "Moduloi", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_MODULOI, "ID=?", cp.id.toString())),
+				new XMLDataObject(CuestionarioDAO.TABLA_MODULOII, "Moduloii", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_MODULOII, "ID=?", cp.id.toString())),
+				new XMLDataObject(CuestionarioDAO.TABLA_MODULOIII01, "Moduloiii01", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_MODULOIII01, "ID=?", cp.id.toString())),
+				new XMLDataObject(CuestionarioDAO.TABLA_MODULOIII_DET, "ModuloIII_det", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_MODULOIII_DET, "ID=?", cp.id.toString())),
+				new XMLDataObject(CuestionarioDAO.TABLA_MODULOIII02, "Moduloiii02", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_MODULOIII02, "ID=?", cp.id.toString())),
+				new XMLDataObject(CuestionarioDAO.TABLA_MODULOIV01, "Moduloiv01", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_MODULOIV01, "ID=?", cp.id.toString())),
+				new XMLDataObject(CuestionarioDAO.TABLA_MODULOIV02, "Moduloiv02", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_MODULOIV02, "ID=?", cp.id.toString())),
+				new XMLDataObject(CuestionarioDAO.TABLA_MODULOIV03, "Moduloiv03", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_MODULOIV03, "ID=?", cp.id.toString())),
+				new XMLDataObject(CuestionarioDAO.TABLA_MODULOV01, "Modulov01", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_MODULOV01, "ID=?", cp.id.toString())),
+				new XMLDataObject(CuestionarioDAO.TABLA_MODULOV02, "Modulov02", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_MODULOV02, "ID=?", cp.id.toString())),
+				new XMLDataObject(CuestionarioDAO.TABLA_MODULOVI01, "Modulovi01", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_MODULOVI01, "ID=?", cp.id.toString())),
+				new XMLDataObject(CuestionarioDAO.TABLA_MODULOVII01, "Modulovii01", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_MODULOVII01, "ID=?", cp.id.toString())),
+				new XMLDataObject(CuestionarioDAO.TABLA_MODULOVIII, "Moduloviii", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_MODULOVIII, "ID=?", cp.id.toString())),
+				new XMLDataObject(CuestionarioDAO.TABLA_MODULOIX_DET01, "ModuloixDet01", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_MODULOIX_DET01, "ID=?", cp.id.toString())),
+				new XMLDataObject(CuestionarioDAO.TABLA_MODULOIX_DET02, "ModuloixDet02", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_MODULOIX_DET02, "ID=?", cp.id.toString())),
+				new XMLDataObject(CuestionarioDAO.TABLA_MODULOIX_DET03, "ModuloixDet03", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_MODULOIX_DET03, "ID=?", cp.id.toString())),
+							
+				new XMLDataObject(CuestionarioDAO.TABLA_MODULOIX_DET04, "ModuloixDet04", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_MODULOIX_DET04, "ID=?", cp.id.toString())),
+				new XMLDataObject(CuestionarioDAO.TABLA_MODULOIX_DET05, "ModuloixDet05", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_MODULOIX_DET05, "ID=?", cp.id.toString())),
+		
+				
+				new XMLDataObject(CuestionarioDAO.TABLA_MODULOIX, "Moduloix", XMLDataObject.BORRAR_PRIMERO, service.getRegistros(CuestionarioDAO.TABLA_MODULOIX, "ID=?", cp.id.toString()))
+		);
+		
+		archivos.add(xmlregistros);
+
+		return archivos;
+	}
+	
+	public static List<Map<String, Object>> inMap(List<Map<String, Object>> lmap, Map<String, String> mp){
+		if (lmap != null) {
+			for ( Map<String, Object> map : lmap ) {
+				for(Entry<String, String> e : mp.entrySet()){
+					map.put(e.getKey(), e.getValue());
+				}
+			}
+		}
+		return lmap;
+	}
+	
+	public static class LockViewCondition<T extends EditText, E extends View> implements TextWatcher {
+		private T view;
+		private E[] views;
+		private boolean inverse;
+		
+		public LockViewCondition(T t, E... e) {
+			this(true, t, e);
+		}
+		public LockViewCondition(boolean equal, T t, E... e) {
+			inverse = equal;
+			view = t;
+			views = e;
+		}
+		
+		@Override
+		public void afterTextChanged(Editable arg0) {
+			if(!Util.esVacio((TextBoxField)view)){
+				Log.e("entras", "mirateeee: "+inverse);
+				if(inverse) Util.cleanAndLockView(((TextBoxField)view).getContext(), views);
+				else Util.lockView(((TextBoxField)view).getContext(), false, views);
+			} else {
+				if(inverse)	Util.lockView(((TextBoxField)view).getContext(), false, views);
+				else Util.cleanAndLockView(((TextBoxField)view).getContext(), views);
+			}
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+			
+		}
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before,
+				int count) {
+			
+		}
+		
+	}
+	
+	public static String getString(Object text, String other){
+		if(text == null) return other;
+		String result = "";
+		try {
+			result = text.toString();
+		} catch (Exception e) {
+			
+		}
+		return result;
+	}
+	//cbarrientos
+	public static Object validateNullControl(int startindex, int endindex,
+			Object contex, Context cont) {
+		View v[] = null;
+		Object ctrlerror = null;
+		if (contex instanceof DialogFragmentComponent) {
+			v = ((DialogFragmentComponent) contex).getFieldsOrdered();
+		} else if (contex instanceof FragmentForm) {
+			v = ((FragmentForm) contex).getFieldsOrdered();
+		}
+
+		if (startindex >= v.length)
+			return null;
+		if (endindex >= v.length)
+			return null;
+
+		for (int p = startindex; p <= endindex; p++) {		
+			if (v[p] instanceof RadioGroupOtherField) {
+				if (Util.esVacio(((RadioGroupOtherField) v[p]))) {
+					ctrlerror = v[p];					
+					break;					
+				}
+			}else if (v[p] instanceof IntegerField) {
+				if (Util.esVacio(((IntegerField) v[p]))) {
+					ctrlerror = v[p];					
+					break;					
+				}
+			}
+			
+		}
+		return ctrlerror;
+
+	}
+	public static boolean validaIsNullableAll(Integer testval,
+			Object... mycontrolvalue) {
+		boolean isallnull = false;
+		Integer allnull = 0;
+		Integer valcaj = null;
+		if (mycontrolvalue.length == 0)
+			return false;
+		for (Object caja : mycontrolvalue) {
+			//valcaj = Integer.parseInt(caja.toString());
+			valcaj = caja==null?null:Integer.parseInt(caja.toString()); 
+			if (caja == null || !Util.esDiferente(valcaj, testval))
+				allnull++;
+		}
+		Log.e("allnull count : ", String.valueOf(allnull));
+		if (allnull == mycontrolvalue.length)
+			isallnull = true;
+
+		return isallnull;
+	}
+}

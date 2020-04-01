@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mod3_titulo">CAPÍTULO 300. RECURSOS HUMANOS </string>
+    <string name="mod3_titulo1">SOLO PARA EMPRESAS CON MÁS DE UN TRABAJADOR</string>
+    <string name="mod3_titulo2">INCENTIVOS TRIBUTARIOS PARA LA CAPACITACIÓN LABORAL \n (Sólo para empresas con más de un trabajador)</string>
+    <string name="mod3_titulo3">CAPACITACIÓN DEL RESPONSABLE \n (Sólo para micro y pequeñas empresas)</string>
+    <string name="mod3_preg1">301. En promedio, durante el año 2018, ¿cuántas personas trabajaron en la empresa? \n(Registrar la información en soles, sin considerar céntimos) </string>
+	<string name="mod3_cab1">CATEGORÍA OCUPACIONAL</string>
+	<string name="mod3_cab2">PROMEDIO ANUAL DE PERSONAL OCUPADO</string>
+	<string name="mod3_cab3">REMUNERACIÓN PROMEDIO MENSUAL (Soles)</string>
+	<string name="mod3_cab3d">(4)</string>
+	<string name="mod3_cab_tot">Total</string>
+	<string name="mod3_cab_totd">(1)=(2)+(3)</string>
+    <string name="mod3_cab_h">Hombres</string>
+    <string name="mod3_cab_hd">(2)</string>
+    <string name="mod3_cab_m">Mujeres</string>
+    <string name="mod3_cab_md">(3)</string>
+    
+	<string name="mod3_file1">1. Ejecutivos (presidente de directorio, gerente, subgerente, directores)</string>
+	<string name="mod3_file2">2. Empleados permanentes (Mayor a un año)</string>
+	<string name="mod3_file3">3. Obreros permanentes (Mayor a un año)</string>
+	<string name="mod3_file4">4. Empleados eventuales (Menor o igual a un año)</string>
+	<string name="mod3_file5">5. Obreros eventuales (Menor o igual a un año)</string>
+	<string name="mod3_file6"> TOTAL (01 al 05)</string>
+	<string name="mod3_file7">6. Propietario (empleador o patrón)</string>
+	<string name="mod3_file8">7. Familiares no remunerados</string>
+	<string name="mod3_file9">8. Practicante o modalidades formativas</string>
+	<string name="mod3_file10">9. Personal de servicios por honorarios</string>
+	<string name="mod3_file11">10. Comisionistas</string>
+	<string name="mod3_file12"> TOTAL (T1 + 06 al 10)</string>
+	<string name="mod3_file13">11. Personal de empresas de servicios de intermediación laboral</string>
+    <string name="mod3_subtitulo">CAPACITACIÓN Y ASISTENCIA TÉCNICA RECIBIDA POR EL PERSONAL</string>
+    <string name="mod3_subtitulo1">ASISTENCIA TÉCNICA</string>
+</resources>

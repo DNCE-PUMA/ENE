@@ -1,0 +1,373 @@
+package gob.inei.ene2019v2.fragment.ModI;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.GridComponent2;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.MasterActivity;
+import gob.inei.dnce.components.RadioGroupOtherField;
+import gob.inei.dnce.components.RadioGroupOtherField.ORIENTATION;
+import gob.inei.dnce.components.SpinnerField;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.model.Moduloi;
+import gob.inei.ene2019v2.model.Ubigeo;
+import gob.inei.ene2019v2.service.CuestionarioService;
+import gob.inei.ene2019v2.service.UbigeoService;
+
+import java.sql.SQLException;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
+
+public class Mod_I_Fragment_005 extends FragmentForm {
+
+	@FieldAnnotation(orderIndex = 1)
+	public SpinnerField spnC1P112_1CD;
+	@FieldAnnotation(orderIndex = 2)
+	public SpinnerField spnC1P112_2CD;
+	@FieldAnnotation(orderIndex = 3)
+	public SpinnerField spnC1P112_3CD;
+	@FieldAnnotation(orderIndex = 4)
+	public RadioGroupOtherField rgC1P113;
+	@FieldAnnotation(orderIndex = 5)
+	public RadioGroupOtherField rgC1P114;
+
+	private CuestionarioService cuestionarioService;
+	private UbigeoService ubigeoService;
+	private Moduloi bean;
+	private LabelComponent lblTitulo,lblSubTitulo3;
+	private GridComponent2 grUbigeo;
+	LinearLayout q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10;
+
+	public Mod_I_Fragment_005() {
+	}
+
+	public Mod_I_Fragment_005 parent(MasterActivity parent) {
+		this.parent = parent;
+		return this;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = createUI();
+		initObjectsWithoutXML(this, rootView);
+		enlazarCajas();
+		listening();
+
+		return rootView;
+	}
+
+	@Override
+	protected void buildFields() {
+		lblTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.moduloI).textSize(21).centrar().negrita();
+		
+		lblSubTitulo3 = new LabelComponent(this.getActivity())
+		.size(MATCH_PARENT, MATCH_PARENT)
+		.text(R.string.c1c100m1p012_0).textSize(18).negrita()
+		.colorFondo(R.color.amarillo);
+		
+//		LabelComponent real_preg = new LabelComponent(getActivity())
+//		.text(R.string.c1c100m1p012_0).size(altoComponente, 250).colorFondo(R.color.amarillo);
+
+		spnC1P112_1CD = new SpinnerField(getActivity()).size(
+				altoComponente + 15, 270).keyString();
+		Util.llenarItems(getActivity(), spnC1P112_1CD, Util
+				.getListObject(getUbigeoService().getDepartamentos("99")
+						.toArray()), "DEPARTAMENTO", true);
+
+		spnC1P112_2CD = new SpinnerField(getActivity()).size(
+				altoComponente + 15, 270).keyString();
+		Util.llenarItems(getActivity(), spnC1P112_2CD, Util
+				.getListObject(getUbigeoService().getDepartamentos("99")
+						.toArray()), "DEPARTAMENTO", true);
+		spnC1P112_3CD = new SpinnerField(getActivity()).size(
+				altoComponente + 15, 270).keyString();
+		Util.llenarItems(getActivity(), spnC1P112_3CD, Util
+				.getListObject(getUbigeoService().getDepartamentos("99")
+						.toArray()), "DEPARTAMENTO", true);
+
+		rgC1P113 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m1p013_1, R.string.c1c100m1p013_2,
+				R.string.c1c100m1p013_3, R.string.c1c100m1p013_4).size(
+				WRAP_CONTENT, 350).orientation(ORIENTATION.VERTICAL);
+
+		rgC1P114 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m1p014_1, R.string.c1c100m1p014_2,
+				R.string.c1c100m1p014_3).size(WRAP_CONTENT, 350).orientation(
+				ORIENTATION.VERTICAL);
+
+		
+		LabelComponent Internac = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100m1p012_1).size(altoComponente, 250);
+		LabelComponent Nacional = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100m1p012_2).size(altoComponente, 250);
+		LabelComponent Local = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100m1p012_3).size(altoComponente, 250);
+
+		grUbigeo = new GridComponent2(this.getActivity(), 2);
+		grUbigeo.addComponent(Internac);
+		grUbigeo.addComponent(spnC1P112_1CD);
+		grUbigeo.addComponent(Nacional);
+		grUbigeo.addComponent(spnC1P112_2CD);
+		grUbigeo.addComponent(Local);
+		grUbigeo.addComponent(spnC1P112_3CD);
+
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+
+		q0 = createQuestionSection(lblTitulo);
+		q1 = createQuestionSection(lblSubTitulo3);
+		q2 = createQuestionSection(R.string.c1c100m1p012, grUbigeo.component());
+		q3 = createQuestionSection(R.string.c1c100m1p013, rgC1P113);
+		q4 = createQuestionSection(R.string.c1c100m1p014, rgC1P114);
+
+		ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+		form.addView(q0);
+		form.addView(q1);
+		form.addView(q2);
+		form.addView(q3);
+		form.addView(q4);
+		
+		return contenedor;
+	}
+
+	@Override
+	public boolean grabar() {
+
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals("")) {
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+				if (view != null) {
+					view.requestFocus();
+				}
+			}
+			return false;
+		}
+		uiToEntity(bean);
+
+//		if (spnC1P112_1CD.getSelectedItemKey() != null) {
+//		Ubigeo ubigeo1 = (Ubigeo) spnC1P112_1CD.getValue();
+//		bean.c1p112_1 = ubigeo1.departamento;
+//	}
+//	    if (spnC1P112_2CD.getSelectedItemKey() != null) {
+//		Ubigeo ubigeo2 = (Ubigeo) spnC1P112_2CD.getValue();
+//		bean.c1p112_2 = ubigeo2.departamento;
+//	}
+//	   if (spnC1P112_3CD.getSelectedItemKey() != null) {
+//		Ubigeo ubigeo3 = (Ubigeo) spnC1P112_3CD.getValue();
+//
+//		bean.c1p112_3 = ubigeo3.departamento;
+//	}
+		try {
+
+			if (spnC1P112_1CD.getSelectedItemKey() != null) {
+		    	Ubigeo ubigeo1=((Ubigeo) spnC1P112_1CD.getSelectedItem());
+		    	bean.c1p112_1 = ubigeo1.departamento;
+			}
+			if (spnC1P112_2CD.getSelectedItemKey() != null) {
+				Ubigeo ubigeo2=((Ubigeo) spnC1P112_2CD.getSelectedItem());
+		    	bean.c1p112_2 = ubigeo2.departamento;
+			}
+			if (spnC1P112_3CD.getSelectedItemKey() != null) {
+				Ubigeo ubigeo3=((Ubigeo) spnC1P112_3CD.getSelectedItem());
+		    	bean.c1p112_3 = ubigeo3.departamento;
+			}
+			Log.e ("spnC1P112_2CD " , bean.c1p112_1 + "");
+			if (!getCuestionarioService().saveOrUpdate(
+					bean,
+					bean.getSecCap(getListFields(this, new String[] {
+							"C1P112_1", "C1P112_2", "C1P112_3" })))) {
+				ToastMessage.msgBox(this.getActivity(),
+						"Los datos no se guardaron",
+						ToastMessage.MESSAGE_ERROR, ToastMessage.DURATION_LONG);
+			}
+		} catch (SQLException e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean validar() {
+		String pregunta_no_vacia = getString(R.string.pregunta_no_vacia);
+		error = false;
+
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+//2310
+		if (Util.getInt(bean.c1p111a_2) == 1 ) {
+			if (spnC1P112_1CD.getSelectedItemKey() == null) {
+				mensaje = pregunta_no_vacia.replace("$", "1. Departamento");
+				view = spnC1P112_1CD;
+				error = true;
+				return false;
+			}
+//			if (spnC1P112_2CD.getSelectedItemKey() == null) {
+//				mensaje = pregunta_no_vacia.replace("$", "2. Departamento");
+//				view = spnC1P112_2CD;
+//				error = true;
+//				return false;
+//			}
+			// if (spnC1P112_3CD.getSelectedItemKey() == null) {
+			// mensaje = pregunta_no_vacia.replace("$", "3. Departamento");
+			// view = spnC1P112_3CD;
+			// error = true;
+			// return false;
+			// }
+
+			
+			if ((spnC1P112_1CD.getSelectedItemKey() != null  &&   spnC1P112_2CD.getSelectedItemKey() != null  ) ||
+					(spnC1P112_2CD.getSelectedItemKey() != null  &&   spnC1P112_3CD.getSelectedItemKey() != null  )||
+					(spnC1P112_1CD.getSelectedItemKey() != null  &&   spnC1P112_3CD.getSelectedItemKey() != null  ) ) {
+				if (       String.valueOf(spnC1P112_1CD.getValue()).equals(String.valueOf(spnC1P112_2CD.getValue()))
+						|| String.valueOf(spnC1P112_1CD.getValue()).equals(String.valueOf(spnC1P112_3CD.getValue()))
+						|| String.valueOf(spnC1P112_2CD.getValue()).equals(String.valueOf(spnC1P112_3CD.getValue()))) {
+					mensaje = "Los Departamentos ingresados NO deben repetirse.";
+					view = spnC1P112_1CD;
+					return !(error = true);
+				}
+			}
+			
+	}
+//		VERIFICACIÓN    :  Si C1P111_2=1 AND C1P112_1CD = CCDD and C1P112_2CD=” ” and C1P112_3CD=” ”  Error
+		
+//                   MENSAJE            :  “Error: Revisar información ingresada en la P111 y P112” 
+
+		if (Util.getInt(bean.c1p111_2)==1) {
+			    if ( String.valueOf(App.getInstance().getMarco().ccdd.toString()).equals(String.valueOf(spnC1P112_1CD.getValue()))
+			    || String.valueOf(App.getInstance().getMarco().ccdd.toString()).equals(String.valueOf(spnC1P112_2CD.getValue()))
+			    || String.valueOf(App.getInstance().getMarco().ccdd.toString()).equals(String.valueOf(spnC1P112_3CD.getValue()))
+			//   (Util.esVacio(spnC1P112_2CD.toString())&&esVacio(spnC1P112_3CD.toString()))
+			   ) {
+				mensaje = "Error: Revisar información ingresada en la P111 y P112";
+				view = spnC1P112_1CD;
+				return !(error = true);
+			  }
+			}
+   //      Si C1P111_3=2 and (C1P112_1CD= CCDD  or C1P112_2CD= CCDD or C1P112_3CD= CCDD) Error
+     //MENSAJE            :  “Error: Revisar información ingresada en la P111 y P112” 
+		if (Util.getInt(bean.c1p111_3)==2) {
+			if ((!Util.esDiferente(App.getInstance().getMarco().ccdd.toString(),spnC1P112_1CD.getSelectedItem().toString()))||
+			   (!Util.esDiferente(App.getInstance().getMarco().ccdd.toString(),spnC1P112_2CD.getSelectedItem().toString()))||
+			   (!Util.esDiferente(App.getInstance().getMarco().ccdd.toString(),spnC1P112_3CD.getSelectedItem().toString()))
+					) {
+				mensaje = "Error: Revisar información ingresada en la P111 y P112";
+				view = spnC1P112_1CD;
+				return !(error = true);
+			  }
+			}
+
+//			if (spnC1P112_2CD.getSelectedItemKey() != null
+//					&& spnC1P112_3CD.getSelectedItemKey() != null) {
+//				if (String.valueOf(spnC1P112_2CD.getValue()).equals(String.valueOf(spnC1P112_3CD.getValue()))) {
+//					mensaje = "Los Departamentos ingresados NO deben repetirse";
+//					view = spnC1P112_2CD;
+//					return !(error = true);
+//				}
+//			}
+		
+
+		if (Util.esVacio(rgC1P113)) {
+			mensaje = pregunta_no_vacia.replace("$", "La pregunta P113");
+			view = rgC1P113;
+			error = true;
+			return false;
+		}
+
+		if (Util.esVacio(rgC1P114)) {
+			mensaje = pregunta_no_vacia.replace("$", "La pregunta P114");
+			view = rgC1P114;
+			error = true;
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public void cargarDatos() {
+		bean = getCuestionarioService().getModuloi(
+				App.getInstance().getEmpresa(),
+				new Moduloi().getSecCap(getListFields(this, new String[] {
+						"C1P111A_2","C1P111_1","C1P111_2","C1P111_3" })));
+		if (bean == null) {
+			bean = new Moduloi();
+			bean.id = App.getInstance().getEmpresa().id;
+		}
+
+		entityToUI(bean);
+		inicio();
+	}
+
+	private void inicio() {
+		Log.e("bean.c1p111_2",bean.c1p111_2+ "");
+		Log.e("App.getInstance().getMarco().empresa_tipo_cdD)",App.getInstance().getMarco().nombredd + "");
+		Log.e("spnC1P112_1CD)",spnC1P112_1CD + "");
+		Log.e("spnC1P112_2CD)",spnC1P112_2CD + "");
+		Log.e("spnC1P112_3CD)",spnC1P112_3CD + "");
+		if (Util.getInt(bean.c1p111a_2) == 1 ) {
+			Util.lockView(getActivity(), false, spnC1P112_1CD, spnC1P112_2CD,
+					spnC1P112_3CD);
+			spnC1P112_1CD.requestFocus();
+		} else {
+			Util.cleanAndLockView(getActivity(), spnC1P112_1CD, spnC1P112_2CD,
+					spnC1P112_3CD);
+			rgC1P113.requestFocus();
+		}
+
+		spnC1P112_1CD.requestFocus();
+	}
+
+	public CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+
+	public UbigeoService getUbigeoService() {
+		if (ubigeoService == null) {
+			ubigeoService = UbigeoService.getInstance(getActivity());
+		}
+		return ubigeoService;
+	}
+
+	@Override
+	public Entity getEntity() {
+		return bean;
+	}
+}

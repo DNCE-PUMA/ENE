@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+     <string-array name="array_701">
+        <item>1. Créditos para capital de trabajo?</item>
+        <item>2. Créditos para inversión en activo fijo?</item>
+        <item>3. Crédito para consumo con tarjeta de crédito (como financiamiento para el negocio)?</item>
+        <item>4. Crédito para consumo como préstamo personal (como financiamiento para el negocio)?</item>
+        <item>5. Factoring? </item>
+        <item>6. Descuento de facturas?</item>
+        <item>7. Cartas fianza / Garantía?</item>
+        <item>8. Otro?</item>
+    </string-array>
+
+     <string-array name="array_616">
+        <item>1. Vía marítima?</item>
+        <item>2. Vía fluvial?</item>
+        <item>3. Vía ferrea?</item>
+        <item>4. Vía aérea?</item>
+        <item>5. Otro? </item>
+    </string-array>
+
+          
+    <string-array name="array_499">
+        <item>1.	Start Up Perú/ Capital semilla para emprendedores  innovadores?</item>
+        <item>2.	Misiones y/o pasantías tecnológicas?</item>
+        <item>3.	Programa Mejora con Calidad? </item>
+        <item>4.	FIDECOM?</item>
+        <item>5.	PITEI?</item>
+        <item>6.	Otros concursos de INNOVATE? </item>
+    </string-array>
+    <string-array name="drawer_array">
+        <item>Marco</item>
+        <item>Cobertura</item>
+        <item>Exportaci\u00f3n</item>
+        <item>Importar</item>
+        <item>Cargar configuraci\u00f3n</item>
+        <item>Calificaci\u00f3n</item>
+    </string-array>
+    <string-array name="arrayResultadosVIS">
+        <item>(Seleccione)</item>
+        <item>1. Completa</item>
+        <item>2. Incompleta</item>
+        <item>3. Ausente</item>
+        <item>4. Rechazo</item>
+        <item>5. No Ubicada</item>
+        <item>6. Pendiente de Cita</item>
+        <item>7. Actividad no Investigada</item>
+        <item>8. Otro</item>
+    </string-array>
+    <string-array name="ModIV_detalleP76">
+        <item>1. COMPRAS</item>
+        <item>2. PRODUCCIÓN</item>
+        <item>3. ALMACENAMIENTO</item>
+        <item>4. COMERCIALIZACIÓN</item>
+        <item>5. TRANSPORTE O DISTRIBUCIÓN</item>
+        <item>6. SERVICIOS POST-VENTA</item>
+    </string-array>
+    
+        <string-array name="ModIV_detalleP404">
+        <item>1. Nacional</item>
+        <item>2. Internacional</item>
+    </string-array>
+    <string-array name="MOD003_P334">
+        <item>1. GESTION EMPRESARIAL</item>
+        <item>2. TEMAS PRODUCTIVOS</item>
+    </string-array>
+    
+   <string-array name="array_846">
+    <item>(Seleccione)</item>
+    <item>1. Falta de habilidades de gestión/gerencia del negocio?</item>
+    <item>2. Dificultad de financiamiento?</item>
+    <item>3. Falta de mano de obra calificada?</item>
+    <item>4. Demanda limitada de mis productos/servicios?</item>
+    <item>5. Falta de insumos en cantidad, precio o calidad adecuada nacionales e importados?</item>
+    <item>6. Falta de información de mercados?</item>
+    <item>7. Excesiva regulación laboral?</item>
+    <item>8. Excesiva regulación tributaria?</item>
+    <item>9. Excesiva regulación ambiental?</item>
+    <item>10. Excesiva regulación para trámites sectoriales/autorizaciones?</item>
+    <item>11. Corrupción de funcionarios públicos?</item>
+    <item>12. Contrabando?</item>
+    <item>13. Piratería/vulneración de derechos de propiedad?</item>
+    <item>14. Exceso de cargas tributarias?</item>
+    <item>15. Competencia de empresas informales?</item>
+    <item>16. Competencia de empresas formales?</item>
+    <item>17. Víctima de hechos delictivos?</item>
+    <item>18. Desastres o fenómenos naturales?</item>
+    <item>19. Clientes demoran o no cumplen en pagar?</item>
+    <item>20. Falta de apoyo a la innovación?</item>
+    <item>21. Falta de espacio propio/altos alquileres?</item>
+    <item>22. Inadecuada ubicación para el negocio?</item>
+    <item>23. Conflictos sociales/huelgas?</item>
+    <item>24. Deficiente o ausente infraestructura de transporte?</item>
+    </string-array>
+    
+    <string-array name="ModuloIX_P906">
+        <item> Terrenos </item>
+        <item> Edificaciones</item>
+        <item> Maquinaria, equipo, muebles, herramientas</item>
+        <item> Intangibles</item>
+        <item> Otros</item>
+    </string-array>
+    <string-array name="ModuloIX_P907">
+        <item> Edificaciones</item>
+        <item> Maquinaria, equipo, muebles, herramientas</item>
+        <item> Intangibles</item>
+        <item> Otros</item>
+    </string-array>
+    
+    <string-array name="ModuloIX_P908">
+        <item> Mercaderías</item>
+        <item> Productos terminados, subproductos, desechos y desperdicios</item>
+        <item> Materias primas, materiales auxiliares, suministros, repuestos, envases y embalajes.</item>
+    </string-array>
+    
+
+</resources>

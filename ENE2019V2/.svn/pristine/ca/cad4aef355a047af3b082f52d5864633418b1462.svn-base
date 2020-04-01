@@ -1,0 +1,705 @@
+package gob.inei.ene2019v2.fragment.ModIII;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.components.CheckBoxField;
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.components.Entity.SeccionCapitulo;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.GridComponent;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.MasterActivity;
+import gob.inei.dnce.components.RadioGroupOtherField;
+import gob.inei.dnce.components.RadioGroupOtherField.ORIENTATION;
+import gob.inei.dnce.components.TableComponent;
+import gob.inei.dnce.components.TextField;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.interfaces.IDetailEntityComponent;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.fragment.ModIII.dialog.Mod_III_Fragment_012_01;
+import gob.inei.ene2019v2.model.Caratula;
+import gob.inei.ene2019v2.model.Moduloiii02;
+import gob.inei.ene2019v2.service.CuestionarioService;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
+
+public class Mod_III_Fragment_012 extends FragmentForm {
+
+	@FieldAnnotation(orderIndex = 1)
+	public RadioGroupOtherField rgC3P333;
+	@FieldAnnotation(orderIndex = 2)
+	public RadioGroupOtherField rgC3P333A;
+	@FieldAnnotation(orderIndex = 3)
+	public CheckBoxField chbC3P333B_1;
+	@FieldAnnotation(orderIndex = 4)
+	public CheckBoxField chbC3P333B_2;
+	@FieldAnnotation(orderIndex = 5)
+	public CheckBoxField chbC3P333B_3;
+	@FieldAnnotation(orderIndex = 6)
+	public CheckBoxField chbC3P333B_4;
+	@FieldAnnotation(orderIndex = 7)
+	public CheckBoxField chbC3P333B_5;
+	@FieldAnnotation(orderIndex = 8)
+	public CheckBoxField chbC3P333B_6;
+	@FieldAnnotation(orderIndex = 9)
+	public TextField txtC3P333B_6ESP;
+	@FieldAnnotation(orderIndex = 10)
+	public CheckBoxField chbC3P333B_7;
+
+	private TableComponent tcMP334;
+	private CuestionarioService cuestionarioService;
+	private Moduloiii02 bean;
+	Caratula caratula;
+	private LabelComponent lblTitulo, lblTitulo1;
+	private List<P3Det> detalles;
+	private int cont;
+	private GridComponent gridP34_6;
+	P3_1ClickListener adapter;
+	SeccionCapitulo[] campos;
+	LinearLayout q0, q1, q2, q3, q4;
+
+	public Mod_III_Fragment_012() {
+	}
+
+	public Mod_III_Fragment_012 parent(MasterActivity parent) {
+		this.parent = parent;
+		return this;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = createUI();
+		initObjectsWithoutXML(this, rootView);
+		enlazarCajas();
+		adapter = new P3_1ClickListener();
+		tcMP334.getListView().setOnItemClickListener(adapter);
+		listening();
+
+		return rootView;
+	}
+
+	@Override
+	protected void buildFields() {
+		lblTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.mod3_titulo).textSize(21).centrar().negrita();
+		lblTitulo1 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.mod3_titulo3).textSize(20).centrar().negrita();
+		rgC3P333 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m3p031_1, R.string.c1c100m3p031_2)
+				.size(WRAP_CONTENT, 180).orientation(ORIENTATION.HORIZONTAL)
+				.callback("FuncionP333");
+		rgC3P333A = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m3p031_1, R.string.c1c100m3p031_2)
+				.size(WRAP_CONTENT, 180).orientation(ORIENTATION.HORIZONTAL)
+				.centrar().callback("FuncionP333A");
+
+		chbC3P333B_1 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m3p033B_1, "1:0").size(WRAP_CONTENT, 600).callback("FuncionCheck");
+		chbC3P333B_2 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m3p033B_2, "1:0").size(WRAP_CONTENT, 600).callback("FuncionCheck");
+		chbC3P333B_3 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m3p033B_3, "1:0").size(WRAP_CONTENT, 600).callback("FuncionCheck");
+		chbC3P333B_4 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m3p033B_4, "1:0").size(WRAP_CONTENT, 600).callback("FuncionCheck");
+		chbC3P333B_5 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m3p033B_5, "1:0").size(WRAP_CONTENT, 600).callback("FuncionCheck");
+		chbC3P333B_6 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m3p033B_6, "1:0").size(WRAP_CONTENT, 350).callback("FuncionCheck");
+		txtC3P333B_6ESP = new TextField(this.getActivity(), false)
+		.size(altoComponente, 250).hint(R.string.especifique)
+		.soloTextoNumero();
+		chbC3P333B_7 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m3p033B_7, "1:0").size(WRAP_CONTENT, 600).callback("FuncionCheck");
+
+		gridP34_6 = new GridComponent(this.getActivity(), Gravity.CENTER, 2, 0);
+		gridP34_6.addComponent(chbC3P333B_6);
+		gridP34_6.addComponent(txtC3P333B_6ESP);
+
+		tcMP334 = new TableComponent(getActivity(), this, App.ESTILO).size(300,
+				750).dataColumHeight(85);
+		tcMP334.addHeader(R.string.m3p034_p334, 4f, TableComponent.ALIGN.LEFT);
+		tcMP334.addHeader(R.string.m3p035_selec, 1f, CheckBoxField.class,
+				R.string.c1c100m3p035_vacio);
+		tcMP334.addCallback(1, "onSeleccionadoChangeValue");
+		tcMP334.setHeaderHeight(99);
+		tcMP334.setCellColor(-1, 0, true);
+
+		Filtros.setFiltro(txtC3P333B_6ESP, Filtros.TIPO.ALFAN_U, 300, null);
+
+	}
+
+	public void onSeleccionadoChangeValue(Object entity, Integer row,
+			Integer opcion) {
+		if (entity != null) {
+			P3Det tmp = (P3Det) entity;
+			tmp.p334a = opcion;
+			if (opcion == 0) {
+				tmp.cleanEntity();
+			}
+			refrescarTabla();
+		}
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+
+		q0 = createQuestionSection(lblTitulo, lblTitulo1);
+		q1 = createQuestionSection(R.string.c1c100m3p033, rgC3P333);
+		q2 = createQuestionSection(R.string.c1c100m3p033A, rgC3P333A);
+		q3 = createQuestionSection(R.string.c1c100m3p033B, chbC3P333B_1,
+				chbC3P333B_2, chbC3P333B_3, chbC3P333B_4, chbC3P333B_5,
+			 gridP34_6.component(), chbC3P333B_7);
+		q4 = createQuestionSection(R.string.c1c100m3p034,
+				tcMP334.getTableView());
+
+		ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+		form.addView(q0);
+		form.addView(q1);
+		form.addView(q2);
+		form.addView(q3);
+		form.addView(q4);
+
+		return contenedor;
+	}
+
+	@Override
+	public boolean grabar() {
+		uiToEntity(bean);
+	//	llenarBean();
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals("")) {
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+				if (view != null) {
+					view.requestFocus();
+				}
+			}
+			return false;
+		}
+
+		try {
+			if (!getCuestionarioService().saveOrUpdate(bean, campos)) {
+				ToastMessage.msgBox(this.getActivity(),
+						"Los datos no se guardaron",
+						ToastMessage.MESSAGE_ERROR, ToastMessage.DURATION_LONG);
+			}
+		} catch (SQLException e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean validar() {
+		String pregunta_no_vacia = getString(R.string.pregunta_no_vacia);
+		error = false;
+
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+		
+		//2310
+//		if (Util.between(caratula.p25, 1, 2)) {
+//
+//			if (Util.getInt(bean.c3p332) == 2 && rgC3P333.isTagSelected(2) ) {
+//				if (!chbC3P333B_1.isChecked() && !chbC3P333B_2.isChecked()
+//						&& !chbC3P333B_3.isChecked()
+//						&& !chbC3P333B_4.isChecked()
+//						&& !chbC3P333B_5.isChecked()
+//						&& !chbC3P333B_6.isChecked()
+//						&& !chbC3P333B_7.isChecked()) {
+//					mensaje = "DEBE SELECCIONAR AL MENOS UNA ALTERNATIVA EN P333B";
+//					view = chbC3P333B_1;
+//					error = true;
+//					return false;
+//				}
+//
+//				if (chbC3P333B_6.isChecked()) {
+//					if (Util.esVacio(txtC3P333B_6ESP)) {
+//						mensaje = pregunta_no_vacia.replace("$",
+//								"La Preg.333B (Especifique)");
+//						view = txtC3P333B_6ESP;
+//						error = true;
+//						return false;
+//					}
+//				}
+//			} else {
+//
+//				if (Util.esVacio(rgC3P333)) {
+//					mensaje = pregunta_no_vacia
+//							.replace("$", "La pregunta P333");
+//					view = rgC3P333;
+//					error = true;
+//					return false;
+//				}
+//
+//				if (rgC3P333.isTagSelected(1)) {
+//					if (Util.esVacio(rgC3P333A)) {
+//						mensaje = pregunta_no_vacia.replace("$",
+//								"La pregunta P333A");
+//						view = rgC3P333A;
+//						error = true;
+//						return false;
+//					}
+//
+//				} else {
+//					if (!chbC3P333B_1.isChecked() && !chbC3P333B_2.isChecked()
+//							&& !chbC3P333B_3.isChecked()
+//							&& !chbC3P333B_4.isChecked()
+//							&& !chbC3P333B_5.isChecked()
+//							&& !chbC3P333B_6.isChecked()
+//							&& !chbC3P333B_7.isChecked()) {
+//						mensaje = "DEBE SELECCIONAR AL MENOS UNA ALTERNATIVA EN P333B";
+//						view = chbC3P333B_1;
+//						error = true;
+//						return false;
+//					}
+//
+//					if (chbC3P333B_6.isChecked()) {
+//						if (Util.esVacio(txtC3P333B_6ESP)) {
+//							mensaje = pregunta_no_vacia.replace("$",
+//									"La Preg.333B (Especifique)");
+//							view = txtC3P333B_6ESP;
+//							error = true;
+//							return false;
+//						} else {
+//							if (txtC3P333B_6ESP.getText().length() < 3) {
+//								mensaje = "Ingrese la información correcta";
+//								view = txtC3P333B_6ESP;
+//								error = true;
+//								return false;
+//							}
+//						}
+//					}
+//
+//				}
+//
+//				int cont = 0;
+//				for (int i = 0; i < detalles.size(); i++) {
+//					P3Det cc = (P3Det) detalles.get(i);
+//					if (!Util.esDiferente(cc.p334a, 1)) {
+//						cont += 1;
+//
+//						if (!Util.esVacio(rgC3P333A) && (Util.getInt(bean.c3p332a) == 0 && i == 0)) {  //332 es 2
+//							mensaje = "No cuenta con Prácticas de Gestión Empresarial, no corresponde información";
+//							error = true;
+//							view = tcMP334;
+//							return false;
+//						}
+//
+//						//
+//						if (!Util.esVacio(bean.c3p332a) 
+//								&& (Util.esVacio(rgC3P333A) && i == 1)) { //332  = 1
+//							mensaje = "No cuenta con Temas Productivos, no corresponde información";
+//							view = tcMP334;
+//							error = true;
+//							return false;
+//						}
+//					}
+//
+//					if (Util.esVacio(cc.p334_3) && !Util.esVacio(bean.c3p332a) && i == 0) {   //332 es 1
+//						ToastMessage.msgBox(this.getActivity(),
+//								"Falta ingresar información en "
+//										+ "GESTIÓN EMPRESARIAL",
+//								ToastMessage.MESSAGE_INFO,
+//								ToastMessage.DURATION_LONG);
+//						return false;
+//					}
+//					if (Util.esVacio(cc.p334_3) && !Util.esVacio(rgC3P333A) 
+//							&& i == 1) {  //333a > 0 
+//						ToastMessage.msgBox(this.getActivity(),
+//								"Falta ingresar información en "
+//										+ "TEMAS PRODUCTIVOS",
+//								ToastMessage.MESSAGE_INFO,
+//								ToastMessage.DURATION_LONG);
+//						return false;
+//					}
+//
+//				}
+//
+//				if (cont == 0) {
+//					mensaje = "Debe ingresar al menos una opción en P334";
+//					view = tcMP334;
+//					error = true;
+//					return false;
+//				}
+//			}
+//		}
+		return true;
+	}
+
+	@Override
+	public void cargarDatos() {
+		caratula = App.getInstance().getEmpresa();
+		Moduloiii02 mod2 = new Moduloiii02();
+		campos = mod2.getSecCap(
+				getListFields(mod2, "(32|33|34|34a_|34b_)", "c3p3", null),
+				false);
+
+		bean = getCuestionarioService().getModuloiii02(
+				App.getInstance().getEmpresa(), campos);
+
+		detalles = new ArrayList<P3Det>();
+		for (cont = 0; cont < 2; cont++) {
+			detalles.add(new P3Det(getResources().getStringArray(
+					R.array.MOD003_P334)[cont]));
+		}
+		if (bean == null) {
+			bean = new Moduloiii02();
+			bean.id = App.getInstance().getEmpresa().id;
+		}
+
+	//	llenarUI();
+		entityToUI(bean);
+		refrescarTabla();
+		inicio();
+	}
+
+	private void inicio() {
+	//	tcMP334.setBorderBlock(1, 1, true);
+
+		if (Util.between(caratula.p25, 3, 4)) {
+			Util.cleanAndLockView(getActivity(), rgC3P333, rgC3P333A, tcMP334,
+					chbC3P333B_1, chbC3P333B_2, chbC3P333B_3, chbC3P333B_4,
+					chbC3P333B_5, chbC3P333B_6, chbC3P333B_7, txtC3P333B_6ESP);
+			LimpiarTCP334();
+		} else {
+			FuncionP333();
+			FuncionP333A();
+			//2310
+//			if (Util.getInt(bean.c3p332) == 2 && rgC3P333.isTagSelected(2)  ) {
+//				Util.cleanAndLockView(getActivity(), rgC3P333A, tcMP334);
+//				FuncionCheck();
+//				LimpiarTCP334();
+//			} else if (Util.esVacio(bean.c3p332)) {
+//				LimpiarCHECKTc1();
+//			} else {
+//				Util.lockView(getActivity(), false, tcMP334);
+//			}
+			rgC3P333.requestFocus();
+		}
+
+	}
+
+//	private void llenarUI() {
+//		detalles = new ArrayList<Mod_III_Fragment_012.P3Det>();
+//		P3Det tmp = new P3Det(getResources()
+//				.getStringArray(R.array.MOD003_P334)[0]);
+//		tmp.p334a = bean.c3p334a_1;
+//		tmp.p334_2x = bean.c3p334a_2;
+//		tmp.p334_2x_o = bean.c3p334a_2esp;
+//		tmp.p334_3 = bean.c3p334a_3;
+//		tmp.p334_3_o = bean.c3p334a_3esp;
+//		tmp.p334_4 = bean.c3p334a_4;
+//		tmp.p334_4_o = bean.c3p334a_4esp;
+//		tmp.p334_5 = bean.c3p334a_5;
+//		tmp.p334_6 = bean.c3p334a_6;
+//		tmp.p334_6_o = bean.c3p334a_6esp;
+//		tmp.p334_7 = bean.c3p334a_7;
+//		tmp.p334_8 = bean.c3p334a_8;
+//		detalles.add(tmp);
+//
+//		tmp = new P3Det(getResources().getStringArray(R.array.MOD003_P334)[1]);
+//		tmp.p334a = bean.c3p334b_1;
+//		tmp.p334_2y = bean.c3p334b_2;
+//		tmp.p334_2y_o = bean.c3p334b_2esp;
+//		tmp.p334_3 = bean.c3p334b_3;
+//		tmp.p334_3_o = bean.c3p334b_3esp;
+//		tmp.p334_4 = bean.c3p334b_4;
+//		tmp.p334_4_o = bean.c3p334b_4esp;
+//		tmp.p334_5 = bean.c3p334b_5;
+//		tmp.p334_6 = bean.c3p334b_6;
+//		tmp.p334_6_o = bean.c3p334b_6esp;
+//		tmp.p334_7 = bean.c3p334b_7;
+//		tmp.p334_8 = bean.c3p334b_8;
+//		detalles.add(tmp);
+//	}
+
+//	private void llenarBean() {
+//		P3Det tmpP1;
+//
+//		tmpP1 = (P3Det) detalles.get(0);
+//		bean.c3p334a_1 = tmpP1.p334a;
+//		bean.c3p334a_2 = tmpP1.p334_2x;
+//		bean.c3p334a_2esp = tmpP1.p334_2x_o;
+//		bean.c3p334a_3 = tmpP1.p334_3;
+//		bean.c3p334a_3esp = tmpP1.p334_3_o;
+//		bean.c3p334a_4 = tmpP1.p334_4;
+//		bean.c3p334a_4esp = tmpP1.p334_4_o;
+//		bean.c3p334a_5 = tmpP1.p334_5;
+//		bean.c3p334a_6 = tmpP1.p334_6;
+//		bean.c3p334a_6esp = tmpP1.p334_6_o;
+//		bean.c3p334a_7 = tmpP1.p334_7;
+//		bean.c3p334a_8 = tmpP1.p334_8;
+//
+//		tmpP1 = (P3Det) detalles.get(1);
+//		bean.c3p334b_1 = tmpP1.p334a;
+//		bean.c3p334b_2 = tmpP1.p334_2y;
+//		bean.c3p334b_2esp = tmpP1.p334_2y_o;
+//		bean.c3p334b_3 = tmpP1.p334_3;
+//		bean.c3p334b_3esp = tmpP1.p334_3_o;
+//		bean.c3p334b_4 = tmpP1.p334_4;
+//		bean.c3p334b_4esp = tmpP1.p334_4_o;
+//		bean.c3p334b_5 = tmpP1.p334_5;
+//		bean.c3p334b_6 = tmpP1.p334_6;
+//		bean.c3p334b_6esp = tmpP1.p334_6_o;
+//		bean.c3p334b_7 = tmpP1.p334_7;
+//		bean.c3p334b_8 = tmpP1.p334_8;
+//	}
+
+	public void refrescarTabla() {
+		tcMP334.setData(detalles, "label", "p334a");
+		setBorder(false);
+	}
+
+	public void setBorder(boolean refresh) {
+		for (int row = 0; row < detalles.size(); row++) {
+			tcMP334.setBorderRow(row, obtenerEstado(detalles.get(row)));
+			if (Util.getInt(detalles.get(row).p334a) == 1
+					&& detalles.get(row).p334_3 != null) {
+				tcMP334.setBorderRow(row);
+			} else {
+				tcMP334.setBorderRow(row, false);
+			}
+		}
+
+	}
+
+	private boolean obtenerEstado(P3Det detalle) {
+		if (!Util.esDiferente(detalle.p334a, 1) && Util.esVacio(detalle.p334_3)) {
+			return false;
+		}
+		return true;
+	}
+
+	public void abrirDetalle(int index) {
+		FragmentManager fm = Mod_III_Fragment_012.this.getFragmentManager();
+		Mod_III_Fragment_012_01 aperturaDialog = Mod_III_Fragment_012_01
+				.newInstance(Mod_III_Fragment_012.this,
+						(P3Det) detalles.get(index), index);
+		aperturaDialog.show(fm, "aperturaDialog");
+	}
+
+
+	public void FuncionP333() {
+		Integer valor = Integer.parseInt(rgC3P333.getTagSelected("0").toString());
+		if (rgC3P333.isPressed()) {
+			if (valor == 1) {
+				Util.lockView(getActivity(), false, tcMP334);
+	
+			}
+		}
+
+		if (valor == 1) {
+			Util.cleanAndLockView(getActivity(), chbC3P333B_1, chbC3P333B_2,
+					chbC3P333B_3, chbC3P333B_4, chbC3P333B_5, chbC3P333B_6,
+					chbC3P333B_7,txtC3P333B_6ESP);
+		}else if (valor == 2) {
+			Util.lockView(getActivity(), false, chbC3P333B_1, chbC3P333B_2,
+					chbC3P333B_3, chbC3P333B_4, chbC3P333B_5, chbC3P333B_6,
+					chbC3P333B_7);
+			FuncionCheck();
+		}
+		
+		//2310
+//		if (Util.getInt(bean.c3p332) == 2 && valor == 2) {			
+//			Util.cleanAndLockView(getActivity(), rgC3P333A, tcMP334);
+//			FuncionCheck();
+//			LimpiarTCP334();
+//			chbC3P333B_1.requestFocus();
+//		} else {
+//			if (valor == 2 && Util.getInt(bean.c3p332) == 1) {
+//				Util.cleanAndLockView(getActivity(), rgC3P333A);
+//				Util.lockView(getActivity(), false, tcMP334);
+//				
+//				chbC3P333B_1.requestFocus();
+//			} else {
+//				Util.lockView(getActivity(), false, rgC3P333A);				
+//				rgC3P333A.requestFocus();
+//			}
+//		}
+	}
+
+	public void FuncionP333A() {
+		Integer valor = Integer.parseInt(rgC3P333A.getTagSelected("0")
+				.toString());
+		if (valor == 1 || valor == 2) {
+			Util.cleanAndLockView(getActivity(), chbC3P333B_1, chbC3P333B_2,
+					chbC3P333B_3, chbC3P333B_4, chbC3P333B_5, chbC3P333B_6,
+					chbC3P333B_7, txtC3P333B_6ESP);
+		}
+	}
+
+	public void FuncionCheck() {
+		if (chbC3P333B_1.isChecked() || chbC3P333B_2.isChecked()
+				|| chbC3P333B_3.isChecked() || chbC3P333B_4.isChecked()
+				|| chbC3P333B_5.isChecked() || chbC3P333B_6.isChecked()) {
+			Util.cleanAndLockView(getActivity(), chbC3P333B_7);
+		} else {
+			Util.lockView(getActivity(), false, chbC3P333B_7);
+		}
+
+		if (chbC3P333B_7.isChecked()) {
+			Util.cleanAndLockView(getActivity(), chbC3P333B_1, chbC3P333B_2,
+					chbC3P333B_3, chbC3P333B_4, chbC3P333B_5, chbC3P333B_6,
+			 txtC3P333B_6ESP);
+		} else {
+			Util.lockView(getActivity(), false, chbC3P333B_1, chbC3P333B_2,
+					chbC3P333B_3, chbC3P333B_4, chbC3P333B_5, chbC3P333B_6	);
+		}
+
+		if (chbC3P333B_6.isChecked()) {
+			Util.lockView(getActivity(), false, txtC3P333B_6ESP);
+			txtC3P333B_6ESP.requestFocus();
+		} else {
+			Util.cleanAndLockView(getActivity(), txtC3P333B_6ESP);
+		}
+	}
+
+	
+	private class P3_1ClickListener implements OnItemClickListener {
+		public P3_1ClickListener() {
+		}
+
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+				long arg3) {
+			P3Det c = (P3Det) detalles.get(arg2);
+			//2310
+//			if (Util.esVacio(bean.c3p332a) && arg2 == 0) {
+//				LimpiarCHECKTc1();
+//				return;
+//			}
+			if (Util.esVacio(rgC3P333A) && arg2 == 1) {
+				LimpiarCHECKTc2();
+				return;
+			}
+
+			if (!Util.esDiferente(c.p334a, 1)) {
+				abrirDetalle(arg2);
+			}
+		}
+	}
+
+	public static class P3Det extends Entity implements IDetailEntityComponent {
+		private static final long serialVersionUID = 1L;
+		public Moduloiii02 bean;
+		public String label = null;
+		public Integer p334a = null;
+		public Integer p334_2x = null;
+		public String p334_2x_o = null;
+		public Integer p334_2y = null;
+		public String p334_2y_o = null;
+		public Integer p334_3 = null;
+		public String p334_3_o = null;
+		public Integer p334_4 = null;
+		public String p334_4_o = null;
+		public Integer p334_5 = null;
+		public Integer p334_6 = null;
+		public String p334_6_o = null;
+		public Integer p334_7 = null;
+		public Integer p334_8 = null;
+
+		public P3Det(String label) {
+			super();
+			this.label = label;
+		}
+
+		@Override
+		public void cleanEntity() {
+			// p35 = null;
+			p334_2x = null;
+			p334_2x_o = null;
+			p334_2y = null;
+			p334_2y_o = null;
+			p334_3 = null;
+			p334_3_o = null;
+			p334_4 = null;
+			p334_4_o = null;
+			p334_5 = null;
+			p334_6 = null;
+			p334_6_o = null;
+			p334_7 = null;
+			p334_8 = null;
+		}
+
+		@Override
+		public boolean isTitle() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+	}
+
+	public void LimpiarCHECKTc1() {
+		for (int row = 0; row < detalles.size(); row++) {
+			if (row == 0) {
+				detalles.get(row).p334a = 0;
+				detalles.get(row).cleanEntity();
+				refrescarTabla();
+			}
+		}
+	}
+
+	public void LimpiarCHECKTc2() {
+		for (int row = 0; row < detalles.size(); row++) {
+			if (row == 1) {
+				detalles.get(row).p334a = 0;
+				detalles.get(row).cleanEntity();
+				refrescarTabla();
+			}
+		}
+	}
+
+	public void LimpiarTCP334() {
+		for (int row = 0; row < detalles.size(); row++) {
+			detalles.get(row).p334a = 0;
+			detalles.get(row).cleanEntity();
+		}
+		refrescarTabla();
+	}
+
+	public CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+
+}

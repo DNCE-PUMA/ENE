@@ -1,0 +1,17 @@
+<sqldatabase>
+	<sql_tablas>
+    	CREATE TABLE T_UNIDAD_MEDIDA (
+			CODIGO VARCHAR(3) PRIMARY KEY,
+			DESCRIPCION VARCHAR(500) NULL,
+			ESPEC INT NULL,
+			ESTADO INT NULL
+		)
+	</sql_tablas>
+	<sql_tablas>
+    	CREATE TABLE T_PAIS (
+			CODIGO VARCHAR(4) PRIMARY KEY,
+			PAIS VARCHAR(500) NULL,
+			FLAGMOSTRAR INT NULL
+		)
+	</sql_tablas>
+</sqldatabase>

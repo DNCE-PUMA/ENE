@@ -1,0 +1,147 @@
+package gob.inei.ene2019v2.model;
+
+import gob.inei.dnce.annotations.FieldEntity;
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.interfaces.IDetailEntityComponent;
+
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+public class Moduloix extends Entity implements IDetailEntityComponent {
+
+	private static final long serialVersionUID = 1L;
+
+	public BigDecimal c9p904_1 = null;
+	public BigDecimal c9p904_2 = null;
+	public BigDecimal c9p904_3 = null;
+	public BigDecimal c9p904_4 = null;
+	public BigDecimal c9p904_5 = null;
+	public BigDecimal c9p904_6 = null;
+	public BigDecimal c9p904_7 = null;
+	public Integer c9p905_1 = null;
+	public Integer c9p905_2 = null;
+	public Integer c9p905_3 = null;
+	public Integer c9p905_4 = null;
+	public Integer c9p905_5 = null;
+	public Integer c9p905_6 = null;
+	public Integer c9p905_7 = null;
+	public Integer c9p905_8 = null;
+	public Integer c9p905_9 = null;
+	public Integer c9p905_10 = null;
+	public Integer c9p905_11 = null;
+	public Integer c9p905_12 = null;
+	public Integer c9p905_13 = null;
+	public Integer c9p905_14 = null;
+	public Integer c9p905_15 = null;
+	public Integer c9p905_16 = null;
+	public Integer c9p905_17 = null;
+	public Integer c9p905_18 = null;
+	public Integer c9p905_19 = null;
+	public Integer c9p905_20 = null;
+	public Integer c9p905_21 = null;
+	public Integer c9p905_22 = null;
+	public Integer c9p905_23 = null;
+	public Integer c9p905_24 = null;
+	public Integer c9p905_25 = null;
+	public Integer c9p905_26 = null;
+	public Integer c9p905_27 = null;
+	
+	public Integer c9p906_t1 = null;
+	public Integer c9p906_t2 = null;
+	public Integer c9p906_t3 = null;
+	public Integer c9p906_t4 = null;
+	public Integer c9p906_t5 = null;
+	public Integer c9p907_t1 = null;
+	public Integer c9p907_t2 = null;
+	public Integer c9p907_t3 = null;
+	public Integer c9p907_t4 = null;
+	public Integer c9p907_t5 = null;
+
+	public String c9a_obs = null;
+	public Integer t_c9b = null;
+
+	public Moduloix() {
+	}
+
+	@Override
+	public void cleanEntity() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean isTitle() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getPks() {
+		return "ID";
+	}
+
+	@Override
+	public String toString() {
+		return super.toString();
+	}
+
+	public Map<Field, Object> getGroup(Field[] fields, Integer group, Integer to) {
+		Map<Field, Object> m = new LinkedHashMap<Field, Object>();
+		for (int i = 1; i <= to; i++) {
+			for (int y = 0; y < fields.length; y++) {
+				FieldEntity n = fields[y].getAnnotation(FieldEntity.class);
+				if (n != null) {
+					int f = n.markF();
+					int o = n.orderIndex();
+					if (f == group && o == i) {
+						try {
+							m.put(fields[y], fields[y].get(this));
+							break;
+						} catch (IllegalArgumentException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IllegalAccessException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+		return m;
+	}
+
+	public Map<Field, Object> getGroup1(Field[] fields, Integer group,
+			Integer to) {
+		return getGroup1(fields, group, to, true);
+	}
+
+	public Map<Field, Object> getGroup1(Field[] fields, Integer group,
+			Integer to, boolean flag) {
+		Map<Field, Object> m = new LinkedHashMap<Field, Object>();
+		for (int y = 0; y < fields.length; y++) {
+			FieldEntity n = fields[y].getAnnotation(FieldEntity.class);
+			if (n != null) {
+				for (int i = 1; i <= to; i++) {
+					int f = n.markF();
+					int o = n.orderIndex();
+					if (f == group && o == i) {
+						try {
+							m.put(fields[y], flag ? fields[y].get(this) : null);
+							break;
+						} catch (IllegalArgumentException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IllegalAccessException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+		return m;
+	}
+}

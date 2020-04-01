@@ -1,0 +1,261 @@
+package gob.inei.ene2019v2.fragment.ModVIII;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.MasterActivity;
+import gob.inei.dnce.components.RadioGroupOtherField;
+import gob.inei.dnce.components.RadioGroupOtherField.ORIENTATION;
+import gob.inei.dnce.components.TextField;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.model.Moduloviii;
+import gob.inei.ene2019v2.service.CuestionarioService;
+
+import java.sql.SQLException;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
+
+public class Mod_VIII_Fragment_010 extends FragmentForm {
+
+	@FieldAnnotation(orderIndex = 1)
+	public RadioGroupOtherField rgC8P839;
+	@FieldAnnotation(orderIndex = 2)
+	public RadioGroupOtherField rgC8P840;
+	@FieldAnnotation(orderIndex = 3)
+	public RadioGroupOtherField rgC8P841;
+	@FieldAnnotation(orderIndex = 4)
+	public TextField txtC8P841_ESP;
+	@FieldAnnotation(orderIndex = 5)
+	public RadioGroupOtherField rgC8P844;
+
+	
+	private CuestionarioService cuestionarioService;
+	private Moduloviii bean;
+	private LabelComponent lblTitulo, lblSubTitulo;
+	LinearLayout q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10;
+
+	public Mod_VIII_Fragment_010() {
+	}
+
+	public Mod_VIII_Fragment_010 parent(MasterActivity parent) {
+		this.parent = parent;
+		return this;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = createUI();
+		initObjectsWithoutXML(this, rootView);
+		enlazarCajas();
+		listening();
+
+		return rootView;
+	}
+
+	@Override
+	protected void buildFields() {
+		lblTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.c2c100m8).textSize(21).centrar().negrita();
+		lblSubTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.c2c100m8_DCivil).textSize(20).centrar()
+				.negrita();
+
+		rgC8P839 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c2c100m8p839_1, R.string.c2c100m8p839_2,
+				R.string.c2c100m8p839_3).size(WRAP_CONTENT, 450)
+				.orientation(ORIENTATION.HORIZONTAL).callback("FuncionRG839");
+		rgC8P840 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c2c100m8p840_1, R.string.c2c100m8p840_2,
+				R.string.c2c100m8p840_3, R.string.c2c100m8p840_4,
+				R.string.c2c100m8p840_5, R.string.c2c100m8p840_6,
+				R.string.c2c100m8p840_7).size(WRAP_CONTENT, 450).orientation(
+				ORIENTATION.VERTICAL);
+		rgC8P841 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c2c100m8p841_1, R.string.c2c100m8p841_2,
+				R.string.c2c100m8p841_3, R.string.c2c100m8p841_4,
+				R.string.c2c100m8p841_5).size(WRAP_CONTENT, 600).orientation(
+				ORIENTATION.VERTICAL);
+		txtC8P841_ESP = new TextField(this.getActivity(), false)
+				.size(altoComponente, 450).hint(R.string.especifique)
+				.soloTextoNumero();
+		rgC8P841.agregarEspecifique(3, txtC8P841_ESP);
+		
+		rgC8P844 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c2c100m8p839_1, R.string.c2c100m8p839_2,
+				R.string.c2c100m8p839_3).size(WRAP_CONTENT, 450)
+				.orientation(ORIENTATION.HORIZONTAL);
+
+		Filtros.setFiltro(txtC8P841_ESP, Filtros.TIPO.ALFAN_U, 300, null);
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+
+		q0 = createQuestionSection(lblTitulo, lblSubTitulo);
+		q1 = createQuestionSection(R.string.c2c100m8p839, rgC8P839);
+		q2 = createQuestionSection(R.string.c2c100m8p840, rgC8P840);
+		q3 = createQuestionSection(R.string.c2c100m8p841, rgC8P841);
+		q4 = createQuestionSection(R.string.c2c100m8p844, rgC8P844);
+
+		ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+
+		form.addView(q0);
+		form.addView(q1);
+		form.addView(q2);
+		form.addView(q3);
+		form.addView(q4);
+
+		return contenedor;
+	}
+
+	@Override
+	public boolean grabar() {
+
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals("")) {
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+				if (view != null) {
+					view.requestFocus();
+				}
+			}
+			return false;
+		}
+		uiToEntity(bean);
+		try {
+			if (!getCuestionarioService().saveOrUpdate(bean,
+					bean.getSecCap(getListFields(this)))) {
+				ToastMessage.msgBox(this.getActivity(),
+						"Los datos no se guardaron",
+						ToastMessage.MESSAGE_ERROR, ToastMessage.DURATION_LONG);
+			}
+		} catch (SQLException e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean validar() {
+		String pregunta_no_vacia = getString(R.string.pregunta_no_vacia);
+		error = false;
+
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+
+		if (Util.esVacio(rgC8P839)) {
+			mensaje = pregunta_no_vacia.replace("$", "La pregunta P839");
+			view = rgC8P839;
+			error = true;
+			return false;
+		}
+		if (rgC8P839.getTagSelected("").toString().equals("1")) {
+
+			if (Util.esVacio(rgC8P840)) {
+				mensaje = pregunta_no_vacia.replace("$", "La pregunta P840");
+				view = rgC8P840;
+				error = true;
+				return false;
+			}
+			if (Util.esVacio(rgC8P841)) {
+				mensaje = pregunta_no_vacia.replace("$", "La pregunta P841");
+				view = rgC8P841;
+				error = true;
+				return false;
+			}
+
+			if (rgC8P841.getTagSelected("").toString().equals("4")) {
+				if (Util.esVacio(txtC8P841_ESP)) {
+					mensaje = pregunta_no_vacia.replace("$", "La Preg.841 (Especifique)");
+					view = txtC8P841_ESP;
+					error = true;
+					return false;
+				}
+			}
+		}
+		if (Util.esVacio(rgC8P844)) {
+			mensaje = pregunta_no_vacia.replace("$", "La pregunta P844");
+			view = rgC8P844;
+			error = true;
+			return false;
+		}	
+		return true;
+	}
+
+	@Override
+	public void cargarDatos() {
+		bean = getCuestionarioService().getModuloviii(
+				App.getInstance().getEmpresa(),
+				new Moduloviii().getSecCap(getListFields(this)));
+		if (bean == null) {
+			bean = new Moduloviii();
+			bean.id = App.getInstance().getEmpresa().id;
+		}
+
+		entityToUI(bean);
+		inicio();
+	}
+
+	private void inicio() {
+		FuncionRG839();
+		rgC8P839.requestFocus();
+	}
+
+	public CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+
+	@Override
+	public Entity getEntity() {
+		return bean;
+	}
+
+	public void FuncionRG839() {
+		Integer valor = Integer.parseInt(rgC8P839.getTagSelected("0")
+				.toString());
+		if (valor != 1) {
+			Util.cleanAndLockView(getActivity(), rgC8P840, rgC8P841,
+					txtC8P841_ESP);
+			rgC8P844.requestFocus();
+		} else {
+			Util.lockView(getActivity(), false, rgC8P840, rgC8P841);
+			rgC8P840.requestFocus();
+		}
+	}
+
+}

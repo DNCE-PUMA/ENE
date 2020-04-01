@@ -1,0 +1,205 @@
+package gob.inei.ene2019v2.model;
+
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.util.Util;
+
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
+
+import android.util.Log;
+
+public class Nota extends Entity {
+
+	private static final long serialVersionUID = -2540355008636710114L;
+	public String alumno;
+	private BigDecimal nota;
+	public Caratula id;
+	public Moduloi c100;
+	public Moduloii c200;
+	public Moduloiii01 c300_1;
+	public Moduloiii02 c300_2;
+	public Moduloiv01 c400_1;
+	public Moduloiv02 c400_2;
+	public Moduloiv03 c400_3;
+	public Modulov01 c500_1;
+	public Modulov02 c500_2;
+	public Modulovi01 c600;
+	public Modulovii01 c700;
+	public Moduloviii c800;
+	public Moduloix c900;
+	public List<ModuloixDet01> c900_1;
+	public List<ModuloixDet02> c900_2;
+	public List<ModuloixDet03> c900_3;
+	public List<ModuloIXS> c900_4;
+	
+	public BigDecimal getNota() {
+		return nota;
+	}
+
+	public void setNota(String nota) {
+		this.nota = new BigDecimal(nota);
+	}
+
+	public void calificar(BigDecimal puntajeTotal, BigDecimal base,
+			Nota plantilla) {
+		nota = BigDecimal.ZERO;
+		try {
+			nota = nota.add(calificarBean(this.id, plantilla.id));
+			nota = nota.add(calificarBean(this.c100, plantilla.c100));
+			nota = nota.add(calificarBean(this.c200, plantilla.c200));			
+			nota = nota.add(calificarBean(this.c300_1, plantilla.c300_1));
+			nota = nota.add(calificarBean(this.c300_2, plantilla.c300_2));
+			nota = nota.add(calificarBean(this.c400_1, plantilla.c400_1));
+			nota = nota.add(calificarBean(this.c400_2, plantilla.c400_2));
+			nota = nota.add(calificarBean(this.c400_3, plantilla.c400_3));
+			nota = nota.add(calificarBean(this.c500_1, plantilla.c500_1));
+			nota = nota.add(calificarBean(this.c500_2, plantilla.c500_2));
+			nota = nota.add(calificarBean(this.c600, plantilla.c600));
+			nota = nota.add(calificarBean(this.c700, plantilla.c700));
+			nota = nota.add(calificarBean(this.c800, plantilla.c800));
+			nota = nota.add(calificarBean(this.c900, plantilla.c900));
+			nota = nota.add(calificarBeans(this.c900_1, plantilla.c900_1));
+			nota = nota.add(calificarBeans(this.c900_2, plantilla.c900_2));
+			nota = nota.add(calificarBeans(this.c900_3, plantilla.c900_3));
+			nota = nota.add(calificarBeans(this.c900_4, plantilla.c900_4));
+			
+			
+			Log.e(this.getClass().getSimpleName(), "Nota[" + nota.toString()
+					+ "] Base[" + base.toString() + "] PuntajeTotal["
+					+ puntajeTotal.toString() + "]");
+			nota = (nota.multiply(base)).divide(puntajeTotal, 4,
+					RoundingMode.HALF_EVEN);
+		} catch (IllegalArgumentException e) {
+			Log.e(this.getClass().getSimpleName(), e.getMessage(), e);
+		} catch (IllegalAccessException e) {
+			Log.e(this.getClass().getSimpleName(), e.getMessage(), e);
+		} catch (NullPointerException e) {
+			Log.e(this.getClass().getSimpleName(), "Objeto nulo", e);
+		} catch (Exception e) {
+			Log.e(this.getClass().getSimpleName(), e.getMessage(), e);
+		}
+	}
+
+	private BigDecimal calificarBeans(List bean1, List bean2)
+			throws IllegalArgumentException, IllegalAccessException {
+		BigDecimal calificacion = BigDecimal.ZERO;
+		if (bean1 == null || bean2 == null) {
+			return calificacion;
+		}
+		for (int i = 0; i < bean2.size(); i++) {
+			for (int j = 0; j < bean1.size(); j++) {
+				if (((Entity) bean2.get(i)).equalsToPractice(bean1.get(j))) {
+					calificacion = calificacion.add(calificarBean(
+							(Entity) bean1.get(j), (Entity) bean2.get(i)));
+					break;
+				}
+			}
+		}
+		return calificacion;
+	}
+
+	private BigDecimal calificarBean(Entity bean1, Entity bean2)
+			throws IllegalArgumentException, IllegalAccessException {
+		BigDecimal calificacion = BigDecimal.ZERO;
+		if (bean1 == null || bean2 == null) {
+			return calificacion;
+		}
+		Field[] campos = bean1.getPracticeFields();
+		int campo = 0;
+		for (int i = 0; i < campos.length; i++) {
+			if (campos[i].getType() == BigDecimal.class) {
+				campo++;
+				BigDecimal val1 = (BigDecimal) campos[i].get(bean1);
+				BigDecimal val2 = (BigDecimal) campos[i].get(bean2);
+				if (!Util.esDiferente(val1, val2)) {
+					calificacion = calificacion.add(BigDecimal.ONE);
+				} else {
+					Log.e(getClass().getSimpleName(), campos[i].getName()
+							+ " es diferente.");
+				}
+			} else if (campos[i].getType() == Integer.class) {
+				campo++;
+				Integer val1 = (Integer) campos[i].get(bean1);
+				Integer val2 = (Integer) campos[i].get(bean2);
+				if (!Util.esDiferente(val1, val2)) {
+					calificacion = calificacion.add(BigDecimal.ONE);
+				} else {
+					Log.e(getClass().getSimpleName(), campos[i].getName()
+							+ " es diferente.");
+				}
+			} else if (campos[i].getType() == String.class) {
+				campo++;
+				String val1 = (String) campos[i].get(bean1);
+				String val2 = (String) campos[i].get(bean2);
+				if (!Util.esDiferente(val1, val2)) {
+					calificacion = calificacion.add(BigDecimal.ONE);
+				} else {
+					Log.e(getClass().getSimpleName(), campos[i].getName()
+							+ " es diferente.");
+				}
+			}
+		}
+		Log.e(getClass().getSimpleName(), bean1.getClass().getSimpleName()
+				+ " - Total Campos: " + campos.length + " Campos Calificados: "
+				+ campo);
+		return calificacion;
+	}
+
+	public BigDecimal getPuntajeTotal() throws IllegalArgumentException,
+			IllegalAccessException {
+		BigDecimal puntaje = BigDecimal.ZERO;
+		puntaje = puntaje.add(getPuntajeBean(id));
+		Log.e("llegas x1", " " + puntaje);
+		puntaje = puntaje.add(getPuntajeBean(c100));
+		puntaje = puntaje.add(getPuntajeBean(c200));
+		puntaje = puntaje.add(getPuntajeBean(c300_1));
+		puntaje = puntaje.add(getPuntajeBean(c300_2));
+		puntaje = puntaje.add(getPuntajeBean(c400_1));
+		puntaje = puntaje.add(getPuntajeBean(c400_2));
+		puntaje = puntaje.add(getPuntajeBean(c400_3));
+		puntaje = puntaje.add(getPuntajeBean(c500_1));
+		puntaje = puntaje.add(getPuntajeBean(c500_2));
+		puntaje = puntaje.add(getPuntajeBean(c600));
+		puntaje = puntaje.add(getPuntajeBean(c700));
+		puntaje = puntaje.add(getPuntajeBean(c800));
+		puntaje = puntaje.add(getPuntajeBean(c900));
+		puntaje = puntaje.add(getPuntajeBean(c900_1));
+		puntaje = puntaje.add(getPuntajeBean(c900_2));
+		puntaje = puntaje.add(getPuntajeBean(c900_3));
+		puntaje = puntaje.add(getPuntajeBean(c900_4));
+		Log.e("llegas x2", "llegas x2: " + puntaje);
+
+		return puntaje;
+	}
+
+	private BigDecimal getPuntajeBean(List beans)
+			throws IllegalArgumentException, IllegalAccessException {
+		BigDecimal puntaje = BigDecimal.ZERO;
+		if (beans == null || beans.size() == 0) {
+			return puntaje;
+		}
+		for (Object bean : beans) {
+			puntaje = puntaje.add(getPuntajeBean((Entity) bean));
+		}
+		return puntaje;
+	}
+
+	private BigDecimal getPuntajeBean(Entity bean)
+			throws IllegalArgumentException, IllegalAccessException {
+		BigDecimal puntaje = BigDecimal.ZERO;
+		if (bean == null) {
+			return puntaje;
+		}
+		Field[] campos = bean.getPracticeFields();
+		for (int i = 0; i < campos.length; i++) {
+			// if (campos[i].get(bean) != null) {
+			puntaje = puntaje.add(BigDecimal.ONE);
+			// Log.e(getClass().getSimpleName(), bean.getClass().getSimpleName()
+			// + " - " + campos[i].getName());
+			// }
+		}
+		return puntaje;
+	}
+}

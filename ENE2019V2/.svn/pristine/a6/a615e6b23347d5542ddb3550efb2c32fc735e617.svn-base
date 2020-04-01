@@ -1,0 +1,1155 @@
+package gob.inei.ene2019v2.fragment;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.components.ButtonComponent;
+import gob.inei.dnce.components.CheckBoxField;
+import gob.inei.dnce.components.DialogComponent;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.GridComponent;
+import gob.inei.dnce.components.ImageComponent;
+import gob.inei.dnce.components.IntegerField;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.MasterActivity;
+import gob.inei.dnce.components.RadioGroupOtherField;
+import gob.inei.dnce.components.RadioGroupOtherField.ORIENTATION;
+import gob.inei.dnce.components.TextAreaField;
+import gob.inei.dnce.components.TextBoxField;
+import gob.inei.dnce.components.TextField;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.components.ui.SearchDialog;
+import gob.inei.dnce.interfaces.FieldComponent;
+import gob.inei.dnce.interfaces.IDetailEntityComponent;
+import gob.inei.dnce.interfaces.Respondible;
+import gob.inei.dnce.interfaces.Searchable1;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.activity.CuestionarioFragmentActivity;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.model.ActSecDivGrpClase;
+import gob.inei.ene2019v2.model.Caratula;
+import gob.inei.ene2019v2.service.CuestionarioService;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
+
+public class Caratula_Fragment_003 extends FragmentForm implements Searchable1,
+		Respondible {
+
+	@FieldAnnotation(orderIndex = 1)
+	public IntegerField txtRUC;
+	@FieldAnnotation(orderIndex = 2)
+	public TextField txtRSOCIAL;
+	@FieldAnnotation(orderIndex = 3)
+	public TextField txtNCOMERCIAL;
+	@FieldAnnotation(orderIndex = 4)
+	public CheckBoxField chbRES_VERIF;
+
+	@FieldAnnotation(orderIndex = 5)
+	public IntegerField txtFUNCIONAMIENTO;
+	@FieldAnnotation(orderIndex = 6)
+	public TextField txtPAGWEB;
+	@FieldAnnotation(orderIndex = 7)
+	public CheckBoxField chbPAGWEB_NO;
+	@FieldAnnotation(orderIndex = 8)
+	public TextField txtEMAIL;
+	@FieldAnnotation(orderIndex = 9)
+	public CheckBoxField chbEMAIL_NO;
+	@FieldAnnotation(orderIndex = 10)
+	public IntegerField txtTELFIJO;
+	@FieldAnnotation(orderIndex = 11)
+	public CheckBoxField chbTELFIJO_NO;
+	@FieldAnnotation(orderIndex = 12)
+	public IntegerField txtCEL;
+	@FieldAnnotation(orderIndex = 13)
+	public CheckBoxField chbCEL_NO;
+
+	@FieldAnnotation(orderIndex = 14)
+	public TextField txtCIIU_CD;
+	@FieldAnnotation(orderIndex = 15)
+	public TextAreaField txtCIIU_DESC;
+
+	@FieldAnnotation(orderIndex = 16)
+	public RadioGroupOtherField rgCIIU_CD_A;
+	@FieldAnnotation(orderIndex = 17)
+	public TextField txtCIIU_DESC_B;
+	@FieldAnnotation(orderIndex = 18)
+	public TextField txtCIIU_DESC_C;
+	
+	@FieldAnnotation(orderIndex = 19)
+	public RadioGroupOtherField rgCIIU_C;	
+	
+	@FieldAnnotation(orderIndex = 20)
+	public TextField txtCIIU_S1_CD;
+	@FieldAnnotation(orderIndex = 21)
+	public TextField txtCIIU_S1_DESC;
+	@FieldAnnotation(orderIndex = 22)
+	public TextField txtCIIU_S2_CD;
+	@FieldAnnotation(orderIndex = 23)
+	public TextField txtCIIU_S2_DESC;
+	@FieldAnnotation(orderIndex = 24)
+	public TextField txtCIIU_S3_CD;
+	@FieldAnnotation(orderIndex = 25)
+	public TextField txtCIIU_S3_DESC;
+	@FieldAnnotation(orderIndex = 26)
+	public TextField txtCIIU_S4_CD;
+	@FieldAnnotation(orderIndex = 27)
+	public TextField txtCIIU_S4_DESC;
+	@FieldAnnotation(orderIndex = 28)
+	public ButtonComponent imgC;
+
+	@FieldAnnotation(orderIndex = 29)
+	public ButtonComponent imgCP19A;
+
+	@FieldAnnotation(orderIndex = 30)
+	public ButtonComponent imgC1;
+	@FieldAnnotation(orderIndex = 31)
+	public ButtonComponent imgC2;
+	@FieldAnnotation(orderIndex = 32)
+	public ButtonComponent imgC3;
+	@FieldAnnotation(orderIndex = 33)
+	public ButtonComponent imgC4;
+	@FieldAnnotation(orderIndex = 34)
+	public ImageComponent imgE;
+	@FieldAnnotation(orderIndex = 35)
+	public ImageComponent imgEP9A;
+	@FieldAnnotation(orderIndex = 36)
+	public ImageComponent imgE2;
+	@FieldAnnotation(orderIndex = 37)
+	public ImageComponent imgE3;
+	@FieldAnnotation(orderIndex = 38)
+	public ImageComponent imgE4;
+	@FieldAnnotation(orderIndex = 39)
+	public ImageComponent imgE5;
+
+	private CuestionarioService cuestionarioService;
+	private Caratula bean;
+	private LabelComponent lblTitulo, lblVisita;
+	private GridComponent grd1, grd2, grd3;
+	private int buscado = 0;
+	private boolean flag;
+	LinearLayout q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10;
+	private DialogComponent dialog;
+	private boolean onLoad;
+
+	public Caratula_Fragment_003() {
+	}
+
+	public Caratula_Fragment_003 parent(MasterActivity parent) {
+		this.parent = parent;
+		return this;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = createUI();
+		initObjectsWithoutXML(this, rootView);
+		enlazarCajas();
+		listening();
+
+		return rootView;
+	}
+
+	@Override
+	protected void buildFields() {
+		lblTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.c1caratulatit1).textSize(21).centrar().negrita();
+		lblVisita = new LabelComponent(this.getActivity())
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.ResultadoVisita).textSize(18).centrar()
+				.negrita().colorFondo(R.color.amarillo);
+
+		txtRUC = new IntegerField(this.getActivity(), false)
+				.size(altoComponente, 150).centrar().negrita().readOnly();
+		txtRSOCIAL = new TextField(this.getActivity(), false).size(
+				altoComponente, 450);
+		txtNCOMERCIAL = new TextField(this.getActivity(), false).size(
+				altoComponente, 460);
+
+		chbRES_VERIF = new CheckBoxField(this.getActivity(), "1:0").size(
+				WRAP_CONTENT, 50).callback("onFuncionVAUSENTE");
+
+		txtFUNCIONAMIENTO = new IntegerField(this.getActivity(), false).size(
+				altoComponente, 170).centrar();
+		chbPAGWEB_NO = new CheckBoxField(this.getActivity(), -1, "1:0")
+				.centrar().callback("onChbChangeValue");
+		txtPAGWEB = new TextField(this.getActivity(), false).size(
+				altoComponente, 440);
+		chbEMAIL_NO = new CheckBoxField(this.getActivity(), -1, "1:0")
+				.centrar().callback("onChbChangeValue");
+		txtEMAIL = new TextField(this.getActivity(), false).size(
+				altoComponente, 440);
+		chbTELFIJO_NO = new CheckBoxField(this.getActivity(),
+				R.string.c1c100telfijo_no, "1:0").size(WRAP_CONTENT, 150)
+				.callback("onChbChangeValue");
+		txtTELFIJO = new IntegerField(this.getActivity(), false)
+				.size(altoComponente, 250).alinearIzquierda()
+				.hint(R.string.c1c100telnumero).callback("PasaralSiguienteFijo");
+		chbCEL_NO = new CheckBoxField(this.getActivity(),
+				R.string.c1c100cel_no, "1:0").size(WRAP_CONTENT, 150).callback(
+				"onChbChangeValue");
+		txtCEL = new IntegerField(this.getActivity(), false)
+				.size(altoComponente, 250).alinearIzquierda()
+				.hint(R.string.c1c100telnumero).callback("PasaralSiguienteMovil");
+
+		txtCIIU_CD = new TextField(this.getActivity(), false).size(130, 100)
+				.readOnly().centrar().negrita();
+		txtCIIU_DESC = new TextAreaField(getActivity()).size(130, 450)
+				.centrar().negrita();
+
+		rgCIIU_CD_A = new RadioGroupOtherField(this.getActivity(), R.string.si,
+				R.string.no).size(WRAP_CONTENT, WRAP_CONTENT)
+				.orientation(ORIENTATION.HORIZONTAL).callback("FuncionP19A");
+		txtCIIU_DESC_B = new TextField(this.getActivity(), false)
+				.size(altoComponente, 100).readOnly().centrar();
+		txtCIIU_DESC_C = new TextField(this.getActivity(), false).size(
+				altoComponente, 450);
+
+		
+		rgCIIU_C = new RadioGroupOtherField(this.getActivity(), R.string.si,
+				R.string.no).size(WRAP_CONTENT, WRAP_CONTENT)
+				.orientation(ORIENTATION.HORIZONTAL).callback("FuncionP19C");
+		
+		txtCIIU_S1_CD = new TextField(this.getActivity(), false)
+				.size(altoComponente, 100).readOnly().centrar();
+		txtCIIU_S1_DESC = new TextField(this.getActivity(), false).size(
+				altoComponente, 450);
+		txtCIIU_S2_CD = new TextField(this.getActivity(), false)
+				.size(altoComponente, 100).readOnly().centrar();
+		txtCIIU_S2_DESC = new TextField(this.getActivity(), false).size(
+				altoComponente, 450);
+		txtCIIU_S3_CD = new TextField(this.getActivity(), false)
+				.size(altoComponente, 100).readOnly().centrar();
+		txtCIIU_S3_DESC = new TextField(this.getActivity(), false).size(
+				altoComponente, 450);
+		txtCIIU_S4_CD = new TextField(this.getActivity(), false)
+				.size(altoComponente, 100).readOnly().centrar();
+		txtCIIU_S4_DESC = new TextField(this.getActivity(), false).size(
+				altoComponente, 450);
+
+		LabelComponent lbl1 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100ruc).size(altoComponente, 250);
+		LabelComponent lbl2 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100rsocial).size(altoComponente + 10, 250);
+		LabelComponent lbl3 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100ncomercial).size(altoComponente + 5, 250);
+
+		grd1 = new GridComponent(this.getActivity(), 2)
+				.colorFondo(FragmentForm.COLOR_LINEA_SECCION_PREGUNTA);
+		grd1.addComponent(lbl1);
+		grd1.addComponent(lbl2);
+		grd1.addComponent(txtRUC);
+		grd1.addComponent(txtRSOCIAL);
+		grd1.addComponent(lbl3);
+		grd1.addComponent(txtNCOMERCIAL);
+
+		LabelComponent lbl4 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100funcionamiento).size(altoComponente, 200);
+		LabelComponent lbl5 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100pagweb).size(altoComponente + 10, 240);
+		LabelComponent lbl6 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100email).size(altoComponente + 5, 200);
+		LabelComponent lbl61 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100email_no).size(altoComponente, 80)
+				.centrar();
+
+		grd2 = new GridComponent(this.getActivity(), 3)
+				.colorFondo(FragmentForm.COLOR_LINEA_SECCION_PREGUNTA);
+		grd2.addComponent(lbl4);
+		grd2.addComponent(lbl5);
+		grd2.addComponent(lbl61);
+		grd2.addComponent(txtFUNCIONAMIENTO);
+		grd2.addComponent(txtPAGWEB);
+		grd2.addComponent(chbPAGWEB_NO);
+		grd2.addComponent(lbl6);
+		grd2.addComponent(txtEMAIL);
+		grd2.addComponent(chbEMAIL_NO);
+
+		LabelComponent lbl7 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100telfijo).size(altoComponente, 200);
+		LabelComponent lbl8 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100cel).size(altoComponente, 200);
+
+		grd3 = new GridComponent(this.getActivity(), 3)
+				.colorFondo(FragmentForm.COLOR_LINEA_SECCION_PREGUNTA);
+		grd3.addComponent(lbl7);
+		// grd3.addComponent(txtTELFIJO_LDN);
+		grd3.addComponent(txtTELFIJO);
+		grd3.addComponent(chbTELFIJO_NO);
+		grd3.addComponent(lbl8);
+		grd3.addComponent(txtCEL);
+		grd3.addComponent(chbCEL_NO);
+
+		imgC = new ButtonComponent(this.getActivity())
+				.size(70, altoComponente + 10).drawableLeft(App.SEARCH)
+				.padding(15, 0, 0, 0);
+		imgC.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				search(1);
+			}
+		});
+
+		imgCP19A = new ButtonComponent(this.getActivity())
+				.size(70, altoComponente + 10).drawableLeft(App.SEARCH)
+				.padding(15, 0, 0, 0);
+		imgCP19A.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				search(6);
+			}
+		});
+
+		imgC1 = new ButtonComponent(this.getActivity())
+				.size(70, altoComponente + 10).drawableLeft(App.SEARCH)
+				.padding(15, 0, 0, 0);
+		imgC1.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				search(2);
+			}
+		});
+
+		imgC2 = new ButtonComponent(this.getActivity())
+				.size(70, altoComponente + 10).drawableLeft(App.SEARCH)
+				.padding(15, 0, 0, 0);
+		imgC2.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				search(3);
+			}
+		});
+
+		imgC3 = new ButtonComponent(this.getActivity())
+				.size(70, altoComponente + 10).drawableLeft(App.SEARCH)
+				.padding(15, 0, 0, 0);
+		imgC3.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				search(4);
+			}
+		});
+
+		imgC4 = new ButtonComponent(this.getActivity())
+				.size(70, altoComponente + 10).drawableLeft(App.SEARCH)
+				.padding(15, 0, 0, 0);
+		imgC4.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				search(5);
+			}
+		});
+
+		imgE = new ImageComponent(this.getActivity(), R.drawable.eliminar,
+				R.drawable.eliminar).size(64, 64);
+		imgE.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				txtCIIU_CD.setText("");
+				txtCIIU_DESC.setText("");
+			}
+		});
+
+		imgEP9A = new ImageComponent(this.getActivity(), R.drawable.eliminar,
+				R.drawable.eliminar).size(64, 64);
+		imgEP9A.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				txtCIIU_DESC_B.setText("");
+				txtCIIU_DESC_C.setText("");
+			}
+		});
+
+		imgE2 = new ImageComponent(this.getActivity(), R.drawable.eliminar,
+				R.drawable.eliminar).size(64, 64);
+		imgE2.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				txtCIIU_S1_CD.setText("");
+				txtCIIU_S1_DESC.setText("");
+			}
+		});
+
+		imgE3 = new ImageComponent(this.getActivity(), R.drawable.eliminar,
+				R.drawable.eliminar).size(64, 64);
+		imgE3.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				txtCIIU_S2_CD.setText("");
+				txtCIIU_S2_DESC.setText("");
+			}
+		});
+
+		imgE4 = new ImageComponent(this.getActivity(), R.drawable.eliminar,
+				R.drawable.eliminar).size(64, 64);
+		imgE4.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				txtCIIU_S3_CD.setText("");
+				txtCIIU_S3_DESC.setText("");
+			}
+		});
+
+		imgE5 = new ImageComponent(this.getActivity(), R.drawable.eliminar,
+				R.drawable.eliminar).size(64, 64);
+		imgE5.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				txtCIIU_S4_CD.setText("");
+				txtCIIU_S4_DESC.setText("");
+			}
+		});
+
+		Filtros.setFiltro(txtRUC, Filtros.TIPO.NUMBER, 11, -1, null,
+				10000000000l, 20999999999l, -1, 11);
+		Filtros.setFiltro(txtRSOCIAL, Filtros.TIPO.ALFAN_U, 300, new char[] {
+				'+', '-', '.', '&' });
+		Filtros.setFiltro(txtNCOMERCIAL, Filtros.TIPO.ALFAN_U, 300, new char[] {
+				'+', '-', '.', '&'} );
+		Filtros.setFiltro(txtFUNCIONAMIENTO, Filtros.TIPO.NUMBER, 4, -1, null,
+				1800, 2019, -1, 4);
+		Filtros.setFiltro(txtPAGWEB, Filtros.TIPO.WEB, 100,  new char[] {
+				'/'});
+		Filtros.setFiltro(txtEMAIL, Filtros.TIPO.EMAIL, 100, null);
+		Filtros.setFiltro(txtTELFIJO, Filtros.TIPO.PATRON, 7, -1, null, -1, -1,
+				-1, -1, -1, -1, -1, "[^(1|8|9)]([0-9]{5,6})");
+		Filtros.setFiltro(txtCEL, Filtros.TIPO.PATRON, 9, -1, null, -1, -1,
+				8 - 1, -1, -1, -1, -1, "[^(0-8)]([0-9]{8})");
+		Filtros.setFiltro(txtCIIU_CD, Filtros.TIPO.ALFAN_U, 4, null);
+		Filtros.setFiltro(txtCIIU_DESC, Filtros.TIPO.ALFAN_U, 300, null);
+		Filtros.setFiltro(txtCIIU_S1_CD, Filtros.TIPO.ALFAN_U, 4, null);
+		Filtros.setFiltro(txtCIIU_S1_DESC, Filtros.TIPO.ALFAN_U, 300, null);
+		Filtros.setFiltro(txtCIIU_S2_CD, Filtros.TIPO.ALFAN_U, 4, null);
+		Filtros.setFiltro(txtCIIU_S2_DESC, Filtros.TIPO.ALFAN_U, 300, null);
+		Filtros.setFiltro(txtCIIU_S3_CD, Filtros.TIPO.ALFAN_U, 4, null);
+		Filtros.setFiltro(txtCIIU_S3_DESC, Filtros.TIPO.ALFAN_U, 300, null);
+		Filtros.setFiltro(txtCIIU_S4_CD, Filtros.TIPO.ALFAN_U, 4, null);
+		Filtros.setFiltro(txtCIIU_S4_DESC, Filtros.TIPO.ALFAN_U, 300, null);
+		Filtros.setFiltro(txtCIIU_DESC_C, Filtros.TIPO.ALFAN_U, 300, null);
+		Filtros.setFiltro(txtCIIU_DESC_B, Filtros.TIPO.ALFAN_U, 4, null);
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+
+		q0 = createQuestionSection(lblTitulo);
+		q1 = createQuestionSection(grd1.component());
+		q3 = createQuestionSection(lblVisita, chbRES_VERIF);
+		q2 = createQuestionSection(grd2.component());
+		q4 = createQuestionSection(grd3.component());
+		q5 = createQuestionSection(
+				R.string.c1c100ciiu_desc,
+				createLy(LinearLayout.HORIZONTAL, Gravity.CENTER, txtCIIU_CD,
+						txtCIIU_DESC, imgC, imgE));
+
+		q6 = createQuestionSection(R.string.c1c100ciiu_P19A, rgCIIU_CD_A);
+		q7 = createQuestionSection(
+				R.string.c1c100ciiu_P19B,
+				createLy(LinearLayout.HORIZONTAL, Gravity.CENTER, 0, 0, 0, 0,
+						WRAP_CONTENT, txtCIIU_DESC_B, txtCIIU_DESC_C, imgCP19A,
+						imgEP9A));
+
+		q8 = createQuestionSection(R.string.c1c100ciiu_P19C, rgCIIU_C);
+		
+		q9 = createQuestionSection(
+				R.string.c1c100ciiu_s1_cd,
+				createLy(LinearLayout.HORIZONTAL, Gravity.CENTER, 0, 0, 0, 0,
+						WRAP_CONTENT, txtCIIU_S1_CD, txtCIIU_S1_DESC, imgC1,
+						imgE2),
+				createLy(LinearLayout.HORIZONTAL, Gravity.CENTER, 0, 0, 0, 0,
+						WRAP_CONTENT, txtCIIU_S2_CD, txtCIIU_S2_DESC, imgC2,
+						imgE3),
+				createLy(LinearLayout.HORIZONTAL, Gravity.CENTER, 0, 0, 0, 0,
+						WRAP_CONTENT, txtCIIU_S3_CD, txtCIIU_S3_DESC, imgC3,
+						imgE4),
+				createLy(LinearLayout.HORIZONTAL, Gravity.CENTER, 0, 0, 0, 0,
+						WRAP_CONTENT, txtCIIU_S4_CD, txtCIIU_S4_DESC, imgC4,
+						imgE5));
+
+		ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+
+		form.addView(q0);
+		form.addView(q1);
+		form.addView(q3);
+		form.addView(q2);
+		form.addView(q4);
+		form.addView(q5);
+		form.addView(q6);
+		form.addView(q7);
+		form.addView(q8);
+		form.addView(q9);
+		
+		return contenedor;
+	}
+
+	@Override
+	public boolean grabar() {
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals("")) {
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+				if (view != null) {
+					view.requestFocus();
+				}
+			}
+			return false;
+		}
+
+		uiToEntity(bean);
+
+		if (chbRES_VERIF.isChecked()) {
+			bean.p21 = bean.p22 = bean.p23_1 = bean.p23a_1 = bean.p23_2 = bean.p23a_2 = null;
+			bean.p23_3 = bean.p23a_3 = bean.p23_4 = bean.p23a_4 = bean.p23_5 = null;
+			bean.p23a_5 = bean.p23_6 = bean.p23a_6 = bean.p23a_total = bean.p24_tipo = bean.p25 = null;
+			bean.p24_ccdd = bean.p24_dd = bean.p24_ccpp = bean.p24_pp = null;
+			bean.p24_ccdi = bean.p24_di = bean.p23_6esp = bean.p21_esp /*
+																		 * =
+																		 * bean.
+																		 * p24_tipo_esp
+																		 */= null;
+			bean.p26_nomb = bean.p26_apat = bean.p26_amat = bean.p30_esp = bean.p31_nomb = bean.p31_apat = bean.p31_amat = bean.p32_email = bean.p33_cel = null;
+			bean.p27 = bean.p28 = bean.p29 = bean.p30 = bean.p32_email_no = bean.p33_cel_no = bean.p34_telfijo_no = bean.p34_telfijo_no = null;
+
+			try {
+				if (!getCuestionarioService().saveOrUpdate(
+						bean,
+						bean.getSecCap(getListFields(this, new String[] {
+								"P21", "P21_ESP", "P22", "P23_1", "P23A_1",
+								"P23_2", "P23A_2", "P23_3", "P23A_3", "P23_4",
+								"P23A_4", "P23_5", "P23A_5", "P23_6",
+								"P23_6ESP", "P23A_6", "P23A_TOTAL", "P24_CCDD",
+								"P24_DD", "P24_CCPP", "P24_PP", "P24_CCDI",
+								"P24_DI", "P24_TIPO", "P25", "P26_NOMB",
+								"P26_APAT", "P26_AMAT", "P27", "P28", "P29",
+								"P30", "P30_ESP", "P31_NOMB", "P31_APAT",
+								"P31_AMAT", "P32_EMAIL", "P32_EMAIL_NO",
+								"P33_CEL", "P33_CEL_NO", "P34_TELFIJO",
+								"P34_TELFIJO_NO" })))) {
+					ToastMessage.msgBox(this.getActivity(),
+							"Los datos no se guardaron",
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+			} catch (SQLException e) {
+				ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+						ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+				return false;
+			}
+		} else {
+			Integer codigo = Integer.parseInt(bean.ciiu_cd.toString()
+					.substring(0, 2));
+			if ((codigo >= 10 && codigo <= 33)
+					|| (codigo == 41 || codigo == 42 || codigo == 43)) {
+				EliminarM9Det3();
+			} else {
+				EliminarM9Det2();
+			}
+
+			try {
+				if (!getCuestionarioService().saveOrUpdate(bean,
+						bean.getSecCap(getListFields(this)))) {
+					ToastMessage.msgBox(this.getActivity(),
+							"Los datos no se guardaron",
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+			} catch (SQLException e) {
+				ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+						ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private boolean validar() {
+		String pregunta_no_vacia = getString(R.string.pregunta_no_vacia);
+		String especifique_no_vacio = getString(R.string.pregunta_especifique);
+		error = false;
+
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+
+		if (Util.esVacio(txtRSOCIAL)) {
+			mensaje = pregunta_no_vacia.replace("$", "Preg 12;");
+			view = txtRSOCIAL;
+			return !(error = true);
+		}
+		if (Util.esVacio(txtNCOMERCIAL)) {
+			mensaje = pregunta_no_vacia.replace("$", "Preg 13;");
+			view = txtNCOMERCIAL;
+			return !(error = true);
+		}
+		if (!chbRES_VERIF.isChecked()) {
+			if (Util.esVacio(txtFUNCIONAMIENTO)) {
+				mensaje = pregunta_no_vacia.replace("$", "Preg 14;");
+				view = txtFUNCIONAMIENTO;
+				return !(error = true);
+			}
+			if (Util.esVacio(txtPAGWEB) && !chbPAGWEB_NO.isChecked()) {
+				mensaje = pregunta_no_vacia.replace("$", "Preg 15;");
+				view = txtPAGWEB;
+				return !(error = true);
+			}
+			if (!chbPAGWEB_NO.isChecked()
+					&& txtPAGWEB.getCurrentTextColor() == Filtros.ERRORCOLOR) {
+				mensaje = "Error: Debe ingresar información correcta";
+				view = txtPAGWEB;
+				return !(error = true);
+			}
+			if (Util.esVacio(txtEMAIL) && !chbEMAIL_NO.isChecked()) {
+				mensaje = pregunta_no_vacia.replace("$", "Preg 16;");
+				view = txtEMAIL;
+				return !(error = true);
+			}
+
+			if (!chbEMAIL_NO.isChecked()
+					&& txtEMAIL.getCurrentTextColor() == Filtros.ERRORCOLOR) {
+				mensaje = "Error: Debe incluir el @";
+				view = txtEMAIL;
+				return !(error = true);
+			}
+			if (!chbTELFIJO_NO.isChecked()) {
+
+				if (Util.esVacio(txtTELFIJO)) {
+					mensaje = pregunta_no_vacia.replace("$", "Preg 17;");
+					view = txtTELFIJO;
+					return !(error = true);
+				}
+
+				// Modificado 191216 por un Verificar
+				String text = txtTELFIJO.getText().toString().trim();
+				if (text.length() < 6) {
+					mensaje = "Ingrese numero de telefono correcto";
+					view = txtTELFIJO;
+					return !(error = true);
+				}
+
+				if (txtTELFIJO.getCurrentTextColor() == Filtros.ERRORCOLOR) {
+					mensaje = "Error; Tel\u00e9fono fijo inicia con 2, 3, 4, 5, 6 o 7";
+					view = txtTELFIJO;
+					return !(error = true);
+				}
+				Integer teleFijo = Util.getInt(txtTELFIJO.getText().length());
+
+				if ((((Util.getInt(bean.ccdd) == 15 || Util.getInt(bean.ccdd) == 07) && teleFijo < 7))
+						|| (((Util.getInt(bean.ccdd) != 15 && Util
+								.getInt(bean.ccdd) != 07) && teleFijo == 7))) {
+					mensaje = "Error: La cantidad de dígitos del teléfono fijo no se relaciona con la región";
+					view = txtTELFIJO;
+					return !(error = true);
+
+				}
+
+			}
+			if (Util.esVacio(txtCEL) && !chbCEL_NO.isChecked()) {
+				mensaje = pregunta_no_vacia.replace("$", "Preg 18;");
+				view = txtCEL;
+				return !(error = true);
+			}
+
+			if (!Util.esVacio(txtCEL)) {
+				int size = txtCEL.getText().length();
+				String caracter = txtCEL.getText().toString().substring(0, 1);
+				if (size == 9 && !caracter.equals("*") && !caracter.equals("#")) {
+					int valor = Integer.parseInt(txtCEL.getText().toString()
+							.substring(0, 1));
+					if (valor != 9) {
+						mensaje = "Error; Tel\u00e9fono celular debe iniciar con 9";
+						view = txtCEL;
+						return !(error = true);
+					}
+				}
+
+				if (txtCEL.getText().toString().length() <= 8) {
+					mensaje = "Tel\u00e9fono celular debe contener mínimo de 9 dígitos.";
+					view = txtCEL;
+					return !(error = true);
+				}
+
+			}
+
+			if (Util.esVacio(txtCIIU_CD)) {
+				mensaje = "CIIU no puede estar vacío";
+				view = txtCIIU_CD;
+				return !(error = true);
+			}
+
+			if (Util.esVacio(txtCIIU_DESC)) {
+				mensaje = pregunta_no_vacia.replace("$", "Preg 19;");
+				// view = imgC;
+				view = txtCIIU_DESC;
+				return !(error = true);
+			}
+
+			if (Util.esVacio(rgCIIU_CD_A)) {
+				mensaje = pregunta_no_vacia.replace("$", "La pregunta P19A");
+				view = rgCIIU_CD_A;
+				error = true;
+				return false;
+			}
+
+			if (rgCIIU_CD_A.isTagSelected(2)) {
+				if (Util.esVacio(txtCIIU_DESC_B)) {
+					mensaje = pregunta_no_vacia
+							.replace("$", "La pregunta P19B");
+					view = txtCIIU_DESC_B;
+					error = true;
+					return false;
+				}
+				
+				if (Util.esVacio(txtCIIU_DESC_C)) {
+					mensaje = pregunta_no_vacia
+							.replace("$", "La pregunta P19B");
+					view = txtCIIU_DESC_C;
+					error = true;
+					return false;
+				}
+
+				if (txtCIIU_CD.getText().toString().equals(txtCIIU_DESC_B.getText().toString())) {
+					mensaje = "Error: El código CIIU del año actual no puede ser el mismo del año anterior";
+					view = txtCIIU_DESC_B;
+					error = true;
+					return false;
+				}
+			}
+
+			
+			if (rgCIIU_C.isTagSelected(1)) {
+				String cd0 = Util.esVacio(txtCIIU_CD) ? "0" : Util
+						.getText(txtCIIU_CD.getText());
+				String cd1 = Util.esVacio(txtCIIU_S1_CD) ? "1" : Util
+						.getText(txtCIIU_S1_CD.getText());
+				String cd2 = Util.esVacio(txtCIIU_S2_CD) ? "2" : Util
+						.getText(txtCIIU_S2_CD.getText());
+				String cd3 = Util.esVacio(txtCIIU_S3_CD) ? "3" : Util
+						.getText(txtCIIU_S3_CD.getText());
+				String cd4 = Util.esVacio(txtCIIU_S4_CD) ? "4" : Util
+						.getText(txtCIIU_S4_CD.getText());
+				if ((cd1.equals("1") && (!cd2.equals("2") || !cd3.equals("3") || !cd4
+						.equals("4")))
+						|| (cd2.equals("2") && (!cd3.equals("3") || !cd4
+								.equals("4")))
+						|| (cd3.equals("3") && !cd4.equals("4"))) {
+					LimpiezaTxt();
+					mensaje = "Error; No ha ingresado Actividades secundarias en forma ordenada. ";
+					view = imgC1;
+					return !(error = true);
+				}
+				if (cd1.equals(cd2) || cd1.equals(cd3) || cd1.equals(cd4)
+						|| cd2.equals(cd3) || cd2.equals(cd4) || cd3.equals(cd4)) {
+					mensaje = "Los códigos CIIU de las actividades secundarias no deben repetirse";
+					view = imgC1;
+					return !(error = true);
+				}
+				if (cd0.equals(cd1) || cd0.equals(cd2) || cd0.equals(cd3)
+						|| cd0.equals(cd4)) {
+					mensaje = "El código CIIU principal no puede ser igual a los códigos CIIU de una actividad secundaria";
+					view = imgC1;
+					return !(error = true);
+				}
+				
+				if (!Util.esVacio(txtCIIU_S1_CD)) {
+					if (Util.esVacio(txtCIIU_S1_DESC)) {
+						mensaje = pregunta_no_vacia.replace("$", "La pregunta P20");
+						view = txtCIIU_S1_DESC;
+						error = true;
+						return false;
+					}
+				}
+
+				if (!Util.esVacio(txtCIIU_S2_CD)) {
+					if (Util.esVacio(txtCIIU_S2_DESC)) {
+						mensaje = pregunta_no_vacia.replace("$", "La pregunta P20");
+						view = txtCIIU_S2_DESC;
+						error = true;
+						return false;
+					}
+				}
+
+				if (!Util.esVacio(txtCIIU_S3_CD)) {
+					if (Util.esVacio(txtCIIU_S3_DESC)) {
+						mensaje = pregunta_no_vacia.replace("$", "La pregunta P20");
+						view = txtCIIU_S3_DESC;
+						error = true;
+						return false;
+					}
+				}
+
+				if (!Util.esVacio(txtCIIU_S4_CD)) {
+					if (Util.esVacio(txtCIIU_S4_DESC)) {
+						mensaje = pregunta_no_vacia.replace("$", "La pregunta P20");
+						view = txtCIIU_S4_DESC;
+						error = true;
+						return false;
+					}
+				}
+				
+				// verificacion
+				if (flag && cd1.equals("1") && cd2.equals("2") && cd3.equals("3")
+						&& cd4.equals("4")) {
+					DialogComponent dg = new DialogComponent(
+							getActivity(),
+							this,
+							DialogComponent.TIPO_DIALOGO.YES_NO,
+							"Verificar",
+							"No ha registrado ninguna Actividad Secundaria; Esta seguro que desea continuar?");
+					dg.showDialog();
+					return false;
+				}
+			}
+		
+
+		}
+		return true;
+	}
+
+	@Override
+	public void cargarDatos() {
+		flag = true;
+		bean = App.getInstance().getEmpresa();
+		entityToUI(bean);
+		inicio();
+	}
+
+	private void inicio() {
+		txtRUC.setText(Util.getText(App.getInstance().getMarco().ruc));
+		txtRSOCIAL.setText(Util.getText(App.getInstance().getMarco().raz_social_local));
+		onLoad = true;
+		onFuncionVAUSENTE();
+		FuncionP19A();
+		FuncionP19C();
+		onLoad = false;
+		txtRSOCIAL.requestFocus();
+	}
+
+	public CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+
+	public void onFuncionVAUSENTE() {
+		if (chbRES_VERIF.isPressed()) {
+			if (onLoad || chbRES_VERIF.isChecked()) {
+				dialog = new DialogComponent(
+						getActivity(),
+						new EventWarning(),
+						DialogComponent.TIPO_DIALOGO.YES_NO,
+						getResources().getString(R.string.app_name),
+						"\t\t\t\t\t\t\t CONFIRMAR RESULTADO DE VISITA \n (Ausente - Rechazo - No Ubicada - Actividad no Investigada - Otro): \n \t\t\t\t\t\t\t  Está seguro que desea continuar?");
+				dialog.showDialog();
+			}
+		}
+
+		if (chbRES_VERIF.isChecked()) {
+			Util.cleanAndLockView(getActivity(), txtFUNCIONAMIENTO, txtPAGWEB,
+					chbPAGWEB_NO, txtEMAIL, chbEMAIL_NO, txtCEL, chbCEL_NO,
+					txtTELFIJO, chbTELFIJO_NO, txtCIIU_CD, txtCIIU_DESC,
+					txtCIIU_S1_CD, txtCIIU_S1_DESC, txtCIIU_S2_CD,
+					txtCIIU_S2_DESC, txtCIIU_S3_CD, txtCIIU_S3_DESC,
+					txtCIIU_S4_CD, txtCIIU_S4_DESC, txtCIIU_DESC_B,
+					txtCIIU_DESC_C, rgCIIU_CD_A, imgC, imgCP19A, imgC1, imgC2,
+					imgC3, imgC4);
+		} else {
+			Util.lockView(getActivity(), false, txtFUNCIONAMIENTO, txtPAGWEB,
+					chbPAGWEB_NO, txtEMAIL, chbEMAIL_NO, txtCEL, chbCEL_NO,
+					txtTELFIJO, chbTELFIJO_NO, txtCIIU_CD, txtCIIU_DESC,
+					txtCIIU_S1_CD, txtCIIU_S1_DESC, txtCIIU_S2_CD,
+					txtCIIU_S2_DESC, txtCIIU_S3_CD, txtCIIU_S3_DESC,
+					txtCIIU_S4_CD, txtCIIU_S4_DESC, txtCIIU_DESC_B,
+					txtCIIU_DESC_C, rgCIIU_CD_A, imgC, imgCP19A, imgC1, imgC2,
+					imgC3, imgC4);
+			lockP17(chbTELFIJO_NO, null, txtTELFIJO);
+			lockP17(chbCEL_NO, null, txtCEL);
+			lockP17(chbPAGWEB_NO, null, txtPAGWEB);
+			lockP17(chbEMAIL_NO, null, txtEMAIL);
+			txtCIIU_CD.readOnly();
+			txtCIIU_S1_CD.readOnly();
+			txtCIIU_S2_CD.readOnly();
+			txtCIIU_S3_CD.readOnly();
+			txtCIIU_S4_CD.readOnly();
+		}
+
+	}
+
+	public void onChbChangeValue(FieldComponent component) {
+		CheckBoxField chb = (CheckBoxField) component;
+		if (chb.isPressed()) {
+			if (chb.equals(chbTELFIJO_NO))
+				lockP17(chb, txtCEL, txtTELFIJO);
+			else if (chb.equals(chbCEL_NO))
+				lockP17(chb, txtCIIU_DESC, txtCEL);
+			else if (chb.equals(chbEMAIL_NO))
+				lockP17(chb, txtTELFIJO, txtEMAIL);
+			else if (chb.equals(chbPAGWEB_NO))
+				lockP17(chb, txtEMAIL, txtPAGWEB);
+		}
+	}
+
+	private void lockP17(CheckBoxField chb, TextBoxField txt, View... views) {
+		if (chb.isChecked()) {
+			cleanAndLockView(views);
+			if (txt != null) {
+				txt.requestFocus();
+			}
+		} else {
+			lockView(false, views);
+		}
+	}
+
+	public void LimpiezaTxt() {
+		txtCIIU_S1_CD.setText("");
+		txtCIIU_S1_DESC.setText("");
+		txtCIIU_S2_CD.setText("");
+		txtCIIU_S2_DESC.setText("");
+		txtCIIU_S3_CD.setText("");
+		txtCIIU_S3_DESC.setText("");
+		txtCIIU_S4_CD.setText("");
+		txtCIIU_S4_DESC.setText("");
+//		txtCIIU_DESC_B.setText("");
+//		txtCIIU_DESC_C.setText("");
+
+	}
+
+	private void search(int buscar) {
+		buscado = buscar;
+		FragmentManager fm = this.getFragmentManager();
+		SearchDialog aperturaDialog = SearchDialog.newInstance(this, this,"Buscar");
+		// aperturaDialog.setTextButtons("Confirmar Exportacion", "Cancelar");
+		aperturaDialog.setEstilo(App.ESTILO, App.ESTILO_BOTON);
+		aperturaDialog.setSize(600, 800, 90);
+		// aperturaDialog.setColorCondition("valor", Util.getHMObject(0,
+		// R.color.azulaceroclaro, 1, R.color.achurado), true, 16,
+		// R.color.black);
+		aperturaDialog.setAncho(LinearLayout.LayoutParams.MATCH_PARENT);
+		aperturaDialog.show(fm, "aperturaDialog");
+	}
+
+	private List<ActSecDivGrpClase> getActividades() {
+		return App.ACTIVIDADES == null ? (App.ACTIVIDADES = getCuestionarioService()
+				.getActividades()) : App.ACTIVIDADES;
+	}
+
+	@Override
+	public <T extends IDetailEntityComponent> void postResultSearch(
+			List<String> resps, T... result) {
+		ActSecDivGrpClase s = (ActSecDivGrpClase) result[0];
+		switch (buscado) {
+		case 1:
+			txtCIIU_CD.setText(s.clase);
+			txtCIIU_CD.readOnly();
+			// txtCIIU_DESC.setText(s.descripcion);
+			txtCIIU_DESC.requestFocus();
+
+			int codigo = Integer.parseInt(s.clase.toString());
+			if (Util.getInt(s.clase) == 6621
+					|| Util.between(codigo, 8411, 8413)
+					|| Util.between(codigo, 8421, 8423)
+					|| Util.getInt(s.clase) == 8430
+					|| Util.getInt(s.clase) == 9492
+					|| Util.getInt(s.clase) == 9700
+					|| Util.getInt(s.clase) == 9810
+					|| Util.getInt(s.clase) == 9820
+					|| Util.getInt(s.clase) == 9900) {
+				ToastMessage.msgBox(this.getActivity(),
+						"ACTIVIDAD NO INVESTIGADA: POR VERIFICAR",
+						ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+			}
+
+			break;
+		case 2:
+			txtCIIU_S1_CD.setText(s.clase);
+			txtCIIU_S1_CD.readOnly();
+		//	txtCIIU_S1_DESC.setText(s.descripcion);
+			txtCIIU_S1_DESC.requestFocus();
+			break;
+		case 3:
+			txtCIIU_S2_CD.setText(s.clase);
+			txtCIIU_S2_CD.readOnly();
+		//	txtCIIU_S2_DESC.setText(s.descripcion);
+			txtCIIU_S2_DESC.requestFocus();
+			break;
+		case 4:
+			txtCIIU_S3_CD.setText(s.clase);
+			txtCIIU_S3_CD.readOnly();
+		//	txtCIIU_S3_DESC.setText(s.descripcion);
+			txtCIIU_S3_DESC.requestFocus();
+			break;
+		case 5:
+			txtCIIU_S4_CD.setText(s.clase);
+			txtCIIU_S4_CD.readOnly();
+		//	txtCIIU_S4_DESC.setText(s.descripcion);
+			txtCIIU_S4_DESC.requestFocus();
+			break;
+		// P19B
+		case 6:
+			txtCIIU_DESC_B.setText(s.clase);
+			txtCIIU_DESC_B.readOnly();
+		//	txtCIIU_DESC_C.setText(s.descripcion);
+			txtCIIU_DESC_C.requestFocus();
+			break;
+		default:
+			break;
+		}
+	}
+
+	public void FuncionP19A() {
+		Integer valor = Integer.parseInt(rgCIIU_CD_A.getTagSelected("0")
+				.toString());
+		if (valor == 2) {
+			Util.lockView(getActivity(), false, txtCIIU_DESC_B, txtCIIU_DESC_C,
+					imgCP19A, imgEP9A);
+			txtCIIU_DESC_B.readOnly();
+			//txtCIIU_DESC_C.readOnly();
+			imgCP19A.requestFocus();
+		} else {
+			Util.cleanAndLockView(getActivity(), txtCIIU_DESC_B,
+					txtCIIU_DESC_C, imgCP19A, imgEP9A);
+			rgCIIU_C.requestFocus();
+		}
+	}
+	
+	public void FuncionP19C() {
+		Integer valor = Integer.parseInt(rgCIIU_C.getTagSelected("0")
+				.toString());
+		if (valor == 1) {
+			Util.lockView(getActivity(), false, txtCIIU_S1_CD, txtCIIU_S1_DESC,
+					txtCIIU_S2_CD, txtCIIU_S2_DESC, txtCIIU_S3_CD,
+					txtCIIU_S3_DESC, txtCIIU_S4_CD, txtCIIU_S4_DESC, imgC1,
+					imgE2, imgC2, imgE3, imgC3, imgE4, imgC4, imgE5);
+			txtCIIU_S1_CD.readOnly();
+			txtCIIU_S2_CD.readOnly();
+			txtCIIU_S3_CD.readOnly();
+			txtCIIU_S4_CD.readOnly();
+			imgCP19A.requestFocus();
+		} else {
+			Util.cleanAndLockView(getActivity(), txtCIIU_S1_CD,
+					txtCIIU_S1_DESC, txtCIIU_S2_CD, txtCIIU_S2_DESC,
+					txtCIIU_S3_CD, txtCIIU_S3_DESC, txtCIIU_S4_CD,
+					txtCIIU_S4_DESC, imgC1, imgE2, imgC2, imgE3, imgC3, imgE4,
+					imgC4, imgE5);
+		}
+	}
+
+	@Override
+	public <T extends IDetailEntityComponent> List<T> getListData(NIVEL nivel,
+			T selecc) {
+		if (nivel == Searchable1.NIVEL.NIVEL1) {
+			return (List<T>) getActividades();
+		}
+		return null;
+	}
+
+	@Override
+	public List<Object[]> getFieldsListData(NIVEL nivel) {
+		if (nivel == NIVEL.NIVEL1)
+			return Util.getListList(new Object[] { "CLASE", "DESCRIPCION" },
+					new Object[] { R.string.tr_codigo, R.string.tr_nombre },
+					new Object[] { 0.6f, 2f });
+		return null;
+	}
+
+	@Override
+	public <T extends IDetailEntityComponent> boolean getHasEsp(T selecc,
+			NIVEL nivel, KEY key) {
+		return false;
+	}
+
+	@Override
+	public NIVEL getNiveles() {
+		return NIVEL.NIVEL1;
+	}
+
+	@Override
+	public void onCancel() {
+
+	}
+	
+	@Override
+	public void onAccept() {
+		if (flag) {
+			flag = false;
+			parent.nextFragment(parent.getCurPage() + 1);
+		}
+	}
+
+	public void EliminarM9Det3() {
+		try {
+			getCuestionarioService().borrarCapitulos(
+					App.getInstance().getEmpresa().id, "MODULOIX_DET03");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void PasaralSiguienteFijo(){
+		if(txtTELFIJO.getText().length()==7){
+			txtCEL.requestFocus();
+		}
+	}
+	public void PasaralSiguienteMovil(){
+		if(txtCEL.getText().length()==9){
+			txtCIIU_DESC.requestFocus();
+		}
+	}
+	public void EliminarM9Det2() {
+		try {
+			getCuestionarioService().borrarCapitulos(
+					App.getInstance().getEmpresa().id, "MODULOIX_DET02");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public class EventWarning implements Respondible {
+		@Override
+		public void onCancel() {
+			chbRES_VERIF.setCheckedTag(0);
+		}
+
+		@Override
+		public void onAccept() {
+			Util.cleanAndLockView(getActivity(), txtCEL, chbCEL_NO, txtTELFIJO,
+					chbTELFIJO_NO, txtCIIU_CD, txtCIIU_DESC, txtCIIU_S1_CD,
+					txtCIIU_S1_DESC, txtCIIU_S2_CD, txtCIIU_S2_DESC,
+					txtCIIU_S3_CD, txtCIIU_S3_DESC, txtCIIU_S4_CD,
+					txtCIIU_S4_DESC, txtCIIU_DESC_B, txtCIIU_DESC_C, imgC,
+					imgCP19A, imgC1, imgC2, imgC3, imgC4);
+			parent.nextFragment(CuestionarioFragmentActivity.VISITAS);
+		}
+	}
+
+}

@@ -1,0 +1,188 @@
+package gob.inei.ene2019v2.model;
+
+import gob.inei.dnce.annotations.FieldCalificacion;
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.interfaces.IDetailEntityComponent;
+
+import java.io.Serializable;
+
+public class Moduloi extends Entity implements IDetailEntityComponent , Serializable {
+	
+	@FieldCalificacion(ignoreField = true)
+	private static final long serialVersionUID = 1L;
+
+	public Integer c1p101a_1 = null;
+	public String c1p101a_8esp = null;
+	public Integer c1p101b = null;
+	public Integer c1p101b_1 = null;
+	public Integer c1p101b_2 = null;
+	public Integer c1p101b_3 = null;
+	public Integer c1p101b_4 = null;
+	public Integer c1p101b_5 = null;
+	public Integer c1p101b_6 = null;
+	public Integer c1p101b_7 = null;
+	public Integer c1p101b_8 = null;
+	public Integer c1p101b_9 = null;
+	public Integer c1p101b_10 = null;
+	public Integer c1p101b_11 = null;
+	public String c1p101b_11esp = null;
+	public Integer c1p102 = null;
+	public Integer c1p103 = null;
+	public String c1p103_esp = null;
+	public Integer c1p104 = null;
+	public Integer c1p105 = null;
+	
+	public Integer c1p106_1 = null;
+	public Integer c1p106_2 = null;
+	public Integer c1p106_3 = null;
+	public Integer c1p106_4 = null;
+	public Integer c1p106_5 = null;
+	public Integer c1p106_6 = null;
+	public Integer c1p106_7 = null;
+	public Integer c1p106_8 = null;
+	public Integer c1p106_9 = null;
+	public String c1p106_esp = null;
+	
+
+	public Integer c1p111_1 = null;
+	public Integer c1p111_2 = null;
+	public Integer c1p111_3 = null;
+	public Integer c1p111a = null;
+//	public Integer c1p111a_1 = null;
+//	public Integer c1p111a_2 = null;
+//	public Integer c1p111a_3 = null; 
+	public String c1p112_1cd = null;
+	public String c1p112_1 = null;
+	public String c1p112_2cd  = null;
+	public String c1p112_2 = null;
+	public String c1p112_3cd  = null;
+	public String c1p112_3  = null;
+	public Integer c1p113 = null;
+	public Integer c1p114 = null;
+	public Integer c1p115_1 = null;
+	public Integer c1p115_2 = null;
+	public Integer c1p115_3 = null;
+	public Integer c1p115_4 = null;
+	public Integer c1p115_5 = null;
+	public Integer c1p115_6 = null;
+	public Integer c1p115_7 = null;	
+	public Integer c1p115_8 = null;
+	public String c1p115_8esp = null;
+	public Integer c1p115_9 = null;	
+	
+	public Integer c1p115a = null; 
+	public Integer c1p115b_1 = null;
+	public Integer c1p115b_2 = null;
+	public Integer c1p115b_3 = null;
+	public Integer c1p115b_4 = null;
+	public Integer c1p115b_5 = null;
+	public Integer c1p115b_6 = null;
+	public Integer c1p115b_7 = null;
+	public Integer c1p115b_8 = null;
+	public String c1p115b_8esp = null;
+
+	public Integer c1p116 = null;
+	public Integer c1p117 = null;
+	public String c1p117_esp = null;
+	public Integer c1p122_1 = null;
+	public Integer c1p122_2 = null;
+	public Integer c1p122_3 = null;
+	public Integer c1p122_4 = null;
+	public Integer c1p122_5 = null;
+	public Integer c1p122_6 = null;
+	public Integer c1p122_7 = null;
+	public Integer c1p122_8 = null;
+	public Integer c1p122_9 = null;
+	public String c1p122_9esp = null;
+	public Integer c1p123 = null;
+	public Integer c1p125 = null;
+	public Integer c1p126_1 = null;
+	public Integer c1p126_2 = null;
+	public Integer c1p126_3 = null;
+	public Integer c1p126_4 = null;
+	public Integer c1p126_5 = null;
+	public String c1p126_5esp = null;
+	public Integer c1p126_6 = null;
+	
+	public Integer c1p127_1 = null;
+	public Integer c1p127_2 = null;
+	public Integer c1p127_3 = null;
+	public Integer c1p127_4 = null;
+	public Integer c1p127_5 = null;
+	public Integer c1p127_6 = null;
+	public Integer c1p127_7 = null;
+	public Integer c1p127_8 = null;
+	public Integer c1p127_9 = null;
+	public Integer c1p127_11 = null;
+	public String c1p127_11esp = null;
+	public Integer c1p127_12 = null;
+	@FieldCalificacion(ignoreField = true)
+	public String c1_obs = null;
+	@FieldCalificacion(ignoreField = true)
+	public Integer t_c1  = null;
+
+	
+	public Moduloi() {
+	}
+
+	@Override
+	public void cleanEntity() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean isTitle() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getPks() {
+		return "ID";
+	}
+
+	@Override
+	public String toString() {
+		return super.toString();
+	}
+	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Moduloi other = (Moduloi) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+	
+	
+	
+	@Override
+	public boolean equalsToPractice(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Moduloi)) {
+			return false;
+		}
+		if (this.id == null) {
+			return false;
+		}
+
+		Moduloi other = (Moduloi) obj;
+		if (!this.id.equals(other.id) ) {
+			return false;
+		}
+		return true;
+	}
+}

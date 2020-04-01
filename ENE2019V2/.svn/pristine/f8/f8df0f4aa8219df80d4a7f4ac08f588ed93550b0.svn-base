@@ -1,0 +1,865 @@
+package gob.inei.ene2019v2.fragment;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.components.ButtonComponent;
+import gob.inei.dnce.components.DialogComponent;
+import gob.inei.dnce.components.DialogComponent.TIPO_DIALOGO;
+import gob.inei.dnce.components.Entity.SeccionCapitulo;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.GridComponent;
+import gob.inei.dnce.components.GridComponent2;
+import gob.inei.dnce.components.IntegerField;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.MasterActivity;
+import gob.inei.dnce.components.RadioGroupOtherField;
+import gob.inei.dnce.components.TableComponent;
+import gob.inei.dnce.components.TextField;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.interfaces.FieldComponent;
+import gob.inei.dnce.interfaces.Respondible;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.dnce.util.Util.COMPLETAR;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.fragment.dialog.Visita_Fragment_001_01;
+import gob.inei.ene2019v2.model.Caratula;
+import gob.inei.ene2019v2.model.Visita;
+import gob.inei.ene2019v2.service.CuestionarioService;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+
+// 
+public class Visita_Fragment_001 extends FragmentForm implements Respondible {
+
+	@FieldAnnotation(orderIndex = 1)
+	public IntegerField txtENC_DNI;
+	@FieldAnnotation(orderIndex = 2)
+	public TextField txtENC_NOM;
+	@FieldAnnotation(orderIndex = 3)
+	public IntegerField txtSUP_DNI;
+	@FieldAnnotation(orderIndex = 4)
+	public TextField txtSUP_NOM;
+	@FieldAnnotation(orderIndex = 5)
+	public RadioGroupOtherField rgESTADO_ENVIO;
+
+	private TableComponent tcCapVis;
+	private LabelComponent lblTitulo, lblTitulo1, lblTitulo2, lblTitulo3,
+			lblFecR, lblEspr, lblCodR;
+	public List<Visita> lstData;
+	private GridComponent grid, grid_E, grid1;
+	private GridComponent2 grid_Res;
+	public static Visita_Fragment_001 _this;
+	public static final int OTRO = 8;
+
+	public static enum ACCION {
+		ADD, EDIT, FINISH, DELETE, RESUMEN, AVISO
+	}
+
+	private ACCION action;
+	private ButtonComponent btnIniciar, btnTerminar;
+	private DialogComponent dc;
+	private CuestionarioService cuestionarioService;
+	SeccionCapitulo[] seccionVivienda;
+	private String[] results;
+	private Caratula caratula;
+	private String[] campos;
+	
+	public Visita_Fragment_001() {
+	}
+
+	public Visita_Fragment_001 parent(MasterActivity parent) {
+		this.parent = parent;
+		return this;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		_this = this;
+		rootView = createUI();
+		setHasOptionsMenu(true);
+		registerForContextMenu(tcCapVis.getListView());
+		initObjectsWithoutXML(this, rootView);
+		enlazarCajas();
+		listening();
+	//	executeEvents();
+	//	campos =  new String[] {"ENC_DNI", "ENC_NOM"} ;
+
+		
+		return rootView;
+	}
+
+	@Override
+	protected void buildFields() {
+
+		lblTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(MATCH_PARENT, MATCH_PARENT).text(R.string.visita_titulo)
+				.textSize(21).centrar().negrita();
+		lblTitulo1 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(MATCH_PARENT, MATCH_PARENT).text(R.string.visit_titulo2)
+				.textSize(20).centrar().negrita();
+		lblTitulo2 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(MATCH_PARENT, MATCH_PARENT)
+				.text(R.string.transferencia_titulo).textSize(20).centrar()
+				.negrita();
+		lblTitulo3 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(MATCH_PARENT, MATCH_PARENT).text(R.string.visit_titulo3)
+				.textSize(20).centrar().negrita();
+
+		tcCapVis = new TableComponent(getActivity(), this, App.ESTILO)
+				.size(400, 1320).headerHeight(60).dataColumHeight(65)
+				.headerTextSize(App.HTST);
+		tcCapVis.addHeader(R.string.visit_num_1, 0.7f);
+		tcCapVis.addHeader(R.string.visit_fec, 1.5f);
+		tcCapVis.addHeader(R.string.visit_hinicio, 1f);
+		tcCapVis.addHeader(R.string.visit_hfin, 1f);
+		tcCapVis.addHeader(R.string.visit_proxf, 1.4f);
+		tcCapVis.addHeader(R.string.visit_proxhora_1, 1.2f);
+		tcCapVis.addHeader(R.string.visit_result, 1.1f);
+		tcCapVis.addHeader(R.string.visit_resfecha, 1.4f);
+		tcCapVis.addHeader(R.string.visit_reshora1, 1f);
+		tcCapVis.addHeader(R.string.visit_reshora2, 1f);
+		tcCapVis.addHeader(R.string.visit_result, 1.1f);
+		tcCapVis.setCellColor(-1, 6, true);
+
+		LabelComponent lblt1 = new LabelComponent(getActivity(), App.ESTILO)
+				.size(altoComponente, 170).centrar();
+		LabelComponent lblt2 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100enc_dni).size(altoComponente, 150)
+				.centrar();
+		LabelComponent lblt3 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100enc_nom).size(altoComponente, 300)
+				.centrar();
+
+		LabelComponent lbl1 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100enc).size(altoComponente + 10, 170);
+		LabelComponent lbl2 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100sup).size(altoComponente + 10, 170);
+
+		txtENC_DNI = new IntegerField(this.getActivity(), false).size(
+				altoComponente, 150).centrar();
+		txtENC_NOM = new TextField(this.getActivity(), false).size(
+				altoComponente, 420);
+		txtSUP_DNI = new IntegerField(this.getActivity(), false).size(
+				altoComponente, 150).centrar();
+		txtSUP_NOM = new TextField(this.getActivity(), false).size(
+				altoComponente, 420);
+
+		grid1 = new GridComponent(getActivity(), Gravity.CENTER, 3)
+				.colorFondo(FragmentForm.COLOR_LINEA_SECCION_PREGUNTA);
+		grid1.addComponent(lblt1);
+		grid1.addComponent(lblt2);
+		grid1.addComponent(lblt3);
+		grid1.addComponent(lbl1);
+		grid1.addComponent(txtENC_DNI);
+		grid1.addComponent(txtENC_NOM);
+		grid1.addComponent(lbl2);
+		grid1.addComponent(txtSUP_DNI);
+		grid1.addComponent(txtSUP_NOM);
+
+		rgESTADO_ENVIO = new RadioGroupOtherField(this.getActivity(),
+				R.string.c0p_estado_envio_1, R.string.c0p_estado_envio_2)
+				.size(altoComponente, 320).centrar(Gravity.CENTER)
+				.callback("on_RadioChanged_RG");
+
+		btnIniciar = new ButtonComponent(getActivity(), App.ESTILO_BOTON).text(
+				R.string.c0p_visita_iniciar).size(200, 60);
+		btnIniciar.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				tryAddVisit(ACCION.ADD);
+			}
+		});
+
+		btnTerminar = new ButtonComponent(getActivity(), App.ESTILO_BOTON)
+				.text(R.string.c0p_visita_terminar).size(200, 60);
+		btnTerminar.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				tryFinalizeVisit(ACCION.FINISH);
+			}
+		});
+
+		LabelComponent dummy = new LabelComponent(getActivity()).text("")
+				.size(MATCH_PARENT, 30).textSize(24)
+				.colorFondo(R.color.WhiteSmoke);
+		grid = new GridComponent(getActivity(), Gravity.CENTER, 3, 0)
+				.colorFondo(FragmentForm.COLOR_LINEA_SECCION_PREGUNTA);
+		grid.addComponent(btnIniciar);
+		grid.addComponent(dummy);
+		grid.addComponent(btnTerminar);
+
+		LabelComponent lblFRes = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c0p_visita_fecha_res).size(altoComponente, 200);
+		lblFecR = new LabelComponent(getActivity()).size(altoComponente, 160)
+				.negrita().centrar();
+		LabelComponent lblCRes = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c0p_visita_res).size(altoComponente, 200);
+		lblCodR = new LabelComponent(getActivity()).size(altoComponente, 160)
+				.negrita().centrar();
+		LabelComponent lblEspc = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c0p_visita_fecha_esp).size(altoComponente, 350)
+				.centrar();
+		lblEspr = new LabelComponent(getActivity()).size(altoComponente, 350);
+
+		grid_Res = new GridComponent2(getActivity(), 3)
+				.colorFondo(R.color.blanco);
+		grid_Res.addComponent(lblFRes);
+		grid_Res.addComponent(lblFecR);
+		grid_Res.addComponent(lblEspc);
+		grid_Res.addComponent(lblCRes);
+		grid_Res.addComponent(lblCodR);
+		grid_Res.addComponent(lblEspr);
+
+		LabelComponent lblEE = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.lb_C_EstadoEnvio).size(altoComponente, 210);
+		grid_E = new GridComponent(getActivity(), 2).colorFondo(R.color.blanco);
+		grid_E.addComponent(lblEE);
+		grid_E.addComponent(rgESTADO_ENVIO);
+
+		Filtros.setFiltro(txtENC_DNI, Filtros.TIPO.NUMBER, 8, -1, null, 1,
+				99999999, -1, 8, 1, 8, 8);
+		Filtros.setFiltro(txtENC_NOM, Filtros.TIPO.ALFA_U, 300, null);
+		Filtros.setFiltro(txtSUP_DNI, Filtros.TIPO.NUMBER, 8, -1, null, 1,
+				99999999, -1, 8, 1, 8, 8);
+		Filtros.setFiltro(txtSUP_NOM, Filtros.TIPO.ALFA_U, 300, null);
+	}
+
+	   
+    private void executeEvents() {
+		txtENC_DNI.addTextChangedListener(new BlockWatcher());
+	}
+    
+	
+	public void on_RadioChanged_RG(FieldComponent component) {
+		RadioGroupOtherField rg = (RadioGroupOtherField) component;
+		if (rg.isPressed()) {
+			if (rg.equals(rgESTADO_ENVIO)) {
+				int _resp = rg.getTagSelectedInteger(-1);
+				if (_resp == 2 && caratula.resfin == null) {
+					ToastMessage
+							.msgBox(this.getActivity(),
+									"Para Cerrar el Estado de Envio debe tener un Resultado Final.",
+									ToastMessage.MESSAGE_ERROR,
+									ToastMessage.DURATION_LONG);
+					rgESTADO_ENVIO.setTagSelected(1);
+					return;
+				}
+				caratula.estado_envio = _resp;
+				saveUA(new String[] { "ESTADO_ENVIO" });
+			}
+		}
+	}
+
+	private void saveUA(String[] extras) {
+		saveUA(extras, false);
+	}
+
+	private void saveUA(String[] extras, boolean rResult) {
+		try {
+			getCuestionarioService().saveOrUpdate(caratula,
+					caratula.getSecCap(Util.getListList(extras)));
+			if (rResult)
+				reloadResult();
+		} catch (SQLException e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+		}
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		if (v.getId() == tcCapVis.getListView().getId()) {
+			menu.setHeaderTitle("Opciones de las visitas");
+			menu.add(0, 1, 1, "Editar Información");
+			// menu.add(0, 2, 1, "Iniciar Visita Supervisor");
+			// menu.add(0, 3, 1, "Terminar Visita Supervisor");
+			menu.add(1, 1, 1, "Eliminar Visita");
+			menu.add(2, 1, 1, "Ingresar en Modo Solo Lectura");
+
+			AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+			Visita seleccion = (Visita) info.targetView.getTag();
+
+			try {
+				if (Util.getInt(seleccion.cv_resvis, 0) == 0) {
+					menu.findItem(1).setVisible(false);
+					// menu.findItem(3).setVisible(false);
+					menu.removeGroup(2);
+				}
+				if (caratula.resfin != null
+						&& Util.esDiferente(caratula.resfin, 1, 2)) {
+					menu.removeGroup(2);
+				}
+				// if (seleccion.smes != null) {
+				// menu.findItem(2).setVisible(false);
+				// }
+				// if (seleccion.sfinhora != null) {
+				// menu.findItem(3).setVisible(false);
+				// } else if (seleccion.sfinhora == null && seleccion.smes !=
+				// null) {
+				// menu.findItem(3).setVisible(true);
+				// } else {
+				// menu.findItem(3).setVisible(false);
+				// if (seleccion.cv_resvis != null) {
+				// menu.findItem(2).setVisible(false);
+				// }
+				// }
+				if (isEstadoCerrado() || info.position != lstData.size() - 1) {
+					menu.removeGroup(0);
+					menu.removeGroup(1);
+					menu.removeGroup(2);
+				}
+
+			} catch (ClassCastException e) {
+			}
+		}
+
+		super.onCreateContextMenu(menu, v, menuInfo);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		if (!getUserVisibleHint())
+			return false;
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
+				.getMenuInfo();
+		Visita seleccion = (Visita) info.targetView.getTag();
+
+		if (item.getGroupId() == 0) {
+			switch (item.getItemId()) {
+			case 1:
+				editVisit(seleccion, ACCION.EDIT);
+				return true;
+			case 2:
+				editVisitSup(seleccion, ACCION.ADD);
+				break;
+			case 3:
+				editVisitSup(seleccion, ACCION.FINISH);
+				break;
+			}
+		} else if (item.getGroupId() == 1) {
+			switch (item.getItemId()) {
+			case 1:
+				dc = new DialogComponent(getActivity(), this,
+						TIPO_DIALOGO.YES_NO, getResources().getString(
+								R.string.app_name), "Desea eliminar la visita?");
+				action = ACCION.DELETE;
+				dc.put("obj", seleccion);
+				dc.showDialog();
+				break;
+			}
+		} else if (item.getGroupId() == 2) {
+			switch (item.getItemId()) {
+			case 1:
+				App.ONLY_VISUALITATION = FragmentForm.DISABLED = true;
+				parent.nextFragment(parent.getCurPage() + 1);
+				break;
+			}
+		}
+
+		return true;
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+		/* Aca creamos las preguntas */
+		LinearLayout q0 = createQuestionSection(lblTitulo);
+		LinearLayout q1 = createQuestionSection(tcCapVis.getTableView(),
+				grid.component());
+		LinearLayout q2 = createQuestionSection(lblTitulo1);
+		LinearLayout q3 = createQuestionSection(grid_Res.component());
+		LinearLayout q4 = createQuestionSection(lblTitulo3);
+		LinearLayout q5 = createQuestionSection(grid1.component());
+		LinearLayout q6 = createQuestionSection(lblTitulo2);
+		LinearLayout q7 = createQuestionSection(grid_E.component());
+		// ///////////////////////////
+		ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+		/* Aca agregamos las preguntas a la pantalla */
+		form.addView(q0);
+		form.addView(q1);
+		form.addView(q2);
+		form.addView(q3);
+		form.addView(q4);
+		form.addView(q5);
+		form.addView(q6);
+		form.addView(q7);
+		/* Aca agregamos las preguntas a la pantalla */
+		return contenedor;
+	}
+
+	private boolean isEstadoCerrado() {
+		return Util.getInt(caratula.estado_envio) == 2;
+	}
+
+	public void reloadData(Visita visita, int opcion) {
+		switch (opcion) {
+		case 1:
+			if (lstData.size() < visita.cv_id.intValue()) {
+				lstData.add(visita);
+				tcCapVis.getData().add(visita);
+			}
+			break;
+		case 2:
+			removeObject(visita);
+			break;
+		default:
+			break;
+		}
+		App.getInstance().setVisitas(lstData);
+		tcCapVis.reloadData();
+	}
+
+	private void removeObject(Visita detalle) {
+		if (lstData.size() > 0) {
+			for (int x = 0; x < lstData.size(); x++) {
+				if (lstData.get(x).cv_id.equals(detalle.cv_id)) {
+					lstData.remove(x);
+					tcCapVis.getData().remove(x);
+				}
+			}
+		}
+	}
+
+	public Visita getDownCodVisit() {
+		Integer down = 100;
+		Visita _vis = null;
+		if (lstData.size() > 0) {
+			for (Visita _v : lstData) {
+				if (_v.cv_resvis == null)
+					return null;
+				// if (_v.cv_resvis.equals(6)){
+				// caratula.resfin=6;
+				// return _v;
+				// }
+				// if (_v.cv_resvis.equals(5)){
+				// caratula.resfin=4;
+				// return _v;
+				// }
+
+				if (down > _v.cv_resvis) {
+					down = _v.cv_resvis;
+					_vis = _v;
+				}
+			}
+		}
+		return _vis;
+	}
+
+	public Integer grabarCaratulaCobertura(Integer result) {
+		return grabarCaratulaCobertura(result, null);
+	}
+
+	public Integer grabarCaratulaCobertura(Integer result, Integer val) {
+		if (lstData.size() > 0)
+			lstData.get(lstData.size() - 1).cv_resvis = result;
+		Visita lastVisit = getDownCodVisit();
+		if (val != null && lastVisit != null && val.equals(lastVisit.cv_resvis))
+			return val;
+		String[] extra = new String[] { "RESFIN" };
+		if (lstData.size() > 0 && lastVisit != null) {
+			caratula.resfin = lastVisit.cv_resvis;
+		} else {
+			caratula.resfin = null;
+		}
+		saveUA(extra);
+		return caratula.resfin;
+	}
+
+	public void grabarCaratula() {
+		// Ultima visita
+		Visita lastVisit = getDownCodVisit();
+		String[] extra = new String[] { "RESFEC_DIA", "RESFEC_MES",
+				"RESFEC_ANIO", "RESFIN", "RESFIN_ESP", "ENC_DNI", "ENC_NOM",
+				"SUP_DNI", "SUP_NOM" };
+
+		if (lstData.size() > 0 && lastVisit != null) {
+
+			Visita _visit = lstData.get(lstData.size() - 1);
+			Log.e("RESULTADO VISITA: ", " " + _visit.cv_resvis);
+
+			caratula.resfec_dia = Util.getInt(Util.completarCadena(
+					String.valueOf(_visit.cv_fec_dia), "0", 2,
+					COMPLETAR.IZQUIERDA));
+			caratula.resfec_mes = Util.getInt(Util.completarCadena(
+					String.valueOf(_visit.cv_fec_mes), "0", 2,
+					COMPLETAR.IZQUIERDA));
+			caratula.resfec_anio = _visit.cv_fec_anio;
+			caratula.resfin = lastVisit.cv_resvis;
+			caratula.resfin_esp = lastVisit.cv_resvis_esp;
+
+			if (lstData.size() > 1) {
+				if (Util.getInt(lastVisit.cv_resvis) == 1
+						|| Util.getInt(lastVisit.cv_resvis) == 2) {
+					caratula.resfin = lastVisit.cv_resvis;
+					caratula.resfin_esp = lastVisit.cv_resvis_esp;
+				} else {
+					caratula.resfin = _visit.cv_resvis;
+					caratula.resfin_esp = _visit.cv_resvis_esp;
+				}
+			}
+
+		} else {
+			caratula.resfec_dia = null;
+			caratula.resfec_mes = null;
+			caratula.resfec_anio = null;
+			caratula.resfin = null;
+			caratula.resfin_esp = null;
+		}
+
+		caratula.enc_dni = Util.esVacio(txtENC_DNI) ? null : Util
+				.getText(txtENC_DNI.getText());
+		caratula.enc_nom = Util.esVacio(txtENC_NOM) ? null : Util
+				.getText(txtENC_NOM.getText());
+		caratula.sup_dni = Util.esVacio(txtSUP_DNI) ? null : Util
+				.getText(txtSUP_DNI.getText());
+		caratula.sup_nom = Util.esVacio(txtSUP_NOM) ? null : Util
+				.getText(txtSUP_NOM.getText());
+
+		saveUA(extra, true);
+	}
+
+	private void reloadResult() {
+		String result = "";
+		lblFecR.setText(caratula.resfec_dia == null ? null : Util
+				.getFechaFormateada(caratula.resfec_anio, caratula.resfec_mes,
+						caratula.resfec_dia, "dd/MM/yyyy"));
+		if (caratula.resfin != null) {
+			Log.e("ENTROOOOOOOOOOO : ", " " + caratula.resfin);
+			if (results.length > caratula.resfin.intValue()) {
+				result = results[caratula.resfin.intValue()];
+			}
+			if (caratula.resfin.intValue() != OTRO) {
+				grid_Res.hideColumn(2);
+			} else {
+				grid_Res.hideColumn(2, View.VISIBLE);
+				lblEspr.setText(caratula.resfin_esp);
+			}
+		} else {
+			grid_Res.hideColumn(2);
+		}
+		lblCodR.setText(result);
+	}
+
+	private void deleteVisit(Visita visit) {
+		try {
+			getCuestionarioService().borrarVisita(visit);
+			reloadData(visit, 2);
+			grabarCaratula();
+		} catch (SQLException e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+		}
+	}
+
+	private void editVisitSup(Visita visita, ACCION accion) {
+		maintenanceVisitSup(visita, accion);
+	}
+
+	private void tryAddVisit(final ACCION accion) {
+		if (lstData.size() > 0) {
+			if (isEstadoCerrado()) {
+				ToastMessage
+						.msgBox(this.getActivity(),
+								"Estado de Envio Cerrado. No puede Iniciar una Visita.",
+								ToastMessage.MESSAGE_ERROR,
+								ToastMessage.DURATION_LONG);
+				return;
+			}
+			Visita visita = lstData.get(lstData.size() - 1);
+			if (visita.cv_resvis == null) {
+				ToastMessage
+						.msgBox(this.getActivity(),
+								"Debe terminar la visita actual antes de iniciar una nueva.",
+								ToastMessage.MESSAGE_ERROR,
+								ToastMessage.DURATION_LONG);
+				return;
+			} else if (!Util.esDiferente(visita.cv_resvis, 1, 5, OTRO)) {
+				ToastMessage.msgBox(this.getActivity(),
+						"Entrevista Finalizada; No puede iniciar otra visita.",
+						ToastMessage.MESSAGE_ERROR, ToastMessage.DURATION_LONG);
+				return;
+			}
+		}
+
+		addVisit(accion);
+	}
+
+	private void addVisit(ACCION accion) {
+		maintenanceVisit(new Visita(caratula.id, lstData.size() + 1), accion);
+	}
+
+	private void tryFinalizeVisit(final ACCION accion) {
+		if (lstData.size() == 0) {
+			ToastMessage.msgBox(this.getActivity(),
+					"A\u00fan no ha iniciado ninguna visita",
+					ToastMessage.MESSAGE_ERROR, ToastMessage.DURATION_LONG);
+			return;
+		} else if (lstData.get(lstData.size() - 1).cv_resvis != null) {
+			ToastMessage.msgBox(this.getActivity(),
+					"No existe ninguna visita que necesite ser finalizada",
+					ToastMessage.MESSAGE_ERROR, ToastMessage.DURATION_LONG);
+			return;
+		} else if (!validaInfoEncuestador()) {
+			ToastMessage
+					.msgBox(this.getActivity(),
+							"No ha ingresado informacion valida en Funcionarios de la Encuesta",
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+			return;
+		}
+
+		finalizeVisit(accion);
+	}
+
+	private void finalizeVisit(ACCION accion) {
+		maintenanceVisit(lstData.get(lstData.size() - 1), accion);
+	}
+
+	private void editVisit(Visita visita, ACCION accion) {
+		maintenanceVisit(visita, accion);
+	}
+
+	private void maintenanceVisit(Visita visita, ACCION accion) {
+		FragmentManager fm = Visita_Fragment_001.this.getFragmentManager();
+		Visita_Fragment_001_01 aperturaDialog = Visita_Fragment_001_01
+				.newInstance(Visita_Fragment_001.this, visita,
+						getCuestionarioService(), accion);
+		aperturaDialog.setAncho(LinearLayout.LayoutParams.MATCH_PARENT);
+		aperturaDialog.show(fm, "aperturaDialog");
+	}
+
+	private void maintenanceVisitSup(Visita visita, ACCION accion) {
+		FragmentManager fm = Visita_Fragment_001.this.getFragmentManager();
+		// CPV0301_DETDialog_Vis_002 aperturaDialog = CPV0301_DETDialog_Vis_002
+		// .newInstance(Visita_Fragment_001.this, visita,
+		// getVisitaService(), accion);
+		// aperturaDialog.setAncho(LinearLayout.LayoutParams.MATCH_PARENT);
+		// aperturaDialog.show(fm, "aperturaDialog");
+	}
+
+	@Override
+	public boolean grabar() {
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals(""))
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				if (view != null)
+					view.requestFocus();
+			}
+			return false;
+		}
+
+		try {
+			uiToEntity(caratula);
+			if (!getCuestionarioService().saveOrUpdate(caratula,
+					caratula.getSecCap(getListFields(this)))) {
+				ToastMessage.msgBox(this.getActivity(),
+						"Los datos no se guardaron",
+						ToastMessage.MESSAGE_ERROR, ToastMessage.DURATION_LONG);
+			}
+		} catch (SQLException e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean validar() {
+		if (FragmentForm.DISABLED)
+			return true;
+		error = false;
+
+		if (lstData.size() == 0) {
+			mensaje = "Debe iniciar una visita para poder continuar";
+			error = true;
+			return false;
+		}
+		int _res = Util.getInt(lstData.get(lstData.size() - 1).cv_resvis, -1);
+		if (_res != -1) {
+			mensaje = "Visita Cerrada. Inicie una nueva visita antes de continuar";
+			error = true;
+			return false;
+		}
+		if (!validaInfoEncuestador())
+			return false;
+
+		return true;
+	}
+
+	private boolean validaInfoEncuestador() {
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+
+		if (Util.esVacio(txtENC_DNI)) {
+			mensaje = "DNI del Operador/a de Empresas no puede estar vacio.";
+			view = txtENC_DNI;
+			return !(error = true);
+		}
+		if (Util.esVacio(txtENC_NOM)) {
+			mensaje = "Nombre del Operador/a de Empresas no puede estar vacio.";
+			view = txtENC_NOM;
+			return !(error = true);
+		}
+		if (Util.esVacio(txtSUP_DNI) && !Util.esVacio(txtSUP_NOM)) {
+			mensaje = "DNI del Supervisor no puede estar vacio.";
+			view = txtSUP_DNI;
+			return !(error = true);
+		}
+		if (Util.esVacio(txtSUP_NOM) && !Util.esVacio(txtSUP_DNI)) {
+			mensaje = "Nombre del Supervisor no puede estar vacio.";
+			view = txtSUP_NOM;
+			return !(error = true);
+		}
+		return true;
+	}
+
+	@Override
+	public void cargarDatos() {
+		caratula = App.getInstance().getEmpresa();
+		results = getActivity().getResources().getStringArray(
+				R.array.arrayResultadosVIS);
+		lstData = App.getInstance().getVisitas();
+		tcCapVis.setData(lstData, "cv_id", "getFechaE", "getHoraE_from",
+				"getHoraE_to", "getFechaEPV", "getHoraE_pv", "cv_resvis",
+				"getFechaS", "getHoraS_from", "getHoraS_to", "sresult");
+
+		entityToUI(caratula);
+		inicio();
+	}
+
+	private void inicio() {
+		reloadResult();
+		tcCapVis.requestFocus();
+
+		if (App.ONLY_VISUALITATION) {
+			grid.setVisibility(View.GONE);
+		}
+	}
+
+	@Override
+	public boolean getSaltoNavegation() {
+		return validar();
+	}
+
+	@Override
+	public void onAccept() {
+		switch (action) {
+		case RESUMEN:
+			action = null;
+			App.ONLY_VISUALITATION = true;
+			return;
+		case DELETE:
+			Visita obj = (Visita) dc.get("obj");
+			if (obj != null)
+				deleteVisit(obj);
+			action = null;
+			return;
+		default:
+			action = null;
+			break;
+		}
+	}
+
+	@Override
+	public void onCancel() {
+		action = null;
+	}
+
+	public CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+
+	public static LinearLayout createTitle(Context context, View view,
+			View... views) {
+		LinearLayout ly = createLY(context, LinearLayout.VERTICAL);
+		for (View v : views) {
+			ly.addView(_this.createQuestionSection(v));
+		}
+		ly.addView(view);
+		return ly;
+	}
+
+	public static LinearLayout createLY(Context context, int orientacion) {
+		LinearLayout ly = new LinearLayout(context);
+		LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.MATCH_PARENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+		ly.setLayoutParams(llp);
+		ly.setOrientation(orientacion);
+		ly.setBackgroundColor(_this.getResources().getColor(
+				COLOR_LINEA_SECCION_PREGUNTA));
+		return ly;
+	}
+	
+	
+	private class BlockWatcher implements TextWatcher {
+//		private View view;
+
+		public BlockWatcher() {
+//			this.view = view;
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+		}
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before,
+				int count) {
+		}
+
+		@Override
+		public void afterTextChanged(Editable s) {
+//			if(s.length()==8){
+//			Caratula	caratula = getCuestionarioService().getEmpadronador( App.getInstance().getEmpresa().id,  s.toString(),campos);
+//	    		if(caratula!=null){
+//	    			txtENC_NOM.setText(caratula.enc_nom);
+//
+//	    		}
+//	    	} else {
+//	    		txtENC_NOM.setText("");
+//	    	}
+		}
+	}
+}

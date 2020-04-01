@@ -1,0 +1,284 @@
+package gob.inei.ene2019v2.model;
+
+import gob.inei.dnce.annotations.FieldCalificacion;
+import gob.inei.dnce.annotations.FieldEntity;
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.interfaces.IDetailEntityComponent;
+
+import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+public class Moduloiii02 extends Entity implements IDetailEntityComponent, Serializable  { 
+	
+	@FieldCalificacion(ignoreField = true)
+	private static final long serialVersionUID = 1L;
+
+	public Integer c3p315_1 = null;
+	public Integer c3p315_2 = null;
+	public Integer c3p315_3 = null;
+	public Integer c3p315_4 = null;
+	public Integer c3p315_5 = null;
+	public Integer c3p316  = null;
+	public String c3p316_esp = null;
+	public Integer c3p319 = null;
+	public String c3p319_esp = null;
+	public Integer c3p320 = null;
+	public Integer c3p321_1 = null;
+	public Integer c3p321_2 = null;
+	public Integer c3p321_3 = null;
+	public Integer c3p321_4 = null;
+	public Integer c3p321_5 = null;
+	public Integer c3p321_6 = null;
+	public Integer c3p321_7 = null;
+	public Integer c3p321_8 = null;
+	public Integer c3p321_9 = null;
+	public Integer c3p321_10 = null;
+	public Integer c3p321_11 = null;
+	public Integer c3p321_12 = null;
+	public Integer c3p321_13 = null;
+	public Integer c3p321_14 = null;
+	public String c3p321_14esp = null;
+
+	public Integer c3p322 = null;
+	public Integer c3p323 = null;
+	public Integer c3p324 = null;
+	public Integer c3p325 = null;
+	public Integer c3p326_1 = null;
+	public Integer c3p326_2 = null;
+	public Integer c3p326_3 = null;
+	public Integer c3p326_4 = null;
+	public Integer c3p326_5 = null;
+	public Integer c3p326_6 = null;
+	public Integer c3p326_7 = null;
+	public Integer c3p326_8 = null;
+	public Integer c3p326_9 = null;
+	public Integer c3p326_10 = null;
+	public String c3p326_10esp = null;
+	public Integer c3p326_a1 = null;
+	public Integer c3p326_a2 = null;
+	public Integer c3p326_a3 = null;
+	public Integer c3p326_a4 = null;
+	public Integer c3p326_a5 = null;
+	public Integer c3p326_a6 = null;
+	public Integer c3p326_a7 = null;
+	public Integer c3p326_a8 = null;
+	public Integer c3p326_a9 = null;
+	public Integer c3p326_a10 = null;
+	public Integer c3p326_a_tot = null;
+	public Integer c3p326_b1 = null;
+	public Integer c3p326_b2 = null;
+	public Integer c3p326_b3 = null;
+	public Integer c3p326_b4 = null;
+	public Integer c3p326_b5 = null;
+	public Integer c3p326_b6 = null;
+	public Integer c3p326_b7 = null;
+	public Integer c3p326_b8 = null;
+	public Integer c3p326_b9 = null;
+	public Integer c3p326_b10 = null;
+	public Integer c3p326_c1 = null;
+	public Integer c3p326_c2 = null;
+	public Integer c3p326_c3 = null;
+	public Integer c3p326_c4 = null;
+	public Integer c3p326_c5 = null;
+	public Integer c3p326_c6 = null;
+	public Integer c3p326_c7 = null;
+	public Integer c3p326_c8 = null;
+	public Integer c3p326_c9 = null;
+	public Integer c3p326_c10 = null;
+	public Integer c3p326a_a_1 = null;
+	public Integer c3p326a_a_2 = null;
+	public Integer c3p326a_a_3 = null;
+	public Integer c3p326a_a_4 = null;
+	public Integer c3p326a_a_5 = null;
+	public Integer c3p326a_a_6 = null;
+	public Integer c3p326a_a_7 = null;
+	public String c3p326a_a_7esp = null;
+		
+	
+	/*CSSC - 061119 - BEGIN*/
+	public Integer c3p326a_a_8 = null;
+	public Integer c3p326a_a_9 = null;
+	public Integer c3p326a_a_10 = null;
+	public Integer c3p326a_a_11 = null;
+	public Integer c3p326a_a_12 = null;
+	public Integer c3p326a_a_13 = null;
+	public String c3p326a_a_13esp = null;
+	public Integer c3p326a_a_14 = null;
+	public String c3p326a_a_14esp = null;
+	/*CSSC - 061119 - END*/
+	
+	public Integer c3p329 = null;
+	public String c3p329_esp = null;
+	public Integer c3p330 = null;
+	public Integer c3p331 = null;
+	public Integer c3p333 = null;
+	public Integer c3p333a_1 = null;
+	public Integer c3p333a_2 = null;
+	public Integer c3p333a_3 = null;
+	public Integer c3p333a_4 = null;
+	public Integer c3p333a_5 = null;
+	public Integer c3p333a_6 = null;
+	public Integer c3p333a_7 = null;
+	public Integer c3p333a_8 = null;
+	public Integer c3p333a_9 = null;
+	public Integer c3p333a_10 = null;
+	public Integer c3p333a_11 = null;
+	public Integer c3p333a_12 = null;
+	public Integer c3p333a_13 = null;
+	public Integer c3p333a_14 = null;
+	public String c3p333a_14esp = null;
+	public Integer c3p333b_1 = null;
+	public Integer c3p333b_2 = null;
+	public Integer c3p333b_3 = null;
+	public Integer c3p333b_4 = null;
+	public Integer c3p333b_5 = null;
+	public Integer c3p333b_6 = null;
+	public Integer c3p333b_7 = null;
+	public Integer c3p333b_8 = null;
+	public Integer c3p333b_9 = null;
+	public Integer c3p333b_10 = null;
+	public String c3p333b_10esp = null;
+	public Integer c3p333c_1 = null;
+	public Integer c3p333c_2 = null;
+	public Integer c3p333c_3 = null;
+	public Integer c3p333c_4 = null;
+	public Integer c3p333c_5 = null;
+	public Integer c3p333c_6 = null;
+	public Integer c3p333c_7 = null;
+	public Integer c3p333c_8 = null;
+	public Integer c3p333c_9 = null;
+	public Integer c3p333c_10 = null;
+	public Integer c3p333c_11 = null;
+	public Integer c3p333c_12 = null;
+	public Integer c3p333c_13 = null;
+	public String c3p333c_13esp = null;
+	public Integer c3p333c_14 = null;
+		
+	public Integer c3p334 = null;
+	public Integer c3p335 = null;
+	public String c3p335_14esp = null;
+	public Integer c3p336 = null;
+	public Integer c3p337 = null;
+	public String c3p337_14esp = null;
+	public Integer c3p338 = null;
+	public Integer c3p339_1 = null;
+	public Integer c3p339_2 = null;
+	public Integer c3p339_3 = null;
+	public Integer c3p339_4 = null;
+	public Integer c3p339_5 = null;
+	public Integer c3p339_6 = null;
+	public Integer c3p339_6esp = null;
+	public Integer c3p339_7 = null;
+		
+	public Integer c3p340 = null;
+	public Integer c3p341 = null;
+	public String c3p341_7esp = null;
+	public Integer c3p332 = null;
+	public Integer c3p343 = null;
+	public String c3p343_14esp = null;
+	public Integer c3p344 = null;
+	public Integer c3p345_1 = null;
+	public Integer c3p345_2 = null;
+	public Integer c3p345_3 = null;
+	public Integer c3p345_4 = null;
+	public Integer c3p345_5 = null;
+	public Integer c3p345_6 = null;
+	public Integer c3p345_6esp = null;
+	public Integer c3p345_7 = null;
+	
+	@FieldCalificacion(ignoreField = true)
+	public String c3_obs = null;
+	@FieldCalificacion(ignoreField = true)
+	public Integer t_c3 = null;
+    
+    public Moduloiii02() {} 
+	 
+    
+    public Map<Field, Object> getGroup(Field[] fields, Integer group, Integer to){
+    	Map<Field, Object> m = new LinkedHashMap<Field, Object>();
+    	for (int i = 1; i <= to; i++) {
+    		for(int y=0;y<fields.length;y++){
+        		FieldEntity n = fields[y].getAnnotation(FieldEntity.class);
+        		if(n != null){
+        			int f = n.markF();
+        			int o = n.orderIndex();
+        			if(f == group && o == i){
+        				try {
+							m.put(fields[y], fields[y].get(this));
+							break;
+						} catch (IllegalArgumentException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IllegalAccessException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+        			}
+    			}
+        	}
+		}
+    	return m;
+    }
+    
+    
+	@Override
+	public void cleanEntity() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean isTitle() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public String getPks() {
+		return "ID";
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString();
+	}
+	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Moduloiii02 other = (Moduloiii02) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+	
+	@Override
+	public boolean equalsToPractice(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Moduloiii02)) {
+			return false;
+		}
+		if (this.id == null) {
+			return false;
+		}
+
+		Moduloiii02 other = (Moduloiii02) obj;
+		if (!this.id.equals(other.id) ) {
+			return false;
+		}
+		return true;
+	}
+} 

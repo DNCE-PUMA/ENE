@@ -1,0 +1,5 @@
+<sql> 
+<sql_ccpp_grupo4> insert into T_CCPP (ubigeo,ccdd,departamento,ccpp, provincia,ccdi, distrito, codccpp, nomccpp) values('150103','15', 'LIMA','01','LIMA','03','ATE','0001','VITARTE') </sql_ccpp_grupo4>
+<sql_ccpp_grupo4> insert into T_CCPP (ubigeo,ccdd,departamento,ccpp, provincia,ccdi, distrito, codccpp, nomccpp) values('999998','98', '','98','','98','','9998','OTRO') </sql_ccpp_grupo4>
+<sql_ccpp_grupo4> insert into T_CCPP (ubigeo,ccdd,departamento,ccpp, provincia,ccdi, distrito, codccpp, nomccpp) values('999999','99', '','99','','99','','9999','OMISION') </sql_ccpp_grupo4>
+</sql>  

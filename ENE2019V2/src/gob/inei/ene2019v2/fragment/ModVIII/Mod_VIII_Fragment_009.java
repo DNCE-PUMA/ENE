@@ -1,0 +1,386 @@
+package gob.inei.ene2019v2.fragment.ModVIII;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.components.CheckBoxField;
+import gob.inei.dnce.components.DialogComponent;
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.GridComponent;
+import gob.inei.dnce.components.GridComponent2;
+import gob.inei.dnce.components.ImageComponent;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.MasterActivity;
+import gob.inei.dnce.components.RadioGroupOtherField;
+import gob.inei.dnce.components.RadioGroupOtherField.ORIENTATION;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.interfaces.Respondible;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.model.Caratula;
+import gob.inei.ene2019v2.model.Moduloviii;
+import gob.inei.ene2019v2.service.CuestionarioService;
+
+import java.sql.SQLException;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
+
+public class Mod_VIII_Fragment_009 extends FragmentForm {
+
+	@FieldAnnotation(orderIndex = 1)
+	public RadioGroupOtherField rgC8P834A;
+	@FieldAnnotation(orderIndex = 2)
+	public RadioGroupOtherField rgC8P835_1;
+	@FieldAnnotation(orderIndex = 3)
+	public CheckBoxField chbC8P835_1_N;
+	@FieldAnnotation(orderIndex = 4)
+	public RadioGroupOtherField rgC8P835_2;
+	@FieldAnnotation(orderIndex = 5)
+	public CheckBoxField chbC8P835_2_N;
+
+	private ImageComponent imgNota;
+	private CuestionarioService cuestionarioService;
+	private Moduloviii bean;
+	private Caratula caratula;
+	public GridComponent grid1,grid2;
+	public GridComponent2 gridpreg835;
+	private LabelComponent lblTitulo, lblSubTitulo, lblvacio,lblNota,lblNiv,lblNiv1,lblNiv2;
+	LinearLayout q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10;
+
+	public Mod_VIII_Fragment_009() {
+	}
+
+	public Mod_VIII_Fragment_009 parent(MasterActivity parent) {
+		this.parent = parent;
+		return this;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = createUI();
+		initObjectsWithoutXML(this, rootView);
+		executeEvents();
+		enlazarCajas();
+		listening();
+
+		return rootView;
+	}
+
+	private void executeEvents() {
+		imgNota.setOnClickListener(new ClickPopup001(lblvacio.getText()
+				.toString(), R.string.notaRegulaciones));
+	}
+
+	@Override
+	protected void buildFields() {
+
+		lblTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.c2c100m8).textSize(21).centrar().negrita();
+		lblSubTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.c2c100m8_Autorizaciones).textSize(21).centrar()
+				.negrita();
+		imgNota = new ImageComponent(this.getActivity(), R.drawable.img,
+				R.drawable.img2).size(altoComponente + 125, 165);
+		
+		lblNota=new LabelComponent(this.getActivity(), App.ESTILO)
+		.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+		.text(R.string.c2c100m8_AutorizacionesC).textSize(12)
+		.negrita();
+		lblNiv = new LabelComponent(this.getActivity())
+		.size(altoComponente + 10, 540).text("REGULACIONES AUTORIZACION SECTORIALES")
+		.textSize(15).negrita().alinearIzquierda();
+		lblNiv1 = new LabelComponent(this.getActivity())
+		.size(altoComponente + 100, 440).text("1. Los procedimientos realizados para la obtención de la autorización mencionada? ")
+		.textSize(15).negrita().alinearIzquierda();
+		lblNiv2 = new LabelComponent(this.getActivity())
+				.size(altoComponente + 70, 440).text("2. Las actividades de fiscalización y sanción en materia de regulación industrial (PRODUCE)?")
+				.textSize(15).negrita().alinearIzquierda();
+		
+		lblvacio = new LabelComponent(this.getActivity())
+				.size(altoComponente, 320).text(R.string.app_name).textSize(15)
+				.alinearIzquierda().negrita();
+
+
+		rgC8P834A = new RadioGroupOtherField(this.getActivity(),
+				R.string.c2c100m_Si, R.string.c2c100m_No)
+				.size(WRAP_CONTENT, WRAP_CONTENT)
+				.orientation(ORIENTATION.HORIZONTAL).callback("FuncionRGP834a");
+
+		rgC8P835_1 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c2c100m8p002_1, R.string.c2c100m8p002_2,
+				R.string.c2c100m8p002_3, R.string.c2c100m8p002_4,
+				R.string.c2c100m8p002_5).size(30, 320).orientation(
+				ORIENTATION.HORIZONTAL);		
+		
+		chbC8P835_1_N = new CheckBoxField(this.getActivity(),
+				R.string.c2c100m8p002_8, "1:0").size(30, 320).callback("OnChangeCheckP835_1");
+		
+		rgC8P835_2 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c2c100m8p002_1, R.string.c2c100m8p002_2,
+				R.string.c2c100m8p002_3, R.string.c2c100m8p002_4,
+				R.string.c2c100m8p002_5).size(30, 320).orientation(
+				ORIENTATION.HORIZONTAL);		
+		
+		chbC8P835_2_N = new CheckBoxField(this.getActivity(),
+				R.string.c2c100m8p002_8, "1:0").size(30, 320).callback("OnChangeCheckP835_2");
+		
+		grid1  = new GridComponent(this.getActivity(), 1);
+		grid1.addComponent(rgC8P835_1);
+		grid1.addComponent(chbC8P835_1_N);
+		grid1.colorFondo(R.color.WhiteSmoke);
+		
+		grid2  = new GridComponent(this.getActivity(), 1);
+		grid2.addComponent(rgC8P835_2);
+		grid2.addComponent(chbC8P835_2_N);
+		grid2.colorFondo(R.color.WhiteSmoke);
+		
+		gridpreg835 = new GridComponent2(this.getActivity(),Gravity.CENTER,2);
+		gridpreg835.addComponent(lblNiv,2);
+		
+		gridpreg835.addComponent(lblNiv1);
+		gridpreg835.addComponent(grid1.component());
+		gridpreg835.addComponent(lblNiv2);
+		gridpreg835.addComponent(grid2.component());
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+
+		q0 = createQuestionSection(lblTitulo, lblSubTitulo,imgNota,lblNota);
+		q1 = createQuestionSection(R.string.c2c100m8p834a, rgC8P834A);
+		q2 = createQuestionSection(R.string.c2c100m8p835, Gravity.CENTER, LinearLayout.HORIZONTAL, gridpreg835.component());
+
+		ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+
+		form.addView(q0);
+		form.addView(q1);
+		form.addView(q2);
+
+		return contenedor;
+	}
+
+	@Override
+	public boolean grabar() {
+
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals("")) {
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+				if (view != null) {
+					view.requestFocus();
+				}
+			}
+			return false;
+		}
+		uiToEntity(bean);
+		try {
+			if (!getCuestionarioService().saveOrUpdate(bean,
+					bean.getSecCap(getListFields(this)))) {
+				ToastMessage.msgBox(this.getActivity(),
+						"Los datos no se guardaron",
+						ToastMessage.MESSAGE_ERROR, ToastMessage.DURATION_LONG);
+			}
+		} catch (SQLException e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean validar() {
+		String pregunta_no_vacia = getString(R.string.pregunta_no_vacia);
+		error = false;
+
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+
+		if (Util.esVacio(rgC8P834A)) {
+			mensaje = pregunta_no_vacia.replace("$", "La pregunta P834");
+			view = rgC8P834A;
+			error = true;
+			return false;
+		}
+
+		if (rgC8P834A.isTagSelected(1)) {
+			
+			if (Util.esVacio(rgC8P835_1)) {
+				if (!chbC8P835_1_N.isChecked()) {
+					mensaje = pregunta_no_vacia.replace("$", "La pregunta P835_1(B)");
+					view = rgC8P835_1;
+					return !(error = true);
+				}
+			}
+			if (Util.esVacio(rgC8P835_2)) {
+				if (!chbC8P835_2_N.isChecked()) {
+					mensaje = pregunta_no_vacia.replace("$", "La pregunta P835_2 (B)");
+					view = rgC8P835_2;
+					return !(error = true);
+				}
+			}
+
+		} 
+
+		return true;
+	}
+
+	@Override
+	public void cargarDatos() {
+		caratula = App.getInstance().getEmpresa();
+		bean = getCuestionarioService().getModuloviii(
+				App.getInstance().getEmpresa(),
+				new Moduloviii().getSecCap(getListFields(this)));
+		if (bean == null) {
+			bean = new Moduloviii();
+			bean.id = App.getInstance().getEmpresa().id;
+		}
+
+		entityToUI(bean);
+		inicio();
+	}
+
+	private void inicio() {
+		Log.e("Caratula CODIGO", "" + caratula.ciiu_cd);
+		Integer valor = Integer.parseInt(rgC8P834A.getTagSelected("0").toString());
+		
+		if (valor == 2 ) {
+			Util.cleanAndLockView(getActivity(),rgC8P835_1,chbC8P835_1_N,rgC8P835_2,chbC8P835_2_N);
+		
+		} else {
+			Util.lockView(getActivity(), false, rgC8P835_1,chbC8P835_1_N,rgC8P835_2,chbC8P835_2_N);
+			OnChangeCheckP835_1();
+			OnChangeCheckP835_2();
+			rgC8P835_1.requestFocus();
+		}
+	
+	//	FuncionRGP836();
+		rgC8P834A.requestFocus();
+	}
+
+//	public void FuncionRG834() {
+//		Integer valor = Integer.parseInt(rgC8P834A.getTagSelected("0").toString());
+//		if(valor==2){
+//	
+//			Util.cleanAndLockView(getActivity(), rgC8P835, chbC8P835_1);
+//			
+//		}else{
+//			Util.lockView(getActivity(), false, rgC8P835, chbC8P835_1);
+//			rgC8P835.requestFocus();
+//		}
+//	}
+	
+
+	public void FuncionRGP834a() {
+		Integer valor = Integer.parseInt(rgC8P834A.getTagSelected("0").toString());
+		
+		if (valor == 2 ) {
+			Util.cleanAndLockView(getActivity(),rgC8P835_1,chbC8P835_1_N,rgC8P835_2,chbC8P835_2_N);
+		
+		} else {
+			Util.lockView(getActivity(), false, rgC8P835_1,chbC8P835_1_N,rgC8P835_2,chbC8P835_2_N);
+			rgC8P835_1.requestFocus();
+		}
+	}
+	public void OnChangeCheckP835_1(){
+		if (chbC8P835_1_N.isChecked()) {
+			Util.cleanAndLockView(getActivity(), rgC8P835_1);
+		} else {
+			Util.lockView(getActivity(), false, rgC8P835_1);
+			rgC8P835_1.requestFocus();
+		}
+	}
+	public void OnChangeCheckP835_2(){
+		if (chbC8P835_2_N.isChecked()) {
+			Util.cleanAndLockView(getActivity(), rgC8P835_2);
+		} else {
+			Util.lockView(getActivity(), false, rgC8P835_2);
+			rgC8P835_2.requestFocus();
+		}
+	}
+	
+	public CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+
+	@Override
+	public Entity getEntity() {
+		return bean;
+	}
+
+	private class ClickPopup001 implements View.OnClickListener, Respondible {
+		private String textKit;
+		private int idDes;
+		private DialogComponent dc;
+
+		public ClickPopup001(String textKit, int idDes) {
+			this.textKit = textKit;
+			this.idDes = idDes;
+		}
+
+		@Override
+		public void onClick(View v) {
+			dc = new DialogComponent(Mod_VIII_Fragment_009.this.getActivity(),
+					this, DialogComponent.TIPO_DIALOGO.NEUTRAL, textKit,
+					"REGULACIONES EN AUTORIZACIONES SECTORIALES.",
+					DialogComponent.TIPO_ICONO.INFO);
+			dc.setView(createLayout(this.idDes));
+			dc.showDialog();
+		}
+
+		@Override
+		public void onCancel() {
+		}
+
+		@Override
+		public void onAccept() {
+		}
+
+		private View createLayout(int idDes) {
+			LinearLayout ly = new LinearLayout(
+					Mod_VIII_Fragment_009.this.getActivity());
+			ly.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
+					LayoutParams.WRAP_CONTENT));
+			ly.setBackgroundResource(R.color.blanco);
+			ly.setOrientation(LinearLayout.VERTICAL);
+			LabelComponent lblDesc = new LabelComponent(
+					Mod_VIII_Fragment_009.this.getActivity())
+					.size(MATCH_PARENT, MATCH_PARENT).text(idDes).textSize(16)
+					.negrita();
+			ly.addView(lblDesc);
+			return ly;
+		}
+	}
+
+}

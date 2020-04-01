@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="Capitulo900">CAPÍTULO 900. PRODUCCIÓN, VENTAS, VALOR AGREGADO, ACTIVOS</string>
+    <string name="Capitulo900t">EJERCICIO 2016</string>
+    <string name="c900_num">N°</string>
+    <string name="c900_AgregarPro">Agregar Producto</string>
+    <string name="c2c100m9p901">901.    Principales productos fabricados, comercializados o servicios prestados durante el año 2018.
+          \n   Registre en forma detallada y en orden de importancia de acuerdo al mayor nivel de ingresos, el nombre de los principales productos que la empresa   
+             produce, comercializa o presta servicios.
+          \n  (Registre la información sin considerar céntimos ni decimales)</string>
+    <string name="c2c100m9p001_2">C\u00f3digo</string>
+    <string name="c2c100m9p001_3">2. Nombre de los productos fabricados, comercializados o servicios prestados en orden de importancia</string>
+    <string name="c2c100m9p001_4">3. Unidad de medida</string>
+    <string name="c2c100m9p001_5">4. Cantidad</string>
+    <string name="c2c100m9p001_6">5. Valor de venta total sin IGV (En soles)</string>
+    <string name="c2c100m9p002_titulo">Sólo MANUFACTURA y CONSTRUCCIÓN</string>
+    <string name="c2c100m9p902">902.    Principales materias primas y auxiliares utilizadas en la producción, comercialización o servicios prestados durante el año 2018.
+          \n    Registre en forma detallada y en orden de importancia de acuerdo al mayor gasto, el nombre de las principales materias primas, materiales auxiliares y  
+             suministros que ha utilizado la empresa en la producción, comercialización o prestación de servicios en el año 2018.
+           \n  (Registre la información sin considerar céntimos ni decimales)</string>
+    <string name="c2c100m9p002_add">Agregar Materia Prima</string>
+    <string name="c2c100m9p002_2">2. Nombre de materias primas, materiales auxiliares y suministros utilizados en la producción, comercialización o prestación de servicios en orden de importancia</string>
+    <string name="c2c100m9p002_3">3. Unidad de medida</string>
+    <string name="c2c100m9p002_4">4. Cantidad</string>
+    <string name="c2c100m9p002_5">5. Valor de compra total sin IGV (En soles)</string>
+    <string name="c2c100m9p002_6">6. Razón social del proveedor</string>
+    <string name="c2c100m9p003_titulo">Sólo actividades diferentes a MANUFACTURA y CONSTRUCCIÓN</string>
+    <string name="c2c100m9p903">903. Principales materiales auxiliares y suministros utilizados en la comercialización o servicios prestados durante el año 2016.\n Registre en forma detallada y en orden de importancia de acuerdo al mayor gasto, el nombre de los principales materiales auxiliares y suministros que ha utilizado la empresa en la comercialización o prestación de servicios en el año 2016.</string>
+    <string name="c2c100m9p003_add">Agregar Materiales o Suministros</string>
+    <string name="c2c100m9p003_2">2. Nombre de materiales auxiliares y suministros utilizados en la comercialización o prestación de servicios en orden de importancia</string>
+    <string name="c2c100m9p003_3">3. Razón social del proveedor</string>
+    <string name="c2c100t_m9a">Flag M\u00f3dulo 9A, completo</string>
+    <string name="c2c100t_m9b">Flag M\u00f3dulo 9B, completo</string>
+    <string name="c2c100t_m9c">Flag M\u00f3dulo 9C, completo</string>
+    <string name="c2c100t_m9d">Flag M\u00f3dulo 9D, completo</string>
+    <string name="c2c100m9p004_c1">01</string>
+    <string name="c2c100m9p004_c2">02</string>
+    <string name="c2c100m9p004_c3">03</string>
+    <string name="c2c100m9p004_c4">04</string>
+    <string name="c2c100m9p004_c5">05</string>
+    <string name="c2c100m9p004_c6">06</string>
+    <string name="c2c100m9p004_c7">07</string>
+    <string name="c2c100m9p904">904. ¿Cuáles fueron los ingresos que obtuvo su empresa en el año 2016?</string>
+    <string name="nota904">Ventas netas = Ventas totales - devoluciones sobre ventas, descuentos, rebajas y bonificaciones concedidas
+\n (Registre la información sin considerar céntimos)</string>
+    <string name="c2c100m9p004_cab1">CONCEPTOS</string>
+    <string name="c2c100m9p004_cab2">N°</string>
+    <string name="c2c100m9p004_cab3">TOTAL \n (En soles)</string>
+    <string name="c2c100m9p004_1">Ventas netas de mercader\u00edas</string>
+    <string name="c2c100m9p004_2">Costo de ventas de mercader\u00edas</string>
+    <string name="c2c100m9p004_3">Margen comercial (01-02)</string>
+    <string name="c2c100m9p004_4">Ventas netas de productos terminados, subproductos, desperdicios y desechos</string>
+    <string name="c2c100m9p004_5">Prestaci\u00f3n de servicios netos</string>
+    <string name="c2c100m9p004_6">Otros ingresos (ingresos financieros, ingresos excepcionales, ingresos diversos, etc.)</string>
+    <string name="c2c100m9p004_7">Total ingresos (03 al 06)</string>
+    <string name="c2c100m9p905">905. ¿Cuáles fueron las cargas y gastos de la empresa en el año 2016? \n (Registre la información sin considerar céntimos)</string>
+    <string name="c2c100m9p005_cab1">PCGE Cuentas y sub cuentas</string>
+    <string name="c2c100m9p005_cab2">Descripción de las cuentas y sub cuentas</string>
+    <string name="c2c100m9p005_cab3">N°</string>
+    <string name="c2c100m9p005_cab4">2016 En soles</string>
+     <string name="c2c100m9p005_cab42017">2017 En soles</string>
+    <string name="c2c100m9p005_c1">60</string>
+    <string name="c2c100m9p005_c2">62</string>
+    <string name="c2c100m9p005_c3">621</string>
+    <string name="c2c100m9p005_c4">622+625+626+628</string>
+    <string name="c2c100m9p005_c5">623</string>
+    <string name="c2c100m9p005_c6">624</string>
+    <string name="c2c100m9p005_c7">627</string>
+    <string name="c2c100m9p005_c8">629</string>
+    <string name="c2c100m9p005_c9">63</string>
+    <string name="c2c100m9p005_c10">631</string>
+    <string name="c2c100m9p005_c11">632</string>
+    <string name="c2c100m9p005_c12">633</string>
+    <string name="c2c100m9p005_c13">634</string>
+    <string name="c2c100m9p005_c14">635</string>
+    <string name="c2c100m9p005_c15">636</string>
+    <string name="c2c100m9p005_c16">6364+6365+6337</string>
+    <string name="c2c100m9p005_c17">637</string>
+    <string name="c2c100m9p005_c18">638</string>
+    <string name="c2c100m9p005_c19">639</string>
+    <string name="c2c100m9p005_c20">64</string>
+    <string name="c2c100m9p005_c21">65</string>
+    <string name="c2c100m9p005_c22">653</string>
+    <string name="c2c100m9p005_c23">654</string>
+    <string name="c2c100m9p005_c24">658</string>
+    <string name="c2c100m9p005_c25">651+652+655+656+659</string>
+    <string name="c2c100m9p005_n1">01</string>
+    <string name="c2c100m9p005_n2">02</string>
+    <string name="c2c100m9p005_n3">03</string>
+    <string name="c2c100m9p005_n4">04</string>
+    <string name="c2c100m9p005_n5">05</string>
+    <string name="c2c100m9p005_n6">06</string>
+    <string name="c2c100m9p005_n7">07</string>
+    <string name="c2c100m9p005_n8">08</string>
+    <string name="c2c100m9p005_n9">09</string>
+    <string name="c2c100m9p005_n10">10</string>
+    <string name="c2c100m9p005_n11">11</string>
+    <string name="c2c100m9p005_n12">12</string>
+    <string name="c2c100m9p005_n13">13</string>
+    <string name="c2c100m9p005_n14">14</string>
+    <string name="c2c100m9p005_n15">15</string>
+    <string name="c2c100m9p005_n16">16</string>
+    <string name="c2c100m9p005_n17">17</string>
+    <string name="c2c100m9p005_n18">18</string>
+    <string name="c2c100m9p005_n19">19</string>
+    <string name="c2c100m9p005_n20">20</string>
+    <string name="c2c100m9p005_n21">21</string>
+    <string name="c2c100m9p005_n22">22</string>
+    <string name="c2c100m9p005_n23">23</string>
+    <string name="c2c100m9p005_n24">24</string>
+    <string name="c2c100m9p005_n25">25</string>
+    <string name="c2c100m9p005_n26">26</string>
+    <string name="c2c100m9p005_1">Compra de materias primas y auxiliares, envases y embalajes, suministros diversos</string>
+    <string name="c2c100m9p005_2">Gastos de personal (03 al 08)</string>
+    <string name="c2c100m9p005_3">Remuneraciones</string>
+    <string name="c2c100m9p005_4">Otras remuneraciones</string>
+    <string name="c2c100m9p005_5">Indemnizaci\u00f3n al personal</string>
+    <string name="c2c100m9p005_6">Capacitaci\u00f3n</string>
+    <string name="c2c100m9p005_7">Seguridad, previsi\u00f3n social y otras contribuciones</string>
+    <string name="c2c100m9p005_8">Beneficios sociales de los trabajadores</string>
+    <string name="c2c100m9p005_9">Gastos de servicios prestados por terceros (10 al 15 + 17 al 19)</string>
+    <string name="c2c100m9p005_10">Transporte, correos y gastos de viaje</string>
+    <string name="c2c100m9p005_11">Asesor\u00eda y consultor\u00eda</string>
+    <string name="c2c100m9p005_12">Producci\u00f3n encargada a terceros</string>
+    <string name="c2c100m9p005_13">Mantenimiento y reparaciones</string>
+    <string name="c2c100m9p005_14">Alquileres</string>
+    <string name="c2c100m9p005_15">Servicios b\u00e1sicos</string>
+    <string name="c2c100m9p005_16">(Teléfono + Internet + Cable)</string>
+    <string name="c2c100m9p005_17">Publicidad, publicaciones, relaciones p\u00fablicas</string>
+    <string name="c2c100m9p005_18">Servicios de contratistas</string>
+    <string name="c2c100m9p005_19">Otros servicios prestados por terceros</string>
+    <string name="c2c100m9p005_20">TRIBUTOS</string>
+    <string name="c2c100m9p005_21">Otros gastos de gesti\u00f3n (22 al 25)</string>
+    <string name="c2c100m9p005_22">Suscripciones</string>
+    <string name="c2c100m9p005_23">Licencias y derechos de vigencia</string>
+    <string name="c2c100m9p005_24">Gesti\u00f3n medioambiental</string>
+    <string name="c2c100m9p005_25">Otros gastos</string>
+    <string name="c2c100m9p005_26">Otros egresos (cargas financieras, excepcionales)</string>
+    <string name="c2c100m9p006a">1. Terrenos o edificaciones</string>
+    <string name="c2c100m9p006a_cab1">Clave</string>
+    <string name="c2c100m9_Compra2016">COMPRAS EN EL 2016</string>
+    <string name="c2c100m9_vacio"></string>
+    <string name="c2c100m9_TOTAL">TOTAL (01 AL 05)</string>
+    <string name="c2c100m9_TOTAL_">TOTAL (01 AL 04)</string>
+    <string name="c2c100m9_TotP001"></string>
+    <string name="c2c100m9_TotP002"></string>
+    <string name="c2c100m9_TotP003"></string>
+    <string name="c2c100m9_TotP004"></string>
+    <string name="c2c100m9_TotP005"></string>
+    <string name="c2c100m9p006_tipo">TIPO DE ACTIVO</string>
+    <string name="c2c100m9p006a_SaldoI">Saldos iniciales al 01.01.2016 </string>
+    <string name="c2c100m9p006a_Bnuevo">Bienes Nuevos</string>
+    <string name="c2c100m9p006a_Busado">Bienes Usados</string>
+    <string name="c2c100m9p006a_Venta">Ventas y/o retiros</string>
+    <string name="c2c100m9p006a_SaldoF">Saldos finales  al 31.12.2016</string>
+    <string name="c2c100m9p006a_titulo">RESUMEN DEL MOVIMIENTO DEL ACTIVO FIJO 2016</string>
+    <string name="c2c100m9p906">906. Registre el valor de todos los bienes físicos de la propiedad de la empresa, que tuvieron vida útil superior a un año, los cuales fueron adquiridos para desarrollar sus actividades económicas en el año 2016. \n (Registre la información en soles, sin considerar céntimos)</string>
+    <string name="c2c100m9p006a_1">Saldos iniciales al 01.01.2016</string>
+    <string name="c2c100m9p006a_cab">Compras en el 2016:</string>
+    <string name="c2c100m9p006a_2">Bienes Nuevos</string>
+    <string name="c2c100m9p006a_3">Bienes Usados</string>
+    <string name="c2c100m9p006a_4">Ventas y/o retiros</string>
+    <string name="c2c100m9p006a_5">Saldos finales  al 31.12.2016</string>
+    <string name="c2c100m9p006b_1">2. Maquinaria, equipo, muebles, herramientas Saldos iniciales al 01.01.2015</string>
+    <string name="c2c100m9p006b_2">Compras en el 2015: Bienes nuevos</string>
+    <string name="c2c100m9p006b_3">Compras en el 2015: Bienes Usados</string>
+    <string name="c2c100m9p006b_4">Ventas y/o retiros</string>
+    <string name="c2c100m9p006b_5">Saldos finales al 31.12.2015</string>
+    <string name="c2c100m9p006c_1">3. Intangibles Saldos iniciales al 01.01.2015</string>
+    <string name="c2c100m9p006c_2">Compras en el 2015: Bienes nuevos</string>
+    <string name="c2c100m9p006c_3">Compras en el 2015: Bienes Usados</string>
+    <string name="c2c100m9p006c_4">Ventas y/o retiros</string>
+    <string name="c2c100m9p006c_5">Saldos finales al 31.12.2015</string>
+    <string name="c2c100m9p006d_1">4. Otros Saldos iniciales al 01.01.2015</string>
+    <string name="c2c100m9p006d_2">Compras en el 2015: Bienes nuevos</string>
+    <string name="c2c100m9p006d_3">Compras en el 2015: Bienes Usados</string>
+    <string name="c2c100m9p006d_4">Ventas y/o retiros</string>
+    <string name="c2c100m9p006d_5">Saldos finales al 31.12.2015</string>
+    <string name="c2c100m9p006e_1">5. Total (01 al 04) Saldos iniciales al 01.01.2015</string>
+    <string name="c2c100m9p006e_2">Compras en el 2015: Bienes nuevos</string>
+    <string name="c2c100m9p006e_3">Compras en el 2015: Bienes Usados</string>
+    <string name="c2c100m9p006e_4">Ventas y/o retiros</string>
+    <string name="c2c100m9p006e_5">Saldos finales al 31.12.2015</string>
+    <string name="c2c100m9p007a_Tipo">TIPO DE ACTIVO</string>
+    <string name="c2c100m9p007a_SaldoI">Saldos iniciales al 01.01.2016</string>
+    <string name="c2c100m9p007a_Depre1">Depreciación del Periodo</string>
+    <string name="c2c100m9p007a_Depre2">Depreciación Adicional</string>
+    <string name="c2c100m9p007a_Dimin">Diminución por Ventas y/o retiros</string>
+    <string name="c2c100m9p007a_SaldoF">Saldos finales  al 31.12.2016</string>
+    <string name="c2c100m9p907">907. Registre el valor de la depreciación de todos los bienes físicos de propiedad de la empresa, que tuvieron vida útil superior a un año, los cuales fueron adquiridos para desarrollar sus actividades económicas en el año 2016. \n(Registre la información en soles, sin considerar céntimos)</string>
+    <string name="c2c100m9p007a_titulo">RESUMEN DEL MOVIMIENTO DE LA DEPRECIACIÓN 2016</string>
+    <string name="c2c100m9p007_1a">Saldos iniciales al 01.01.2016</string>
+    <string name="c2c100m9p007_1b">Depreciaci\u00f3n del Periodo</string>
+    <string name="c2c100m9p007_1c">Depreciaci\u00f3n Adicional</string>
+    <string name="c2c100m9p007_1d">Disminuci\u00f3n por Ventas y/o retiros</string>
+    <string name="c2c100m9p007_1e">Saldos finales al 31.12.2016</string>
+    <string name="c2c100m9p908">908. Registre la información contable referida al periodo 2016. \n (Registre la información en soles, sin considerar céntimos)</string>
+    <string name="c2c100m9p008a_titulo">MOVIMIENTO DE EXISTENCIAS</string>
+    <string name="c2c100m9p008a_Tipo">Descripción</string>
+    <string name="c2c100m9p008_1a">Existencia Inicial Al 01/01/2016</string>
+    <string name="c2c100m9p008_1b">Compras / Producción</string>
+    <string name="c2c100m9p008_1c">Existencias Final Al 31/12/2016</string>
+    <string name="c2c100m9p008_1d">Variación de existencias</string>
+    <string name="c2c100m9p900Sec">Sólo actividades diferentes a MANUFACTURA y CONSTRUCCIÓN</string>
+    <string name="c2c100m9p910">910. Principales materias primas, materiales auxiliares y suministros utilizados en la producción, comercialización o servicios prestados durante el año 2018. \n Registre en forma detallada y en orden de importancia de acuerdo al mayor gasto, el nombre de los principales materias primas, materiales auxiliares y suministros utilizados por la empresa en la producción, comercialización o prestación de servicios en el año 2018. \n(Registre la información sin considerar céntimos ni decimales)</string>
+    <string name="c2c100m9p911">911. Principales materiales auxiliares y suministros utilizados en la comercialización o servicios prestados durante el año 2018.\n
+Registre en forma detallada y en orden de importancia de acuerdo al mayor gasto, el nombre de los principales materiales auxiliares y suministros que ha utilizado la empresa en la comercialización o prestación de servicios en el año 2018. </string>
+    <string name="c2c100m9p912">912. ¿Cuáles fueron los ingresos que obtuvo su empresa en el año 2018?\n Ventas netas = Ventas totales - devoluciones sobre ventas, descuentos, rebajas y bonificaciones concedidas \n (Registre la información sin considerar céntimos) </string>
+    <string name="c2c100m9p913">913. ¿Cuáles fueron las cargas y gastos de la empresa en el año 2018? \n (Registre la información sin considerar céntimos)</string>
+    <string name="c2c100m9p914">914. Registre el valor de todos los bienes físicos de propiedad de la empresa, que tuvieron vida útil superior a un año, los cuales fueron adquiridos para desarrollar sus actividades económicas en el año 2018 \n(Registre la información en soles, sin considerar céntimos)</string>
+    <string name="c2c100m14_Compra2016">COMPRAS EN EL 2018</string>
+    <string name="c2c100m9p014_tipo">TIPO DE ACTIVO</string>
+    <string name="c2c100m9p014a_SaldoI">Saldos iniciales al 01.01.2017 </string>
+    <string name="c2c100m9p014a_Bnuevo">Bienes Nuevos</string>
+    <string name="c2c100m9p014a_Busado">Bienes Usados</string>
+    <string name="c2c100m9p014a_Venta">Ventas y/o retiros</string>
+    <string name="c2c100m9p014a_SaldoF">Saldos finales  al 31.12.2018</string>
+    <string name="c2c100m9p014a_titulo">RESUMEN DEL MOVIMIENTO DEL ACTIVO FIJO 2016</string>
+    <string name="c2c100m9p014a_1">Saldos iniciales al 01.01.2018</string>
+    <string name="c2c100m9p014a_cab">Compras en el 2018:</string>
+    <string name="c2c100m9p014a_2">Bienes Nuevos</string>
+    <string name="c2c100m9p014a_3">Bienes Usados</string>
+    <string name="c2c100m9p014a_4">Ventas y/o retiros</string>
+    <string name="c2c100m9p014a_5">Saldos finales  al 31.12.2018</string>
+    <string name="c2c100m9p915">915. Registre el valor de la depreciación de todos los bienes físicos de propiedad de la empresa, que tuvieron vida útil superior a un año, los cuales fueron adquiridos para desarrollar sus actividades económicas en el año 2018. \n (Registre la información sin considerar céntimos)</string>
+    <string name="c2c100m9p915Sub">Resumen del movimiento de la depreciación 2018</string>
+    <string name="c2c100m9p015a_Tipo">TIPO DE ACTIVO</string>
+    <string name="c2c100m9p015a_SaldoI">Saldos iniciales al 01.01.2018</string>
+    <string name="c2c100m9p015a_Depre1">Depreciación del Periodo</string>
+    <string name="c2c100m9p015a_Depre2">Depreciación Adicional</string>
+    <string name="c2c100m9p015a_Dimin">Diminución por Ventas y/o retiros</string>
+    <string name="c2c100m9p015a_SaldoF">Saldos finales  al 31.12.2018</string>
+    <string name="c2c100m9p015a_titulo">RESUMEN DEL MOVIMIENTO DE LA DEPRECIACIÓN 2018</string>
+    <string name="c2c100m9p015_1a">Saldos iniciales al 01.01.2018</string>
+    <string name="c2c100m9p015_1b">Depreciaci\u00f3n del Periodo</string>
+    <string name="c2c100m9p015_1c">Depreciaci\u00f3n Adicional</string>
+    <string name="c2c100m9p015_1d">Disminuci\u00f3n por Ventas y/o retiros</string>
+    <string name="c2c100m9p015_1e">Saldos finales al 31.12.2018</string>
+    <string name="c2c100m9p916">916. Registre la información contable referida al periodo 2018. \n (Registre la información en soles, sin considerar céntimos)</string>
+    <string name="c2c100m9p016a_titulo">Movimiento De Existencias</string>
+    <string name="c2c100m9p016a_Tipo">Descripción</string>
+    <string name="c2c100m9p016_1a">Existencia Inicial Al 01/01/2018</string>
+    <string name="c2c100m9p016_1b">Compras / Producción</string>
+    <string name="c2c100m9p016_1c">Existencias Final Al 31/12/2018</string>
+    <string name="c2c100m9p016_1d">Ventas de Existencias</string>
+    <string name="c2c100m9p909">909. Principales productos fabricados, comercializados o servicios prestados durante el año 2018. \n 
+Registre en forma detallada y en orden de importancia de acuerdo al mayor nivel de ingresos, el nombre de los principales productos que la empresa produjo y/o comercializó y de los principales servicios prestados en el año 2018. \n    (Registre la información sin considerar céntimos ni decimales)</string>
+
+    <array name="capIX_detalle">
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+    </array>
+
+    <string-array name="capIX_detalle_preg6">
+        <item>01 Terrenos o edificaciones</item>
+        <item>02 Maquinaria, equipo, muebles, herramientas</item>
+        <item>03 Intangibles</item>
+        <item>04 Otros</item>
+        <item>Total (01 al 04)</item>
+    </string-array>
+    <string-array name="capIX_detalle_preg7">
+        <item>01 Inversiones inmobiliarias</item>
+        <item>02 Otros</item>
+        <item>Total  (01 al 02)</item>
+    </string-array>
+
+</resources>

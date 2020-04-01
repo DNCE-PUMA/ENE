@@ -1,0 +1,205 @@
+package gob.inei.ene2019v2.model;
+
+import java.io.Serializable;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.annotations.FieldCalificacion;
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.components.RadioGroupOtherField;
+import gob.inei.dnce.components.TextField;
+import gob.inei.dnce.interfaces.IDetailEntityComponent;
+
+public class Moduloiv02 extends Entity implements IDetailEntityComponent, Serializable  {
+	
+	@FieldCalificacion(ignoreField = true)
+	private static final long serialVersionUID = 1L;
+
+
+	public Integer c4p446_3 = null;
+	public Integer c4p447_3 = null;
+
+	public Integer c4p449 = null;
+	public Integer c4p450 = null;
+	public Integer c4p450_1 = null;
+	
+	public Integer c4p445 = null;
+	public Integer c4p446_1 = null;
+	public Integer c4p447_1 = null;
+	public Integer c4p446_2 = null;
+	public Integer c4p447_2 = null;
+	public Integer c4p446_4 = null;
+	public Integer c4p447_4 = null;
+	public Integer c4p448 = null;
+	public String c4p448_esp = null;
+	
+	public Integer c4p454_1 = null;
+	public Integer c4p454_2 = null;
+	public Integer c4p454_3 = null;
+	public Integer c4p454_4 = null;
+	public Integer c4p454_5 = null;
+	public Integer c4p454_6 = null;
+	public Integer c4p454_7 = null;
+	public Integer c4p454_8 = null;
+	public Integer c4p454_9 = null;
+	public Integer c4p454_10 = null;
+	public Integer c4p454_11 = null;
+	public Integer c4p454_12 = null;
+	public Integer c4p454_13 = null;
+	public Integer c4p454_14 = null;
+	public Integer c4p454_15 = null;
+	public String c4p454_15esp = null;
+	
+	public Integer c4p455 = null;
+	public String c4p455_esp = null;
+	public Integer c4p455a_1 = null;
+	public Integer c4p455a_2 = null;
+	public Integer c4p455a_3 = null;
+	public Integer c4p455a_4 = null;
+	public Integer c4p455a_5 = null;
+	public Integer c4p455a_6 = null;
+	public String c4p455a_6esp = null;
+	public Integer c4p455a_7 = null;
+	
+	public Integer c4p455b = null;
+	public Integer c4p455c = null;
+	public String c4p455c_esp = null;
+	
+	public Integer c4p456 = null;
+	public Integer c4p457 = null;
+	public Integer c4p457_1 = null;
+	public Integer c4p458_1 = null;
+	public Integer c4p458_2 = null;
+	public Integer c4p458_3 = null;
+	public Integer c4p458_4 = null;
+	public Integer c4p458_5 = null;
+	public String c4p458_5esp = null;
+	public Integer c4p459_1 = null;
+	public Integer c4p459_2 = null;
+	public Integer c4p459_3 = null;
+	public Integer c4p460_1 = null;
+	public Integer c4p460_2 = null;
+	public Integer c4p460_3 = null;
+	public Integer c4p460_4 = null;
+	public Integer c4p460_5 = null;
+	public String c4p460_5esp = null;
+	public Integer c4p461 = null;
+	public Integer c4p462 = null;
+	public Integer c4p465 = null;
+	public Integer c4p466 = null;
+	public Integer c4p467 = null;
+	//public Integer c4p467a = null;
+	public Integer c4p468_1 = null;
+	public Integer c4p468_2 = null;
+	public Integer c4p468_3 = null;
+	public Integer c4p468_4 = null;
+	public Integer c4p468a = null;
+	public Integer c4p469 = null;
+	public Integer c4p470_1 = null;
+	public Integer c4p470_2 = null;
+	public Integer c4p470_3 = null;
+	public Integer c4p470_4 = null;
+	public Integer c4p470_5 = null;
+	public Integer c4p470_6 = null;
+	public Integer c4p470_7 = null;
+	public Integer c4p470_8 = null;
+	public Integer c4p470_9 = null;
+	public Integer c4p470_10 = null;
+	public Integer c4p470_11 = null;
+	public String c4p470_11esp = null;
+	public Integer c4p471 = null;
+	public Integer c4p472 = null;
+	public String c4p472_esp = null;
+	public Integer c4p474 = null;
+	public Integer c4p475_1 = null;
+	public Integer c4p475_2 = null;
+	public Integer c4p475_3 = null;
+	public Integer c4p475_4 = null;
+	public Integer c4p475_5 = null;
+	public Integer c4p475_6 = null;
+	public Integer c4p475_7 = null;
+	public Integer c4p475_8 = null;
+	public Integer c4p475_9 = null;
+	public Integer c4p475_10 = null;
+	public Integer c4p475_11 = null;
+	public Integer c4p475_12 = null;
+	public Integer c4p475_13 = null;
+	public Integer c4p475_14 = null;
+	public Integer c4p475_15 = null;
+	public Integer c4p475_16 = null;
+	public Integer c4p475_17 = null;
+	public String c4p475_17esp = null;
+	public Integer c4p475a = null;
+	public Integer c4p475b_1 = null;
+	public Integer c4p475b_2 = null;
+	public Integer c4p475b_3 = null;
+	public Integer c4p475b_4 = null;
+	public Integer c4p475b_5 = null;
+	public Integer c4p475b_6 = null;
+	public String c4p475b_6esp = null;
+	public Integer c4p475c_1 = null;
+	public Integer c4p475c_2 = null;
+	public Integer c4p475c_3 = null;
+	public Integer c4p475c_4 = null;
+	public Integer c4p475c_5 = null;
+	public Integer c4p475c_6 = null;
+	public Integer c4p475c_7 = null;
+	public Integer c4p475c_8 = null;
+	public Integer c4p475c_9 = null;
+	public Integer c4p475c_10 = null;
+	public Integer c4p475c_11 = null;
+	public String c4p475c_11esp = null;
+	public Integer c4p475d_a_1 = null;
+	public Integer c4p475d_a_2 = null;
+	public Integer c4p475d_a_3 = null;
+	public Integer c4p475d_a_4 = null;
+	public Integer c4p475d_a_5 = null;
+	public Integer c4p475d_a_6 = null;
+
+	public Moduloiv02() {
+	}
+
+	public Moduloiv02(Integer id) {
+		this.id = id;
+	}
+
+	@Override
+	public void cleanEntity() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean isTitle() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getPks() {
+		return "ID";
+	}
+
+	@Override
+	public String toString() {
+		return super.toString();
+	}
+	
+	@Override
+	public boolean equalsToPractice(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Moduloiv02)) {
+			return false;
+		}
+		if (this.id == null) {
+			return false;
+		}
+
+		Moduloiv02 other = (Moduloiv02) obj;
+		if (!this.id.equals(other.id) ) {
+			return false;
+		}
+		return true;
+	}
+}

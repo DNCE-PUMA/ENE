@@ -1,0 +1,1067 @@
+package gob.inei.ene2019v2.controller;
+
+import gob.inei.dnce.components.DialogComponent;
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.core.ZipFile;
+import gob.inei.dnce.exception.ZipException;
+import gob.inei.dnce.interfaces.Respondible;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.model.Caratula;
+import gob.inei.ene2019v2.model.ModuloIII_det;
+import gob.inei.ene2019v2.model.ModuloIXS;
+import gob.inei.ene2019v2.model.Moduloi;
+import gob.inei.ene2019v2.model.Moduloii;
+import gob.inei.ene2019v2.model.Moduloiii01;
+import gob.inei.ene2019v2.model.Moduloiii02;
+import gob.inei.ene2019v2.model.Moduloiv01;
+import gob.inei.ene2019v2.model.Moduloiv02;
+import gob.inei.ene2019v2.model.Moduloiv03;
+import gob.inei.ene2019v2.model.Moduloix;
+import gob.inei.ene2019v2.model.ModuloixDet01;
+import gob.inei.ene2019v2.model.ModuloixDet02;
+import gob.inei.ene2019v2.model.ModuloixDet03;
+import gob.inei.ene2019v2.model.Modulov01;
+import gob.inei.ene2019v2.model.Modulov02;
+import gob.inei.ene2019v2.model.Modulovi01;
+import gob.inei.ene2019v2.model.Modulovii01;
+import gob.inei.ene2019v2.model.Moduloviii;
+import gob.inei.ene2019v2.model.Nota;
+import gob.inei.ene2019v2.model.Parameter;
+import gob.inei.ene2019v2.model.Visita;
+import gob.inei.ene2019v2.service.CuestionarioService;
+import gob.inei.ene2019v2.service.MarcoService;
+import gob.inei.ene2019v2.service.ParameterService;
+import gob.inei.ene2019v2.service.SegmentacionService;
+import gob.inei.ene2019v2.service.UsuarioService;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.util.Xml;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+public class Calificaciones extends AsyncTask<String, String, String> implements
+		Respondible {
+	private Activity activity;
+	private ProgressDialog pDialog;
+
+	private List<Caratula> caratula;
+	private List<Visita> visitas;
+	private List<Moduloi> c100s;
+	private List<Moduloii> c200s;
+	private List<Moduloiii01> c300_1s;
+	private List<ModuloIII_det> c300_dets;
+	private List<Moduloiii02> c300_2s;
+	private List<Moduloiv01> c400_1s;
+	private List<Moduloiv02> c400_2s;
+	private List<Moduloiv03> c400_3s;
+	private List<Modulov01> c500_1s;
+	private List<Modulov02> c500_2s;
+	private List<Modulovi01> c600s;
+	private List<Modulovii01> c700s;
+	private List<Moduloviii> c800s;
+	private List<Moduloix> c900s;
+	private List<ModuloixDet01> c900_1s;
+	private List<ModuloixDet02> c900_2s;
+	private List<ModuloixDet03> c900_3s;	
+	private List<ModuloIXS> c900_4s;
+
+	private List<Nota> notas;
+	private Nota plantilla;
+	private BigDecimal puntajeTotal;
+	private BigDecimal base;
+
+	private String extensionArchivo;
+	private CuestionarioService cuestionarioService;
+	// private VisitaService visitaService;
+	private MarcoService marcoService;
+	private ParameterService parameterService;
+	private UsuarioService usuarioService;
+	private SegmentacionService segmentacionService;
+	private int cantidadUA = 0;
+	private int cantidadVisitas = 0;
+	private int cantidadCuestionario = 0;
+	private int cantidadUsuarios = 0;
+	private int cantidadParameters = 0;
+	private int cantidadSegmentacion = 0;
+	private int cantidadUAProcesados = 0;
+	private int cantidadCuestionarioProcesado = 0;
+	private int cantidadVisitasProcesado = 0;
+	private int cantidadUsuariosProcesados = 0;
+	private int cantidadParametersProcesados = 0;
+	private int cantidadSegmentacionProcesado = 0;
+
+	private static final String ns = null;
+	private String msg;
+	private String titulo;
+	private String rutaBase;
+	private List<File> archivos;
+	private List<Parameter> parameters;
+
+	private View reporte;
+
+	public Calificaciones(Activity activity, String titulo) {
+		super();
+		this.activity = activity;
+		this.titulo = titulo;
+	}
+
+	public List<File> getArchivos() {
+		return archivos;
+	}
+
+	public void setArchivos(List<File> archivos) {
+		this.archivos = archivos;
+	}
+
+	public void setRutaBase(String rutaBase) {
+		this.rutaBase = rutaBase;
+	}
+
+	public void setPlantilla(Nota plantilla) {
+		this.plantilla = plantilla;
+	}
+
+	public void setPuntajeTotal(BigDecimal puntajeTotal) {
+		this.puntajeTotal = puntajeTotal;
+	}
+
+	public void setBase(BigDecimal base) {
+		this.base = base;
+	}
+
+	protected void onPreExecute() {
+		super.onPreExecute();
+		pDialog = new ProgressDialog(this.activity);
+		pDialog.setMessage(titulo + " Por favor espere...");
+		pDialog.setIndeterminate(false);
+		pDialog.setCancelable(false);
+		pDialog.setMax(100);
+		pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		pDialog.setCancelable(false);
+		pDialog.show();
+	}
+
+	protected String doInBackground(String... args) {
+		try {
+			procesarXML();
+			crearReporte();
+			msg = "CALIFICACIÓN FINALIZADA CORRECTAMENTE.";
+		} catch (NullPointerException e) {
+			Log.e(this.getClass().toString(), e.getMessage(), e);
+			msg = "Error de ausencia de datos.";
+		} catch (SQLException e) {
+			Log.e(this.getClass().toString(), e.getMessage(), e);
+			msg = e.getMessage();
+		} catch (Exception e) {
+			Log.e(this.getClass().toString(), e.getMessage(), e);
+			msg = e.getMessage();
+		} finally {
+		}
+		return null;
+	}
+
+	@Override
+	protected void onProgressUpdate(String... progress) {
+		pDialog.setProgress(Integer.parseInt(progress[0]));
+	}
+
+	protected void onPostExecute(String file_url) {
+		pDialog.dismiss();
+		this.activity.runOnUiThread(new Runnable() {
+			public void run() {
+				DialogComponent dlg = new DialogComponent(activity,
+						Calificaciones.this,
+						DialogComponent.TIPO_DIALOGO.NEUTRAL, titulo, msg);
+				dlg.setView(reporte);
+				dlg.showDialog();
+			}
+		});
+	}
+
+//	private boolean grabarCuestionario(Nota nota, SQLiteDatabase dbTX)
+//			throws java.sql.SQLException {
+//		boolean flag = true;
+//		if (flag) {
+//			if (nota.c100 != null) {
+//				borrarCapitulo(dbTX, nota.c100);
+//				flag = grabarCapitulo(dbTX, nota.c100);
+//			} else {
+//				flag = true;
+//			}
+//		}
+//		if (flag) {
+//			if (nota.c200 != null) {
+//				borrarCapitulo(dbTX, nota.c200);
+//				flag = grabarCapitulo(dbTX, nota.c200);
+//			} else {
+//				flag = true;
+//			}
+//		}
+//		if (flag) {
+//			if (nota.c300_1 != null) {
+//				borrarCapitulo(dbTX, nota.c300_1);
+//				flag = grabarCapitulo(dbTX, nota.c300_1);
+//			} else {
+//				flag = true;
+//			}
+//		}
+//	
+//		if (flag) {
+//			if (nota.c300_det != null) {
+//				borrarCapitulo(dbTX, nota.c300_det.toArray());
+//				flag = grabarCapitulo(dbTX, nota.c300_det.toArray());
+//			} else {
+//				flag = true;
+//			}
+//		}
+//
+//		if (flag) {
+//			if (nota.c300_2 != null) {
+//				borrarCapitulo(dbTX, nota.c300_2);
+//				flag = grabarCapitulo(dbTX, nota.c300_2);
+//			} else {
+//				flag = true;
+//			}
+//		}
+//		if (flag) {
+//			if (nota.c400_1 != null) {
+//				borrarCapitulo(dbTX, nota.c400_1);
+//				flag = grabarCapitulo(dbTX, nota.c400_1);
+//			} else {
+//				flag = true;
+//			}
+//		}
+//		if (flag) {
+//			if (nota.c400_2 != null) {
+//				borrarCapitulo(dbTX, nota.c400_2);
+//				flag = grabarCapitulo(dbTX, nota.c400_2);
+//			} else {
+//				flag = true;
+//			}
+//		}
+//		if (flag) {
+//			if (nota.c400_3 != null) {
+//				borrarCapitulo(dbTX, nota.c400_3);
+//				flag = grabarCapitulo(dbTX, nota.c400_3);
+//			} else {
+//				flag = true;
+//			}
+//		}
+//		if (flag) {
+//			if (nota.c500_1 != null) {
+//				borrarCapitulo(dbTX, nota.c500_1);
+//				flag = grabarCapitulo(dbTX, nota.c500_1);
+//			} else {
+//				flag = true;
+//			}
+//		}
+//		if (flag) {
+//			if (nota.c500_2 != null) {
+//				borrarCapitulo(dbTX, nota.c500_2);
+//				flag = grabarCapitulo(dbTX, nota.c500_2);
+//			} else {
+//				flag = true;
+//			}
+//		}
+//		if (flag) {
+//			if (nota.c600 != null) {
+//				borrarCapitulo(dbTX, nota.c600);
+//				flag = grabarCapitulo(dbTX, nota.c600);
+//			} else {
+//				flag = true;
+//			}
+//		}
+//		if (flag) {
+//			if (nota.c700 != null) {
+//				borrarCapitulo(dbTX, nota.c700);
+//				flag = grabarCapitulo(dbTX, nota.c700);
+//			} else {
+//				flag = true;
+//			}
+//		}
+//		if (flag) {
+//			if (nota.c800 != null) {
+//				borrarCapitulo(dbTX, nota.c800);
+//				flag = grabarCapitulo(dbTX, nota.c800);
+//			} else {
+//				flag = true;
+//			}
+//		}
+//		if (flag) {
+//			if (nota.c900 != null) {
+//				borrarCapitulo(dbTX, nota.c900);
+//				flag = grabarCapitulo(dbTX, nota.c900);
+//			} else {
+//				flag = true;
+//			}
+//		}
+//		if (flag) {
+//			if (nota.c900_1 != null) {
+//				borrarCapitulo(dbTX, nota.c900_1.toArray());
+//				flag = grabarCapitulo(dbTX, nota.c900_1.toArray());
+//			} else {
+//				flag = true;
+//			}
+//		}
+//
+//		if (flag) {
+//			if (nota.c900_2 != null) {
+//				borrarCapitulo(dbTX, nota.c900_2.toArray());
+//				flag = grabarCapitulo(dbTX, nota.c900_2.toArray());
+//			} else {
+//				flag = true;
+//			}
+//		}
+//		if (flag) {
+//			if (nota.c900_3 != null) {
+//				borrarCapitulo(dbTX, nota.c900_3.toArray());
+//				flag = grabarCapitulo(dbTX, nota.c900_3.toArray());
+//			} else {
+//				flag = true;
+//			}
+//		}
+//		if (flag) {
+//			if (nota.c900_4 != null) {
+//				borrarCapitulo(dbTX, nota.c900_4.toArray());
+//				flag = grabarCapitulo(dbTX, nota.c900_4.toArray());
+//			} else {
+//				flag = true;
+//			}
+//		}
+//
+//		return flag;
+//	}
+
+	private <T> boolean borrarCapitulo(SQLiteDatabase dbTX, T[] beans)
+			throws java.sql.SQLException {
+		if (beans == null) {
+			return true;
+		}
+		if (beans.length == 0) {
+			return true;
+		}
+		boolean flag = true;
+		for (T b : beans) {
+			if (borrarCapitulo(dbTX, (Entity) b)) {
+				flag = false;
+				break;
+			}
+		}
+		return flag;
+	}
+
+	private <T> boolean borrarCapitulo(SQLiteDatabase dbTX, Entity bean)
+			throws java.sql.SQLException {
+		if (bean == null) {
+			return true;
+		}
+		boolean flag = true;
+//		if (!getCuestionarioService().delete((bean), dbTX)) {
+//			flag = false;
+//		}
+		Log.e("ENTROOOO a ELIMINAAAAAAAR ", "" +bean.id);
+		if (!getCuestionarioService().borrarCapitulos(bean.id, "MODULOI",
+				"MODULOII", "MODULOIII01", "MODULOIII_DET", "MODULOIII02", "MODULOIV01",
+				"MODULOIV02", "MODULOIV03", "MODULOV01", "MODULOV02",
+				"MODULOVI01", "MODULOVII01", "MODULOVIII", "MODULOIX",
+				"MODULOIXDET01", "MODULOIXDET02", "MODULOIXDET03", "MODULOIXS")) {
+			flag = false;
+		}
+
+		return flag;
+	}
+
+	private <T> boolean grabarCapitulo(SQLiteDatabase dbTX, T[] beans)
+			throws java.sql.SQLException {
+		if (beans == null) {
+			return true;
+		}
+		if (beans.length == 0) {
+			return true;
+		}
+		boolean flag = true;
+		for (T b : beans) {
+			if (!grabarCapitulo(dbTX, b)) {
+				flag = false;
+				break;
+			}
+			cantidadCuestionarioProcesado += 1;
+			calcularPorcentajeProcesado();
+		}
+		return flag;
+	}
+
+	private <T> boolean grabarCapitulo(SQLiteDatabase dbTX, T bean)
+			throws java.sql.SQLException {
+		if (bean == null) {
+			return true;
+		}
+		boolean flag = true;
+		if (!getCuestionarioService().saveOrUpdate((Entity) bean, dbTX)) {
+			flag = false;
+		}
+		cantidadCuestionarioProcesado += 1;
+		calcularPorcentajeProcesado();
+		return flag;
+	}
+
+	private void procesarXML() throws Exception {
+		InputStream in = null;
+		this.notas = new ArrayList<Nota>();
+		try {
+			File carpetaTemporal = null;
+			File xml;
+			for (File archivo : archivos) {
+				extensionArchivo = archivo.getName().substring(
+						archivo.getName().length() - 3,
+						archivo.getName().length());
+				if (extensionArchivo.equals("zip")) {
+					extensionArchivo = "xml";
+					String rutaCarpeta = archivo.getAbsolutePath().replace(
+							archivo.getName(), "");
+					carpetaTemporal = new File(rutaCarpeta + "tmp");
+					if (!carpetaTemporal.exists()) {
+						carpetaTemporal.mkdirs();
+					}
+					
+					try {
+				         ZipFile zipFile = new ZipFile(archivo.getAbsolutePath());
+				         if (zipFile.isEncrypted()) {
+				            zipFile.setPassword(App.BOARGINGPASS);
+				         }
+				         zipFile.extractAll(carpetaTemporal.getAbsolutePath());
+				         
+				    } catch (ZipException e) {
+				        e.printStackTrace();
+				    }
+					
+//					gob.inei.dnce.util.Util.unzip(archivo.getAbsolutePath(),
+//							carpetaTemporal.getAbsolutePath());
+					String rutaXML = carpetaTemporal.getAbsolutePath()
+							+ File.separator
+							+ archivo.getName().replace("zip", "xml");
+					xml = new File(rutaXML);
+					if (!xml.exists()) {
+						extensionArchivo = "cfg";
+						rutaXML = carpetaTemporal.getAbsolutePath()
+								+ File.separator
+								+ archivo.getName().replace("zip", "cfg");
+						xml = new File(rutaXML);
+						if (!xml.exists()) {
+							throw new Exception(
+									"Error al descomprimir archivo.");
+						}
+					}
+				} else {
+					xml = archivo;
+				}
+				in = new FileInputStream(xml);
+				XmlPullParser parser = Xml.newPullParser();
+				parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES,
+						false);
+				parser.setInput(in, null);
+				parser.nextTag();
+				leerXML(parser);
+				Nota nota = new Nota();
+				int index = archivo.getPath().indexOf(rutaBase);
+				if (index == -1)
+					index = 19;
+				nota.alumno = archivo.getPath().substring(index);
+				if (caratula != null && caratula.size() > 0) {
+					nota.id = caratula.get(0);
+				}
+				if (c100s != null && c100s.size() > 0) {
+					nota.c100 = c100s.get(0);
+				}
+				if (c200s != null && c200s.size() > 0) {
+					nota.c200 = c200s.get(0);
+				}
+				if (c300_1s != null && c300_1s.size() > 0) {
+					nota.c300_1 = c300_1s.get(0);
+				}
+				if (c300_dets != null && c300_dets.size() > 0) {
+					nota.c300_det = c300_dets;
+				}
+				if (c300_2s != null && c300_2s.size() > 0) {
+					nota.c300_2 = c300_2s.get(0);
+				}
+				if (c400_1s != null && c400_1s.size() > 0) {
+					nota.c400_1 = c400_1s.get(0);
+				}
+				if (c400_2s != null && c400_2s.size() > 0) {
+					nota.c400_2 = c400_2s.get(0);
+				}
+				if (c400_3s != null && c400_3s.size() > 0) {
+					nota.c400_3 = c400_3s.get(0);
+				}
+				if (c500_1s != null && c500_1s.size() > 0) {
+					nota.c500_1 = c500_1s.get(0);
+				}
+				if (c500_2s != null && c500_2s.size() > 0) {
+					nota.c500_2 = c500_2s.get(0);
+				}
+				if (c600s != null && c600s.size() > 0) {
+					nota.c600 = c600s.get(0);
+				}
+				if (c700s != null && c700s.size() > 0) {
+					nota.c700 = c700s.get(0);
+				}
+				if (c800s != null && c800s.size() > 0) {
+					nota.c800 = c800s.get(0);
+				}
+				if (c900s != null && c900s.size() > 0) {
+					nota.c900 = c900s.get(0);
+				}
+				if (c900_1s != null && c900_1s.size() > 0) {
+					nota.c900_1 = c900_1s;
+				}
+
+				if (c900_2s != null && c900_2s.size() > 0) {
+					nota.c900_2 = c900_2s;
+				}
+				if (c900_3s != null && c900_3s.size() > 0) {
+					nota.c900_3 = c900_3s;
+				}
+				if (c900_4s != null && c900_4s.size() > 0) {
+					nota.c900_4 = c900_4s;
+				}
+
+		//		grabarNota(nota);
+				nota.calificar(puntajeTotal, base, plantilla);
+				Log.e ("puntajetotal" , puntajeTotal +"");
+				Log.e ("base" , base +"");
+				Log.e ("plantilla" , plantilla +"");
+				if (nota.getNota().compareTo(new BigDecimal("20")) > 0) {
+					nota.setNota("20");
+				}
+				this.notas.add(nota);
+				limpiarObjetos();
+			}
+			if (carpetaTemporal != null) {
+				if (carpetaTemporal.exists()) {
+					gob.inei.dnce.util.Util.deleteRecursive(carpetaTemporal);
+				}
+			}
+		} catch (FileNotFoundException e) {
+			Log.e(this.getClass().toString(), e.getMessage(), e);
+			throw new Exception("El archivo no pudo ser encontrado.");
+		} catch (XmlPullParserException e) {
+			Log.e(this.getClass().toString(), e.getMessage(), e);
+			throw new Exception("El archivo no pudo ser cargado.");
+		} catch (IOException e) {
+			throw new Exception("El archivo no pudo ser leido.");
+		} catch (IllegalArgumentException e) {
+			Log.e(this.getClass().toString(), e.getMessage(), e);
+			throw new Exception(
+					"No se pudo cargar los datos en la Base de Datos.");
+		} catch (IllegalAccessException e) {
+			Log.e(this.getClass().toString(), e.getMessage(), e);
+		} finally {
+			try {
+				in.close();
+			} catch (IOException e) {
+				Log.e(this.getClass().toString(), e.getMessage(), e);
+			}
+		}
+	}
+
+//	private void grabarNota(Nota nota) throws java.sql.SQLException {
+//		boolean flag = true;
+//
+//		Log.e("MARICAAAAAAAAAAAAAAAAAAAAAAA ", "" + flag);
+//		SQLiteDatabase dbTX = getMarcoService().startTX();
+//		if (!getCuestionarioService().saveOrUpdate(nota.id, dbTX)) {
+//			flag = false;
+//		}
+//		cantidadUAProcesados += 1;
+//		calcularPorcentajeProcesado();
+//		if (flag) {
+//			flag = grabarCuestionario(nota, dbTX);
+//		}
+//		if (flag) {
+//			getMarcoService().commitTX(dbTX);
+//		}
+//		getMarcoService().endTX(dbTX);
+//	}
+
+	private void limpiarObjetos() {
+		caratula = null;
+		visitas = null;
+		c100s = null;
+		c200s = null;
+		c300_1s = null;
+		c300_dets = null;
+		c300_2s = null;
+		c400_1s = null;
+		c400_2s = null;
+		c500_1s = null;
+		c500_2s = null;
+		c600s = null;
+		c700s = null;
+		c800s = null;
+		c900s = null;
+		c900_1s = null;
+		c900_2s = null;
+		c900_3s = null;
+		c900_4s = null;
+	}
+
+	private void skip(XmlPullParser parser) throws XmlPullParserException,
+			IOException {
+		if (parser.getEventType() != XmlPullParser.START_TAG) {
+			throw new IllegalStateException();
+		}
+		int depth = 1;
+		while (depth != 0) {
+			switch (parser.next()) {
+			case XmlPullParser.END_TAG:
+				depth--;
+				break;
+			case XmlPullParser.START_TAG:
+				depth++;
+				break;
+			}
+		}
+	}
+
+	private void leerXML(XmlPullParser parser) throws XmlPullParserException,
+			IOException, IllegalArgumentException, IllegalAccessException,
+			InstantiationException, InvocationTargetException,
+			NoSuchMethodException {
+		String proyecto = this.activity.getResources().getString(
+				gob.inei.ene2019v2.R.string.app_name);
+		parser.require(XmlPullParser.START_TAG, ns, proyecto);
+		
+
+		
+		
+		while (parser.next() != XmlPullParser.END_TAG) {
+			if (parser.getEventType() != XmlPullParser.START_TAG) {
+				continue;
+			}
+			String name = parser.getName();
+			if (name.equals("Caratula")) {
+				cantidadUA = (Integer.parseInt(parser.getAttributeValue(0))) * 2;
+				caratula = new ArrayList<Caratula>();
+				leer(parser, Caratula.class, caratula, "Caratula", "T_05_DIG_CARATULA");
+				
+			} else if (name.equals("Visita")) {
+				cantidadVisitas = (Integer
+						.parseInt(parser.getAttributeValue(0))) * 2;
+				visitas = new ArrayList<Visita>();
+				leer(parser, Visita.class, visitas, "Visita", "T_05_DIG_VISITA");
+
+			} else if (name.equals("Moduloi")) {
+				cantidadCuestionario = cantidadCuestionario
+						+ Integer.parseInt(parser.getAttributeValue(0)) * 2;
+				c100s = new ArrayList<Moduloi>();
+				leer(parser, Moduloi.class, c100s, "Moduloi",
+						"T_05_DIG_MODULOI");
+
+			} else if (name.equals("Moduloii")) {
+				cantidadCuestionario = Integer.parseInt(parser
+						.getAttributeValue(0)) * 2;
+				c200s = new ArrayList<Moduloii>();
+				leer(parser, Moduloii.class, c200s, "Moduloii",
+						"T_05_DIG_MODULOII");
+
+			} else if (name.equals("Moduloiii01")) {
+				cantidadCuestionario = cantidadCuestionario
+						+ Integer.parseInt(parser.getAttributeValue(0)) * 2;
+				c300_1s = new ArrayList<Moduloiii01>();
+				leer(parser, Moduloiii01.class, c300_1s, "Moduloiii01",
+						"T_05_DIG_MODULOIII01");
+
+			}  else if (name.equals("ModuloIII_det")) {
+				cantidadCuestionario = cantidadCuestionario
+						+ Integer.parseInt(parser.getAttributeValue(0)) * 2;
+				c300_dets = new ArrayList<ModuloIII_det>();
+				leer(parser, ModuloIII_det.class, c300_dets, "ModuloIII_det",
+						"T_05_DIG_MODULOIII_DET");
+				
+			}else if (name.equals("Moduloiii02")) {
+				cantidadCuestionario = cantidadCuestionario
+						+ Integer.parseInt(parser.getAttributeValue(0)) * 2;
+				c300_2s = new ArrayList<Moduloiii02>();
+				leer(parser, Moduloiii02.class, c300_2s, "Moduloiii02",
+						"T_05_DIG_MODULOIII02");
+
+			} else if (name.equals("Moduloiv01")) {
+				cantidadCuestionario = cantidadCuestionario
+						+ Integer.parseInt(parser.getAttributeValue(0)) * 2;
+				c400_1s = new ArrayList<Moduloiv01>();
+				leer(parser, Moduloiv01.class, c400_1s, "Moduloiv01",
+						"T_05_DIG_MODULOIV01");
+
+			} else if (name.equals("Moduloiv02")) {
+				cantidadCuestionario = cantidadCuestionario
+						+ Integer.parseInt(parser.getAttributeValue(0)) * 2;
+				c400_2s = new ArrayList<Moduloiv02>();
+				leer(parser, Moduloiv02.class, c400_2s, "Moduloiv02",
+						"T_05_DIG_MODULOIV02");
+
+			} else if (name.equals("Moduloiv03")) {
+				cantidadCuestionario = cantidadCuestionario
+						+ Integer.parseInt(parser.getAttributeValue(0)) * 2;
+				c400_3s = new ArrayList<Moduloiv03>();
+				leer(parser, Moduloiv03.class, c400_3s, "Moduloiv03",
+						"T_05_DIG_MODULOIV03");
+				
+			} else if (name.equals("Modulov01")) {
+				cantidadCuestionario = cantidadCuestionario
+						+ Integer.parseInt(parser.getAttributeValue(0)) * 2;
+				c500_1s = new ArrayList<Modulov01>();
+				leer(parser, Modulov01.class, c500_1s, "Modulov01",
+						"T_05_DIG_MODULOV01");
+
+			} else if (name.equals("Modulov02")) {
+				cantidadCuestionario = cantidadCuestionario
+						+ Integer.parseInt(parser.getAttributeValue(0)) * 2;
+				c500_2s = new ArrayList<Modulov02>();
+				leer(parser, Modulov02.class, c500_2s, "Modulov02",
+						"T_05_DIG_MODULOV02");
+
+			} else if (name.equals("Modulovi01")) {
+				cantidadCuestionario = cantidadCuestionario
+						+ Integer.parseInt(parser.getAttributeValue(0)) * 2;
+				c600s = new ArrayList<Modulovi01>();
+				leer(parser, Modulovi01.class, c600s, "Modulovi01",
+						"T_05_DIG_MODULOVI01");
+
+			} else if (name.equals("Modulovii01")) {
+				cantidadCuestionario = cantidadCuestionario
+						+ Integer.parseInt(parser.getAttributeValue(0)) * 2;
+				c700s = new ArrayList<Modulovii01>();
+				leer(parser, Modulovii01.class, c700s, "Modulovii01",
+						"T_05_DIG_MODULOVII01");
+
+			} else if (name.equals("Moduloviii")) {
+				cantidadCuestionario = cantidadCuestionario
+						+ Integer.parseInt(parser.getAttributeValue(0)) * 2;
+				c800s = new ArrayList<Moduloviii>();
+				leer(parser, Moduloviii.class, c800s, "Moduloviii",
+						"T_05_DIG_MODULOVIII");
+
+			} else if (name.equals("Moduloix")) {
+				cantidadCuestionario = cantidadCuestionario
+						+ Integer.parseInt(parser.getAttributeValue(0)) * 2;
+				c900s = new ArrayList<Moduloix>();
+				leer(parser, Moduloix.class, c900s, "Moduloix",
+						"T_05_DIG_MODULOIX");
+
+			} else if (name.equals("ModuloixDet01")) {
+				cantidadCuestionario = cantidadCuestionario
+						+ Integer.parseInt(parser.getAttributeValue(0)) * 2;
+				c900_1s = new ArrayList<ModuloixDet01>();
+				leer(parser, ModuloixDet01.class, c900_1s, "ModuloixDet01",
+						"T_05_DIG_MODULOIX_DET01");
+
+			} else if (name.equals("ModuloixDet02")) {
+				cantidadCuestionario = cantidadCuestionario
+						+ Integer.parseInt(parser.getAttributeValue(0)) * 2;
+				c900_2s = new ArrayList<ModuloixDet02>();
+				leer(parser, ModuloixDet02.class, c900_2s, "ModuloixDet02",
+						"T_05_DIG_MODULOIX_DET02");
+
+			} else if (name.equals("ModuloixDet03")) {
+				cantidadCuestionario = cantidadCuestionario
+						+ Integer.parseInt(parser.getAttributeValue(0)) * 2;
+				c900_3s = new ArrayList<ModuloixDet03>();
+				leer(parser, ModuloixDet03.class, c900_3s, "ModuloixDet03",
+						"T_05_DIG_MODULOIX_DET03");
+
+			} else if (name.equals("ModuloIXS")) {
+				cantidadCuestionario = cantidadCuestionario
+						+ Integer.parseInt(parser.getAttributeValue(0)) * 2;
+				c900_4s = new ArrayList<ModuloIXS>();
+				leer(parser, ModuloIXS.class, c900_4s, "ModuloIXS",
+						"T_05_DIG_MODULOIX_DET04");
+
+			} else {
+				skip(parser);
+			}
+		}
+	}
+
+	private void leer(XmlPullParser parser, Class<?> clase, List beans,
+			String agrupacion, String item) throws XmlPullParserException,
+			IOException, IllegalArgumentException, IllegalAccessException,
+			InstantiationException, InvocationTargetException,
+			NoSuchMethodException {
+		// parser.require(XmlPullParser.START_TAG, ns, "usuarios");
+		parser.require(XmlPullParser.START_TAG, ns, agrupacion);
+		while (parser.next() != XmlPullParser.END_TAG) {
+			if (parser.getEventType() != XmlPullParser.START_TAG) {
+				continue;
+			}
+			String name = parser.getName();
+			Entity o = null;
+			// Starts by looking for the item tag
+			if (name.equals(item)) {
+				o = (Entity) leer(parser, clase, o, item);
+				if (o != null) {
+					beans.add(o);
+				}
+				if ("Caratula".equals(agrupacion)) {
+					cantidadUAProcesados += 1;
+				} else if ("Caratula".equals(agrupacion)) {
+					cantidadVisitasProcesado += 1;
+				} else if ("Caratula".equals(agrupacion)) {
+					cantidadVisitasProcesado += 1;
+				} else if (agrupacion.startsWith("C")) {
+					cantidadCuestionarioProcesado += 1;
+				} else if ("Usuario".equals(agrupacion)) {
+					cantidadUsuariosProcesados += 1;
+				} else if ("Segmentacion".equals(agrupacion)) {
+					cantidadSegmentacionProcesado += 1;
+				} else if ("Parameter".equals(agrupacion)) {
+					cantidadParametersProcesados += 1;
+				}
+				calcularPorcentajeProcesado();
+			} else {
+				skip(parser);
+			}
+		}
+	}
+
+	private Object leer(XmlPullParser parser, Class<?> clase, Object bean,
+			String item) throws XmlPullParserException, IOException,
+			IllegalArgumentException, IllegalAccessException,
+			InstantiationException, InvocationTargetException,
+			NoSuchMethodException {
+		// parser.require(XmlPullParser.START_TAG, ns, "T_RURAL_USUARIO");
+		parser.require(XmlPullParser.START_TAG, ns, item);
+		bean = clase.getConstructor().newInstance();
+		while (parser.next() != XmlPullParser.END_TAG) {
+			if (parser.getEventType() != XmlPullParser.START_TAG) {
+				continue;
+			}
+			Field[] propiedades = bean.getClass().getFields();
+			String name = parser.getName();
+			String val = null;
+			for (int i = 0; i < propiedades.length; i++) {
+				if (propiedades[i].getName().compareToIgnoreCase(name) == 0) {
+					val = readTag(parser, name);
+					if ("".equals(val)) {
+						propiedades[i].set(bean, null);
+					} else if (propiedades[i].getType() == String.class) {
+						propiedades[i].set(bean, val);
+					} else if (propiedades[i].getType() == Integer.class) {
+						propiedades[i].set(bean, Integer.valueOf(val));
+					} else if (propiedades[i].getType() == BigDecimal.class) {
+						propiedades[i].set(bean, new BigDecimal(val));
+					} else {
+						propiedades[i].set(bean, null);
+					}
+					break;
+				}
+			}
+			if (val == null) {
+				skip(parser);
+			}
+		}
+		return bean;
+	}
+
+	private String readTag(XmlPullParser parser, String tag)
+			throws IOException, XmlPullParserException {
+		parser.require(XmlPullParser.START_TAG, ns, tag);
+		String contenido = readText(parser);
+		parser.require(XmlPullParser.END_TAG, ns, tag);
+		return contenido;
+	}
+
+	// For the tags title and summary, extracts their text values.
+	private String readText(XmlPullParser parser) throws IOException,
+			XmlPullParserException {
+		String result = "";
+		if (parser.next() == XmlPullParser.TEXT) {
+			result = parser.getText();
+			parser.nextTag();
+		}
+		return result;
+	}
+
+	private CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService.getInstance(this.activity
+					.getApplicationContext());
+		}
+		return cuestionarioService;
+	}
+
+	private MarcoService getMarcoService() {
+		if (marcoService == null) {
+			marcoService = MarcoService.getInstance(this.activity
+					.getApplicationContext());
+		}
+		return marcoService;
+	}
+
+	private ParameterService getParameterService() {
+		if (parameterService == null) {
+			parameterService = ParameterService.getInstance(this.activity
+					.getApplicationContext());
+		}
+		return parameterService;
+	}
+
+	private UsuarioService getUsuarioService() {
+		if (usuarioService == null) {
+			usuarioService = UsuarioService.getInstance(this.activity
+					.getApplicationContext());
+		}
+		return usuarioService;
+	}
+
+	private SegmentacionService getSegmentacionService() {
+		if (segmentacionService == null) {
+			segmentacionService = SegmentacionService.getInstance(this.activity
+					.getApplicationContext());
+		}
+		return segmentacionService;
+	}
+
+	private void calcularPorcentajeProcesado() {
+		int procesado = 40;
+//		if (cantidadUA == cantidadUAProcesados) {
+//			procesado += 10;
+//		} else {
+//			int tmp = cantidadUAProcesados;
+//			procesado += ((tmp * 100) / cantidadUA) * 0.10;
+//		}
+//		if (cantidadVisitas == cantidadVisitasProcesado) {
+//			procesado += 10;
+//		} else {
+//			int tmp = cantidadVisitasProcesado;
+//			procesado += ((tmp * 100) / cantidadVisitas) * 0.10;
+//		}
+		if (cantidadCuestionario == cantidadCuestionarioProcesado) {
+			procesado += 10;
+		} else {
+			int tmp = cantidadCuestionarioProcesado;
+			procesado += ((tmp * 100) / cantidadCuestionario) * 0.10;
+		}
+		if (cantidadParameters == cantidadParametersProcesados) {
+			procesado += 10;
+		} else {
+			int tmp = cantidadParametersProcesados;
+			procesado += ((tmp * 100) / cantidadParameters) * 0.10;
+		}
+		if (cantidadUsuarios == cantidadUsuariosProcesados) {
+			procesado += 10;
+		} else {
+			int tmp = cantidadUsuariosProcesados;
+			procesado += ((tmp * 100) / cantidadUsuarios) * 0.10;
+		}
+		if (cantidadSegmentacion == cantidadSegmentacionProcesado) {
+			procesado += 10;
+		} else {
+			int tmp = cantidadSegmentacionProcesado;
+			procesado += ((tmp * 100) / cantidadSegmentacionProcesado) * 0.10;
+		}
+		publishProgress(String.valueOf(procesado));
+	}
+
+	@Override
+	public void onCancel() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onAccept() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void crearReporte() {
+		LayoutInflater inflater = (LayoutInflater) activity
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		reporte = inflater
+				.inflate(gob.inei.ene2019v2.R.layout.notas, null, false);
+		ListView listView = (ListView) reporte
+				.findViewById(gob.inei.ene2019v2.R.id.lst_notas);
+		NotasAdapter adapter = new NotasAdapter(activity, this.notas);
+		listView.setAdapter(adapter);
+		listView.setOnTouchListener(new ListViewOnTouchListener(true));
+	}
+
+	public class ListViewOnTouchListener implements OnTouchListener {
+		private boolean activated;
+
+		public ListViewOnTouchListener() {
+			this(true);
+		}
+
+		public ListViewOnTouchListener(boolean activated) {
+			this.activated = activated;
+		}
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			v.getParent().requestDisallowInterceptTouchEvent(activated);
+			return false;
+		}
+
+	}
+
+	private class NotasAdapter extends ArrayAdapter<Nota> {
+
+		private List<Nota> filas;
+
+		public NotasAdapter(Context context, List<Nota> objects) {
+			super(context, gob.inei.ene2019v2.R.layout.notas_row, objects);
+			filas = new ArrayList<Nota>();
+			filas.addAll(objects);
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View view;
+			if (convertView == null) {
+				LayoutInflater inflator = (LayoutInflater) getContext()
+						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				view = inflator.inflate(gob.inei.ene2019v2.R.layout.notas_row,
+						null);
+			} else {
+				view = convertView;
+			}
+			TextView txtArchivo = (TextView) view
+					.findViewById(gob.inei.ene2019v2.R.id.tvNOTA_ARCHIVO);
+			TextView txtNota = (TextView) view
+					.findViewById(gob.inei.ene2019v2.R.id.tvNOTA_NOTA);
+			txtArchivo.setText(Util.getText(filas.get(position).alumno));
+			txtNota.setText(Util.getText(filas.get(position).getNota()));
+			return view;
+		}
+
+	}
+}

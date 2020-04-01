@@ -1,0 +1,404 @@
+package gob.inei.ene2019v2.fragment.ModV;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.components.CheckBoxField;
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.GridComponent2;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.MasterActivity;
+import gob.inei.dnce.components.RadioGroupOtherField;
+import gob.inei.dnce.components.RadioGroupOtherField.ORIENTATION;
+import gob.inei.dnce.components.TextField;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.model.Modulov01;
+import gob.inei.ene2019v2.service.CuestionarioService;
+
+import java.sql.SQLException;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
+
+public class Mod_V_Fragment_003 extends FragmentForm {
+
+	@FieldAnnotation(orderIndex = 1)
+	public CheckBoxField chbC5P507_1;
+	@FieldAnnotation(orderIndex = 2)
+	public CheckBoxField chbC5P507_2;
+	@FieldAnnotation(orderIndex = 3)
+	public CheckBoxField chbC5P507_3;
+	@FieldAnnotation(orderIndex = 4)
+	public CheckBoxField chbC5P507_4;
+	@FieldAnnotation(orderIndex = 5)
+	public CheckBoxField chbC5P507_5;
+	@FieldAnnotation(orderIndex = 6)
+	public CheckBoxField chbC5P507_6;
+	@FieldAnnotation(orderIndex = 7)
+	public CheckBoxField chbC5P507_7;
+	@FieldAnnotation(orderIndex = 8)
+	public CheckBoxField chbC5P507_8;
+	@FieldAnnotation(orderIndex = 9)
+	public CheckBoxField chbC5P507_9;
+	@FieldAnnotation(orderIndex = 10)
+	public CheckBoxField chbC5P507_10;
+	@FieldAnnotation(orderIndex = 11)
+	public CheckBoxField chbC5P507_11;
+	@FieldAnnotation(orderIndex = 12)
+	public CheckBoxField chbC5P507_12;
+	@FieldAnnotation(orderIndex = 13)
+	public CheckBoxField chbC5P507_13;
+	@FieldAnnotation(orderIndex = 14)
+	public CheckBoxField chbC5P507_14;
+	@FieldAnnotation(orderIndex = 15)
+	public CheckBoxField chbC5P507_15;
+	@FieldAnnotation(orderIndex = 16)
+	public TextField txtC5P507_15ESP;
+	@FieldAnnotation(orderIndex = 17)
+	public RadioGroupOtherField rgC5P508;
+	@FieldAnnotation(orderIndex = 18)
+	public CheckBoxField chbC5P509_1;
+	@FieldAnnotation(orderIndex = 19)
+	public CheckBoxField chbC5P509_2;
+	@FieldAnnotation(orderIndex = 20)
+	public CheckBoxField chbC5P509_3;
+	@FieldAnnotation(orderIndex = 21)
+	public CheckBoxField chbC5P509_4;
+	@FieldAnnotation(orderIndex = 22)
+	public CheckBoxField chbC5P509_5;
+	@FieldAnnotation(orderIndex = 23)
+	public CheckBoxField chbC5P509_6;
+	@FieldAnnotation(orderIndex = 24)
+	public CheckBoxField chbC5P509_7;
+	@FieldAnnotation(orderIndex = 25)
+	public TextField txtC5P509_7ESP;
+
+	private CuestionarioService cuestionarioService;
+	private Modulov01 bean;
+	private LabelComponent lblTitulo, lblsubTitulo, lblDesc;
+	private GridComponent2 grEspe, grEspe2;
+	LinearLayout q0, q1, q2, q3, q4, q5;
+
+	public Mod_V_Fragment_003() {
+	}
+
+	public Mod_V_Fragment_003 parent(MasterActivity parent) {
+		this.parent = parent;
+		return this;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = createUI();
+		initObjectsWithoutXML(this, rootView);
+		enlazarCajas();
+		listening();
+
+		return rootView;
+	}
+
+	@Override
+	protected void buildFields() {
+		lblTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.CapituloV).textSize(21).centrar().negrita();
+
+		lblsubTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.CapV_SecI).textSize(20).centrar().negrita();
+
+		chbC5P507_1 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p007_1, "1:0").size(altoComponente, 600);
+		chbC5P507_2 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p007_2, "1:0").size(altoComponente, 600);
+		chbC5P507_3 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p007_3, "1:0").size(altoComponente, 600);
+		chbC5P507_4 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p007_4, "1:0").size(altoComponente, 600);
+		chbC5P507_5 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p007_5, "1:0").size(altoComponente, 600);
+		chbC5P507_6 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p007_6, "1:0").size(altoComponente, 600);
+		chbC5P507_7 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p007_7, "1:0").size(altoComponente, 600);
+		chbC5P507_8 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p007_8, "1:0").size(altoComponente, 600);
+		chbC5P507_9 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p007_9, "1:0").size(altoComponente, 600);
+		chbC5P507_10 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p007_10, "1:0").size(altoComponente, 600);
+		chbC5P507_11 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p007_11, "1:0").size(altoComponente, 600);
+		chbC5P507_12 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p007_12, "1:0").size(altoComponente, 600);
+		chbC5P507_13 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p007_13, "1:0").size(altoComponente, 600);
+		chbC5P507_14 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p007_14, "1:0").size(altoComponente, 600);
+		chbC5P507_15 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p007_15, "1:0").size(altoComponente, 150)
+				.callback("FuncionCHECK507");
+		txtC5P507_15ESP = new TextField(this.getActivity(), false)
+				.size(altoComponente, 450).hint(R.string.especifique)
+				.soloTextoNumero();
+		rgC5P508 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m5p008_1, R.string.c1c100m5p008_2)
+				.size(WRAP_CONTENT, 180).orientation(ORIENTATION.HORIZONTAL)
+				.callback("FuncionRG508");
+
+		chbC5P509_1 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p009_1, "1:0").size(altoComponente, 600);
+		chbC5P509_2 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p009_2, "1:0").size(altoComponente, 600);
+		chbC5P509_3 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p009_3, "1:0").size(altoComponente, 600);
+		chbC5P509_4 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p009_4, "1:0").size(altoComponente, 600);
+		chbC5P509_5 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p009_5, "1:0").size(altoComponente, 600);
+		chbC5P509_6 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p009_6, "1:0").size(altoComponente, 600);
+		chbC5P509_7 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m5p009_7, "1:0").size(altoComponente, 150)
+				.callback("FuncionCHECK509");
+		txtC5P509_7ESP = new TextField(this.getActivity(), false)
+				.size(altoComponente, 450).hint(R.string.especifique)
+				.soloTextoNumero();
+
+		grEspe = new GridComponent2(this.getActivity(), 2)
+				.colorFondo(R.color.transparent);
+		grEspe.addComponent(chbC5P507_15);
+		grEspe.addComponent(txtC5P507_15ESP);
+
+		grEspe2 = new GridComponent2(this.getActivity(), 2)
+				.colorFondo(R.color.transparent);
+		grEspe2.addComponent(chbC5P509_7);
+		grEspe2.addComponent(txtC5P509_7ESP);
+
+		Filtros.setFiltro(txtC5P507_15ESP, Filtros.TIPO.ALFAN_U, 300, null);
+		Filtros.setFiltro(txtC5P509_7ESP, Filtros.TIPO.ALFAN_U, 300, null);
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+
+		q0 = createQuestionSection(lblTitulo, lblsubTitulo);
+		q1 = createQuestionSection(R.string.c1c100m5p007, chbC5P507_1,
+				chbC5P507_2, chbC5P507_3, chbC5P507_4, chbC5P507_5,
+				chbC5P507_6, chbC5P507_7, chbC5P507_8, chbC5P507_9,
+				chbC5P507_10, chbC5P507_11, chbC5P507_12, chbC5P507_13,
+				chbC5P507_14, grEspe.component());
+		q2 = createQuestionSection(R.string.c1c100m5p008, rgC5P508);
+		q3 = createQuestionSection(R.string.c1c100m5p009, chbC5P509_1,
+				chbC5P509_2, chbC5P509_3, chbC5P509_4, chbC5P509_5,
+				chbC5P509_6, grEspe2.component());
+
+		ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+
+		form.addView(q0);
+		form.addView(q1);
+		form.addView(q2);
+		form.addView(q3);
+
+		return contenedor;
+	}
+
+	@Override
+	public boolean grabar() {
+
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals("")) {
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+				if (view != null) {
+					view.requestFocus();
+				}
+			}
+			return false;
+		}
+		uiToEntity(bean);
+		try {
+
+			if (!getCuestionarioService().saveOrUpdate(bean,
+					bean.getSecCap(getListFields(this)))) {
+				ToastMessage.msgBox(this.getActivity(),
+						"Los datos no se guardaron",
+						ToastMessage.MESSAGE_ERROR, ToastMessage.DURATION_LONG);
+			}
+		} catch (SQLException e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean validar() {
+		String pregunta_no_vacia = getString(R.string.pregunta_no_vacia);
+		error = false;
+
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+
+		if (!chbC5P507_1.isChecked() && !chbC5P507_2.isChecked()
+				&& !chbC5P507_3.isChecked() && !chbC5P507_4.isChecked()
+				&& !chbC5P507_5.isChecked() && !chbC5P507_6.isChecked()
+				&& !chbC5P507_7.isChecked() && !chbC5P507_8.isChecked()
+				&& !chbC5P507_9.isChecked() && !chbC5P507_10.isChecked()
+				&& !chbC5P507_11.isChecked() && !chbC5P507_12.isChecked()
+				&& !chbC5P507_13.isChecked() && !chbC5P507_14.isChecked()
+				&& !chbC5P507_15.isChecked()) {
+			mensaje = "DEBE SELECCIONAR AL MENOS UNA ALTERNATIVA EN P507";
+			view = chbC5P507_1;
+			error = true;
+			return false;
+		}
+
+		if (chbC5P507_15.isChecked()) {
+			if (Util.esVacio(txtC5P507_15ESP)) {
+				mensaje = pregunta_no_vacia.replace("$",
+						"La Preg.507 (Especifique)");
+				view = txtC5P507_15ESP;
+				error = true;
+				return false;
+			} else {
+
+				if (txtC5P507_15ESP.getText().length() < 3) {
+					mensaje = "Ingrese la información correcta";
+					view = txtC5P507_15ESP;
+					error = true;
+					return false;
+				}
+
+			}
+		}
+
+		if (Util.esVacio(rgC5P508)) {
+			mensaje = pregunta_no_vacia.replace("$", "La pregunta P508");
+			view = rgC5P508;
+			error = true;
+			return false;
+		}
+		if (rgC5P508.isTagSelected(1)) {
+			if (!chbC5P509_1.isChecked() && !chbC5P509_2.isChecked()
+					&& !chbC5P509_3.isChecked() && !chbC5P509_4.isChecked()
+					&& !chbC5P509_5.isChecked() && !chbC5P509_6.isChecked()
+					&& !chbC5P509_7.isChecked()) {
+				mensaje = "DEBE SELECCIONAR AL MENOS UNA ALTERNATIVA EN P509";
+				view = chbC5P509_1;
+				error = true;
+				return false;
+			}
+			if (chbC5P509_7.isChecked()) {
+				if (Util.esVacio(txtC5P509_7ESP)) {
+					mensaje = pregunta_no_vacia.replace("$",
+							"La Preg.509 (Especifique)");
+					view = txtC5P509_7ESP;
+					error = true;
+					return false;
+				} else {
+					if (txtC5P509_7ESP.getText().length() < 3) {
+						mensaje = "Ingrese la información correcta";
+						view = txtC5P509_7ESP;
+						error = true;
+						return false;
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
+	@Override
+	public void cargarDatos() {
+		bean = getCuestionarioService().getModulov01(
+				App.getInstance().getEmpresa(),
+				new Modulov01().getSecCap(getListFields(this)));
+		if (bean == null) {
+			bean = new Modulov01();
+			bean.id = App.getInstance().getEmpresa().id;
+		}
+
+		entityToUI(bean);
+		inicio();
+	}
+
+	private void inicio() {
+		FuncionCHECK507();
+		FuncionRG508();
+		FuncionCHECK509();
+		chbC5P507_1.requestFocus();
+	}
+
+	public void FuncionCHECK507() {
+		if (chbC5P507_15.isChecked()) {
+			Util.lockView(getActivity(), false, txtC5P507_15ESP);
+			txtC5P507_15ESP.requestFocus();
+		} else {
+			Util.cleanAndLockView(getActivity(), txtC5P507_15ESP);
+		}
+	}
+
+	public void FuncionRG508() {
+		Integer valor = Integer.parseInt(rgC5P508.getTagSelected("0")
+				.toString());
+		if (valor == 1) {
+			Util.lockView(getActivity(), false, chbC5P509_1, chbC5P509_2,
+					chbC5P509_3, chbC5P509_4, chbC5P509_5, chbC5P509_6,
+					chbC5P509_7);
+			chbC5P509_1.requestFocus();
+		} else {
+			Util.cleanAndLockView(getActivity(), chbC5P509_1, chbC5P509_2,
+					chbC5P509_3, chbC5P509_4, chbC5P509_5, chbC5P509_6,
+					chbC5P509_7, txtC5P509_7ESP);
+		}
+	}
+
+	public void FuncionCHECK509() {
+		if (chbC5P509_7.isChecked()) {
+			Util.lockView(getActivity(), false, txtC5P509_7ESP);
+			txtC5P509_7ESP.requestFocus();
+		} else {
+			Util.cleanAndLockView(getActivity(), txtC5P509_7ESP);
+		}
+	}
+
+	public CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+
+	@Override
+	public Entity getEntity() {
+		return App.getInstance().getEmpresa();
+	}
+}

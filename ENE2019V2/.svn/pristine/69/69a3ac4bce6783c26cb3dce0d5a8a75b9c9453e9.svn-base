@@ -1,0 +1,545 @@
+package gob.inei.ene2019v2.fragment.ModIV.Dialog;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.components.ButtonComponent;
+import gob.inei.dnce.components.DialogFragmentComponent;
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.ImageComponent;
+import gob.inei.dnce.components.IntegerField;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.RadioGroupOtherField;
+import gob.inei.dnce.components.RadioGroupOtherField.ORIENTATION;
+import gob.inei.dnce.components.TextField;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.util.Caretaker;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.fragment.ModIV.Mod_IV_Fragment_023;
+import gob.inei.ene2019v2.fragment.ModIV.Mod_IV_Fragment_023.P3Det;
+import gob.inei.ene2019v2.model.Caratula;
+import gob.inei.ene2019v2.service.CuestionarioService;
+
+import java.util.List;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+
+public class Mod_IV_Fragment_023_01 extends DialogFragmentComponent {
+	public interface C002Fragment_001_01Listener {
+		void onFinishEditDialog(String inputText);
+	}
+
+	@FieldAnnotation(orderIndex = 1)
+	public RadioGroupOtherField rgM4P076;
+	@FieldAnnotation(orderIndex = 2)
+	public RadioGroupOtherField rgM4P077;
+	@FieldAnnotation(orderIndex = 3)
+	public RadioGroupOtherField rgM4P078;
+	@FieldAnnotation(orderIndex = 4)
+	public TextField txtM4P079;
+	@FieldAnnotation(orderIndex = 5)
+	public IntegerField txtM4P080;
+	@FieldAnnotation(orderIndex = 6)
+	public RadioGroupOtherField rgM4P081;
+	@FieldAnnotation(orderIndex = 7)
+	public RadioGroupOtherField rgM4P082;
+	@FieldAnnotation(orderIndex = 8)
+	public RadioGroupOtherField rgM4P083;
+
+	@FieldAnnotation(orderIndex = 9)
+	public RadioGroupOtherField rgM4P083_1;
+	@FieldAnnotation(orderIndex = 10)
+	public RadioGroupOtherField rgM4P083_2;
+	@FieldAnnotation(orderIndex = 11)
+	public RadioGroupOtherField rgM4P083_3;
+
+	@FieldAnnotation(orderIndex = 12)
+	public ButtonComponent btnAceptar;
+	@FieldAnnotation(orderIndex = 13)
+	public ButtonComponent btnCancelar;
+	public ImageComponent btnNext;
+	public ImageComponent btnBack;
+	private CuestionarioService cuestionarioService;
+	private Caratula bean2;
+	private List<P3Det> detalles;
+	Integer index;
+	private LinearLayout q1, q3, q2, q0, q4, q5, q6, q7, q11, q9, q10;
+	private static Mod_IV_Fragment_023 caller;
+	private LabelComponent lblTitulo;
+	private P3Det detalle;
+	private static Mod_IV_Fragment_023_01 _this;
+	int contador = 0;
+
+	public Mod_IV_Fragment_023_01() {
+	}
+
+	public interface C1_Cap00Fragment_001_01Listener {
+		void onFinishEditDialog(String inputText);
+	}
+
+	public static Mod_IV_Fragment_023_01 newInstance(FragmentForm pagina,
+			P3Det detalle, List<P3Det> detalles, int index) {
+		caller = (Mod_IV_Fragment_023) pagina;
+		;
+		Mod_IV_Fragment_023_01 f = new Mod_IV_Fragment_023_01();
+		f.setParent(pagina);
+		Filtros.clear();
+		f.detalles = detalles;
+		f.index = index;
+		Bundle args = new Bundle();
+		args.putSerializable("detalle", detalle);
+		f.setArguments(args);
+		return f;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		detalle = (P3Det) getArguments().getSerializable("detalle");
+		caretaker = new Caretaker<Entity>();
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+		final View rootView = createUI();
+		_this = this;
+		initObjectsWithoutXML(this, rootView);
+		cargarDatos();
+		enlazarCajas(this);
+		listening();
+
+		return rootView;
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+
+		LinearLayout q8 = createQuestionSection(btnNext, btnBack);
+		LinearLayout q10 = new LinearLayout(getActivity());
+		q10.setOrientation(LinearLayout.HORIZONTAL);
+		LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0,
+				altoComponente + 115, 4);
+		lp1.gravity = Gravity.CENTER;
+		LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0,
+				altoComponente + 115, 1);
+		lp2.gravity = Gravity.CENTER;
+		q10.addView(lblTitulo, lp1);
+		q10.addView(q8, lp2);
+
+		q0 = createQuestionSection(q10);
+		q1 = createQuestionSection(R.string.c1c100m4p476A2,
+				Gravity.CENTER_HORIZONTAL | Gravity.CENTER_HORIZONTAL, rgM4P076);
+		q3 = createQuestionSection(R.string.c1c100m4p077,
+				Gravity.CENTER_HORIZONTAL | Gravity.CENTER_HORIZONTAL, rgM4P077);
+		q4 = createQuestionSection(R.string.c1c100m4p078,
+				Gravity.CENTER_HORIZONTAL | Gravity.CENTER_HORIZONTAL, rgM4P078);
+		q5 = createQuestionSection(R.string.c1c100m4p079,
+				Gravity.CENTER_HORIZONTAL | Gravity.CENTER_HORIZONTAL,
+				txtM4P079);
+		q6 = createQuestionSection(R.string.c1c100m4p080,
+				Gravity.CENTER_HORIZONTAL | Gravity.CENTER_HORIZONTAL,
+				txtM4P080);
+		q7 = createQuestionSection(R.string.c1c100m4p081,
+				Gravity.CENTER_HORIZONTAL | Gravity.CENTER_HORIZONTAL, rgM4P081);
+		q9 = createQuestionSection(R.string.c1c100m4p082,
+				Gravity.CENTER_HORIZONTAL | Gravity.CENTER_HORIZONTAL, rgM4P082);
+
+		q11 = createQuestionSection(R.string.c1c100m4p083,
+				Gravity.CENTER_HORIZONTAL | Gravity.CENTER_HORIZONTAL, rgM4P083);
+		LinearLayout botones = createButtonSection(btnAceptar, btnCancelar);
+
+		LinearLayout contenedor = createForm(q0);
+		// ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) ((ScrollView) contenedor
+				.getChildAt(1)).getChildAt(0);
+		form.addView(q1);
+		form.addView(q3);
+		form.addView(q4);
+		form.addView(q5);
+		form.addView(q6);
+		form.addView(q7);
+		form.addView(q9);
+		form.addView(q11);
+		form.addView(botones);
+
+		return contenedor;
+	}
+
+	@Override
+	protected void buildFields() {
+
+		lblTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(MATCH_PARENT, WRAP_CONTENT).text(detalle.label)
+				.textSize(20).negrita().centrar();
+
+		rgM4P076 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p076_1_1, R.string.c1c100m4p076_1_2)
+				.size(WRAP_CONTENT, WRAP_CONTENT)
+				.orientation(ORIENTATION.HORIZONTAL).callback("FuncionP76");
+		rgM4P077 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p077_1_1, R.string.c1c100m4p077_1_2)
+				.size(WRAP_CONTENT, WRAP_CONTENT)
+				.orientation(ORIENTATION.HORIZONTAL).callback("FuncionP77");
+		rgM4P078 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p078_1_1, R.string.c1c100m4p078_1_2)
+				.size(WRAP_CONTENT, WRAP_CONTENT)
+				.orientation(ORIENTATION.HORIZONTAL).callback("FuncionP78");
+		txtM4P079 = new TextField(this.getActivity(), false)
+				.size(altoComponente, 400).hint(R.string.normaI).centrar()
+				.negrita();
+		txtM4P080 = new IntegerField(this.getActivity(), false)
+				.size(altoComponente, 150).hint(R.string.anio).centrar()
+				.negrita();
+		rgM4P081 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p081_1_1, R.string.c1c100m4p081_1_2)
+				.size(WRAP_CONTENT, WRAP_CONTENT)
+				.orientation(ORIENTATION.HORIZONTAL).callback("FuncionP81");
+		rgM4P082 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p082_1_1, R.string.c1c100m4p082_1_2,
+				R.string.c1c100m4p082_1_3).size(WRAP_CONTENT, WRAP_CONTENT)
+				.orientation(ORIENTATION.HORIZONTAL);
+		rgM4P083 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p083_1_11, R.string.c1c100m4p083_1_12,
+				R.string.c1c100m4p083_1_13).size(WRAP_CONTENT, WRAP_CONTENT)
+				.orientation(ORIENTATION.VERTICAL);
+
+		rgM4P083_1 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p083_1_11, R.string.c1c100m4p083_1_12,
+				R.string.c1c100m4p083_1_13).size(WRAP_CONTENT, WRAP_CONTENT)
+				.orientation(ORIENTATION.VERTICAL);
+		rgM4P083_2 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p083_1_11, R.string.c1c100m4p083_1_12,
+				R.string.c1c100m4p083_1_13).size(WRAP_CONTENT, WRAP_CONTENT)
+				.orientation(ORIENTATION.VERTICAL);
+		rgM4P083_3 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p083_1_11, R.string.c1c100m4p083_1_12,
+				R.string.c1c100m4p083_1_13).size(WRAP_CONTENT, WRAP_CONTENT)
+				.orientation(ORIENTATION.VERTICAL);
+
+		btnAceptar = new ButtonComponent(getParent().getActivity(),
+				App.ESTILO_BOTON).text(R.string.btnAceptar).size(200, 60);
+		btnCancelar = new ButtonComponent(getParent().getActivity(),
+				App.ESTILO_BOTON).text(R.string.btnCancelar).size(200, 60);
+
+		btnCancelar.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				detalle.restoreFromMemento(caretaker.get("antes"));
+				// caller.refrescarTabla();
+				// caller.setBorder(true);
+				Mod_IV_Fragment_023_01.this.dismiss();
+			}
+		});
+
+		btnAceptar.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				boolean flag = grabar();
+				if (!flag) {
+					return;
+				}
+				caller.refrescarTabla();
+				Mod_IV_Fragment_023_01.this.dismiss();
+			}
+		});
+
+		// CONTROL DE FLECHAS
+		btnNext = new ImageComponent(getActivity(), R.drawable.arriba,
+				R.drawable.arriba);
+		btnNext.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (!grabar()) {
+					return;
+				}
+				;
+
+				if (index < detalles.size() - 1) {
+					index++;
+					detalle = detalles.get(index);
+					cargarDatos();
+				}
+
+			}
+		});
+		btnBack = new ImageComponent(getActivity(), R.drawable.abajo,
+				R.drawable.abajo);
+		btnBack.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (!grabar()) {
+					return;
+				}
+				;
+
+				if (index > 0) {
+					index--;
+					detalle = detalles.get(index);
+					cargarDatos();
+				}
+
+			}
+		});
+
+		Filtros.setFiltro(txtM4P080, Filtros.TIPO.NUMBER, 4, -1, null, 1900,
+				2017, -1, 4);
+
+	}
+
+	private boolean grabar() {
+		uiToEntity(detalle);
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals("")) {
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+				if (view != null) {
+					view.requestFocus();
+				}
+			}
+			return false;
+		}
+		return true;
+	}
+
+	private boolean validar() {
+		// if (!isInRange()) {
+		// return false;
+		// }
+
+		String preguntaVacia = this.getResources().getString(
+				R.string.pregunta_no_vacia);
+
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+
+		if (Util.esVacio(detalle.m4p076)) {
+			mensaje = preguntaVacia.replace("$", "La pregunta P476A");
+			view = rgM4P076;
+			error = true;
+			return false;
+		}
+
+		if (!Util.esDiferente(detalle.m4p076, 1)) {
+			if (Util.esVacio(detalle.m4p077)) {
+				mensaje = preguntaVacia.replace("$", "La pregunta P477");
+				view = rgM4P077;
+				error = true;
+				return false;
+			}
+
+			if (!Util.esDiferente(detalle.m4p077, 1)) {
+				if (Util.esVacio(detalle.m4p078)) {
+					mensaje = preguntaVacia.replace("$", "La pregunta P478");
+					view = rgM4P078;
+					error = true;
+					return false;
+				}
+				if (rgM4P078.isTagSelected(2)) {
+					if (Util.esVacio(detalle.m4p079)) {
+						mensaje = preguntaVacia
+								.replace("$", "La pregunta P479");
+						view = txtM4P079;
+						error = true;
+						return false;
+					}else{
+						if (detalle.m4p079.length() < 3) {
+							mensaje = "Ingrese la información correcta";
+							view = txtM4P079;
+							error = true;
+							return false;
+						}
+					}
+				}
+				if (Util.esVacio(detalle.m4p080)) {
+					mensaje = preguntaVacia.replace("$", "La pregunta P480");
+					view = txtM4P080;
+					error = true;
+					return false;
+				}
+				if (Util.getInt(txtM4P080) < Util.getInt(bean2.funcionamiento)) {
+					mensaje = "Error: Año de implementación debe ser MAYOR al Año de FUNCIONAMIENTO";
+					view = txtM4P080;
+					error = true;
+					return false;
+				}
+			}
+		}
+
+		if (index == 0 || index == 1) {		
+			if (Util.esVacio(rgM4P081)) {
+				mensaje = preguntaVacia.replace("$", "La pregunta P481");
+				view = rgM4P081;
+				error = true;
+				return false;
+			}
+	
+			if (rgM4P081.isTagSelected(1)) {
+				if (Util.esVacio(rgM4P082)) {
+					mensaje = preguntaVacia.replace("$", "La pregunta P482");
+					view = rgM4P082;
+					error = true;
+					return false;
+				}
+				if (Util.esVacio(rgM4P083)) {
+					mensaje = preguntaVacia.replace("$", "La pregunta P483");
+					view = rgM4P083;
+					error = true;
+					return false;
+				}
+			}
+			
+		
+		if (rgM4P081.isTagSelected(2)) {
+			if (Util.esVacio(rgM4P083)) {
+				mensaje = preguntaVacia.replace("$", "La pregunta P483");
+				view = rgM4P083;
+				error = true;
+				return false;
+			}
+		}
+	}
+		
+		int XD = 6;
+		if (rgM4P076.isTagSelected(2)) {
+			contador++;
+		} else if (rgM4P076.isTagSelected(1)) {
+			contador = contador - 1;
+		}
+		Log.e("CONTADOOOOOR : ", " " + contador);
+		if (contador >= 6) {
+			mensaje = "Si cuenta con procesos debe seleccionar la opción “SI” en uno de ellos";
+			view = rgM4P076;
+			error = true;
+			return false;
+
+		}
+		
+
+		return true;
+	}
+
+	private void cargarDatos() {
+
+		bean2 = App.getInstance().getEmpresa();
+		if (bean2 == null) {
+			bean2 = new Caratula();
+		}
+
+		entityToUI(detalle);
+		lblTitulo.setText(detalle.label);
+		caretaker.addMemento("antes",
+				detalle.saveToMemento(P3Det.class, detalle.label));
+		inicio();
+	}
+
+	public void onSeleccionadoChangeValue() {
+		caller.refrescarTabla();
+	}
+
+	private void inicio() {
+		Log.e ("index", index + "");
+		String r = detalle.label;
+		r = r.substring(r.indexOf(".") + 1);
+		replaceText(q1, Util.getListHashMap("$", r));
+
+			
+		if (index != 0 && index != 1) {
+			q7.setVisibility(view.GONE);
+			q9.setVisibility(view.GONE);
+			q11.setVisibility(view.GONE);
+			rgM4P076.requestFocus();
+		} else {
+			q7.setVisibility(view.VISIBLE);
+			q9.setVisibility(view.VISIBLE);
+			q11.setVisibility(view.VISIBLE);
+			rgM4P076.requestFocus();
+		}
+		
+		FuncionP76();
+		FuncionP77();
+		FuncionP78();
+		FuncionP81();
+		rgM4P076.requestFocus();
+
+	}
+
+	public CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+
+	public void FuncionP76() {
+		Integer valor = Integer.parseInt(rgM4P076.getTagSelected("0")
+				.toString());
+		if (valor == 2) {
+			Util.cleanAndLockView(getActivity(), rgM4P077, rgM4P078, txtM4P079,
+					txtM4P080);
+			rgM4P081.requestFocus();
+		} else if (valor == 1) {
+			Util.lockView(getActivity(), false, rgM4P077);
+			rgM4P077.requestFocus();
+		}
+	}
+
+	public void FuncionP77() {
+		Integer valor = Integer.parseInt(rgM4P077.getTagSelected("0")
+				.toString());
+		if (valor == 2) {
+			Util.cleanAndLockView(getActivity(), rgM4P078, txtM4P079, txtM4P080);
+			rgM4P081.requestFocus();
+		} else if (valor == 1) {
+			Util.lockView(getActivity(), false, rgM4P078);
+			rgM4P078.requestFocus();
+		}
+	}
+
+	public void FuncionP78() {
+		Integer valor = Integer.parseInt(rgM4P078.getTagSelected("0")
+				.toString());
+		if (valor == 2) {
+			Util.lockView(getActivity(), false, txtM4P079, txtM4P080);
+			txtM4P079.requestFocus();
+		} else if (valor == 1) {
+			Util.cleanAndLockView(getActivity(), txtM4P079);
+			Util.lockView(getActivity(), false, txtM4P080);
+			txtM4P080.requestFocus();
+		}
+	}
+
+	public void FuncionP81() {
+		Integer valor = Integer.parseInt(rgM4P081.getTagSelected("0")
+				.toString());
+		if (valor == 2) {
+			Util.cleanAndLockView(getActivity(), rgM4P082);
+			rgM4P083.requestFocus();
+		} else if (valor == 1) {
+			Util.lockView(getActivity(), false, rgM4P082);
+			rgM4P082.requestFocus();
+		}
+	}
+}

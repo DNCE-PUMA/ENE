@@ -1,0 +1,439 @@
+package gob.inei.ene2019v2.fragment.ModIX;
+
+import gob.inei.dnce.components.DialogComponent;
+import gob.inei.dnce.components.DialogComponent.TIPO_DIALOGO;
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.components.Entity.SeccionCapitulo;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.MasterActivity;
+import gob.inei.dnce.components.TableComponent;
+import gob.inei.dnce.components.TableComponent.ALIGN;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.interfaces.IDetailEntityComponent;
+import gob.inei.dnce.interfaces.Respondible;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.fragment.ModIX.dialog.Mod_IX_Fragment_006_01;
+import gob.inei.ene2019v2.model.Caratula;
+import gob.inei.ene2019v2.model.ModuloIXS;
+import gob.inei.ene2019v2.model.Moduloix;
+import gob.inei.ene2019v2.service.CuestionarioService;
+
+import java.lang.reflect.Field;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
+
+public class Mod_IX_Fragment_006 extends FragmentForm implements Respondible {
+
+	private CuestionarioService cuestionarioService;
+	private Caratula caratula;
+	private Moduloix bean;
+	private TableComponent tcModIX;
+	private List<String> data = new ArrayList<String>();
+	private List<ModulooIX> lstData;
+	private List<ModuloIXS> lstDetalle;
+	private List<Map<Field, Object>> lmap;
+	private DialogComponent dc;
+	private SeccionCapitulo[] campos;
+
+	private LabelComponent lblTitulo, lblSubTitulo;
+	LinearLayout q0, q1, q2, q3, q4, q5;
+
+	public Mod_IX_Fragment_006() {
+	}
+
+	public Mod_IX_Fragment_006 parent(MasterActivity parent) {
+		this.parent = parent;
+		return this;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = createUI();
+		initObjectsWithoutXML(this, rootView);
+		enlazarCajas();
+		listening();
+		campos = new SeccionCapitulo[] { new SeccionCapitulo(-1, -1, -1, "ID",
+				"C9P906_T1", "C9P906_T2", "C9P906_T3", "C9P906_T4", "C9P906_T5") };
+		return rootView;
+	}
+
+	@SuppressLint("ResourceAsColor")
+	@Override
+	protected void buildFields() {
+		lblSubTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.c2c100m9p006a_titulo).textSize(21).centrar()
+				.negrita();
+
+		lblTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.Capitulo900).textSize(21).centrar().negrita();
+
+		tcModIX = new TableComponent(getActivity(), this, App.ESTILO)
+				.size(500, 900).headerHeight(99).dataColumHeight(75);
+		tcModIX.setHeaderTextSize(14);
+		tcModIX.addHeader(R.string.c900_num, 0.5f, ALIGN.CENTER);
+		tcModIX.addHeader(R.string.c2c100m9p006_tipo, 2.5f, ALIGN.LEFT);
+		tcModIX.addHeader(R.string.c2c100m9p006a_SaldoI, 1f);
+		tcModIX.addHeader(R.string.c2c100m9p006a_Bnuevo, 1f);
+		tcModIX.addHeader(R.string.c2c100m9p006a_Busado, 1f);
+		tcModIX.addHeader(R.string.c2c100m9p006a_Venta, 0.8f);
+		tcModIX.addHeader(R.string.c2c100m9p006a_SaldoF, 1f);
+		
+		tcModIX.addTitle(R.string.c2c100m9_vacio, 4f, ALIGN.CENTER);
+		tcModIX.addTitle(R.string.c2c100m9_Compra2016, 2f, ALIGN.CENTER);
+		tcModIX.addTitle(R.string.c2c100m9_vacio, 1.8f, ALIGN.CENTER);
+		
+		tcModIX.addFooter(R.string.c2c100m9_TOTAL, 3f, ALIGN.CENTER);
+		tcModIX.addFooter(R.string.c2c100m9_TotP001, 1f);
+		tcModIX.addFooter(R.string.c2c100m9_TotP002, 1f);
+		tcModIX.addFooter(R.string.c2c100m9_TotP003, 1f);
+		tcModIX.addFooter(R.string.c2c100m9_TotP004, 0.8f);
+		tcModIX.addFooter(R.string.c2c100m9_TotP005, 1f);
+		tcModIX.setCellColor(-1, 1,  true);
+		tcModIX.setCellColor(-1, 6, R.color.grisaceoclaro,  true);
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+
+		q0 = createQuestionSection(lblTitulo, lblSubTitulo);
+		q1 = createQuestionSection(R.string.c2c100m9p906,
+				tcModIX.getTableView());
+		registerForContextMenu(tcModIX.getListView());
+		ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+		form.addView(q0);
+		form.addView(q1);
+
+		return contenedor;
+	}
+
+	@Override
+	public boolean grabar() {
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals("")) {
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+				if (view != null) {
+					view.requestFocus();
+				}
+			}
+			return false;
+		}
+		uiToEntity(bean);
+		reloadData();
+		if (!save(true))
+			return false;
+		
+		return true;
+	}
+
+	private boolean save(boolean views) {
+		try {
+			if (!getCuestionarioService().saveOrUpdate(bean, campos)) {
+				ToastMessage.msgBox(this.getActivity(),
+						"Los datos no se guardaron",
+						ToastMessage.MESSAGE_ERROR, ToastMessage.DURATION_LONG);
+			}
+
+		} catch (SQLException e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+			return false;
+		}
+		return true;
+	}
+	
+	public void reloadData() {
+		tcModIX.reloadData();
+		tcModIX.post(new Runnable() {
+			@Override
+			public void run() {
+				
+				bean.c9p906_t1 = Util.getInt(tcModIX.getFooterPosition(1).getText());
+				bean.c9p906_t2 = Util.getInt(tcModIX.getFooterPosition(2).getText());
+				bean.c9p906_t3 = Util.getInt(tcModIX.getFooterPosition(3).getText());
+				bean.c9p906_t4 = Util.getInt(tcModIX.getFooterPosition(4).getText());
+				bean.c9p906_t5 = Util.getInt(tcModIX.getFooterPosition(5).getText());
+				save(true);
+			}
+		});
+	}
+	
+	private boolean validar() {
+		String pregunta_no_vacia = getString(R.string.pregunta_no_vacia);
+		error = false;
+
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+		Integer count = 0;
+		for (int x = 0; x < lstData.size(); x++) {
+
+			if (Util.esVacio(lstData.get(x).detalle.c9p907_1)) {
+				ToastMessage.msgBox(
+						this.getActivity(),
+						pregunta_no_vacia.replace("$", "Información de "
+								+ " Item " + "“ " + lstData.get(x).nombre
+								+ " ”"), ToastMessage.MESSAGE_INFO,
+						ToastMessage.DURATION_LONG);
+				error = true;
+				return false;
+			}
+
+		}
+
+		int valor1, valor2, valor3, valor4, valor5;
+		valor1 = Util.getInt(tcModIX.getFooterPosition(1).getText());
+		valor2 = Util.getInt(tcModIX.getFooterPosition(2).getText());
+		valor3 = Util.getInt(tcModIX.getFooterPosition(3).getText());
+		valor4 = Util.getInt(tcModIX.getFooterPosition(4).getText());
+		valor5 = Util.getInt(tcModIX.getFooterPosition(5).getText());
+		int sumaT;
+		sumaT = valor1 + valor2 + valor3 + valor4 + valor5;
+		if (Util.getInt(sumaT) == 0) {
+			ToastMessage.msgBox(this.getActivity(),
+					"VERIFICAR: La sumatoria de los saldos de todos los tipos de Activo es 0", ToastMessage.MESSAGE_INFO,
+					ToastMessage.DURATION_LONG);
+		}
+
+		return true;
+	}
+
+	@Override
+	public void cargarDatos() {
+		caratula = App.getInstance().getEmpresa();
+		bean = getCuestionarioService().getModuloix(
+				App.getInstance().getEmpresa(),campos);
+		if (bean == null) {
+			bean = new Moduloix();
+			bean.id = App.getInstance().getEmpresa().id;
+		}
+		
+		data = Arrays.asList(getResources().getStringArray(
+				R.array.ModuloIX_P906));
+
+		lstDetalle = getCuestionarioService().getListModuloIXS(
+				caratula, 906,
+				getSecCap2(false, new String[] { "ID", "C9P907_ID",
+						"C9P907_COD", "C9P907_1", "C9P907_2", "C9P907_3",
+						"C9P907_4", "C9P907_5", "C9B_OBS"}));
+
+		lstData = new ArrayList<Mod_IX_Fragment_006.ModulooIX>();
+		List<ModulooIX> lste = new ArrayList<ModulooIX>();
+		boolean flag = false;
+		for (int x = 0; x < data.size(); x++) {
+			if (lstDetalle != null && lstDetalle.size() > 0) {
+				flag = false;
+				for (ModuloIXS ac : lstDetalle) {
+					if (Util.getInt(ac.c9p907_cod, 0) == x + 1) {
+						lste.add(new ModulooIX(x + 1, data.get(x), ac));
+						flag = true;
+						break;
+					}
+				}
+				if (!flag) {
+					lste.add(new ModulooIX(x + 1, data.get(x), new ModuloIXS(
+							caratula.id, 906, x + 1)));
+				}
+			} else {
+				lste.add(new ModulooIX(x + 1, data.get(x), new ModuloIXS(
+						caratula.id, 906, x + 1)));
+			}
+		}
+		lstData.addAll(lste);
+		recargarLista();
+		entityToUI(bean);
+
+	}
+
+	public void recargarLista() {
+		tcModIX.setData(lstData, "orden", "getNombre", "getSaldoI",
+				"getBNuevo", "getBUsado", "getVenta", "getSaldoF");
+		setBorder();
+		registerForContextMenu(tcModIX.getListView());
+	}
+
+	private void setBorder() {
+		for (int x = 0; x < lstData.size(); x++) {
+
+			if (!Util.esVacio(lstData.get(x).detalle.c9p907_1)) {
+				tcModIX.setBorderRow(x);
+
+			} else {
+				tcModIX.setBorderRow(x, false);
+			}
+		}
+
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		AdapterView.AdapterContextMenuInfo info;
+		info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+		ModulooIX opcion = (ModulooIX) (info.targetView.getTag());
+
+		if (opcion.detalle.c9p907_cod == null) {
+			return;
+		}
+
+		if (v.equals(tcModIX.getListView())) {
+			menu.setHeaderTitle("Opciones de Módulo IX");
+			menu.add(0, 1, 1, "Especificar Datos");
+		}
+
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		if (!getUserVisibleHint())
+			return false;
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
+				.getMenuInfo();
+		ModulooIX horario = (ModulooIX) (info.targetView.getTag());
+		tcModIX.requestFocus();
+
+		if (item.getItemId() == 1) {
+			abrirDetalle(horario);
+		}
+
+		return super.onContextItemSelected(item);
+	}
+
+	public void abrirDetalle(ModulooIX bean) {
+		FragmentManager fm = Mod_IX_Fragment_006.this.getFragmentManager();
+		Mod_IX_Fragment_006_01 aperturaDialog = Mod_IX_Fragment_006_01
+				.newInstance(this, bean);
+		aperturaDialog.setAncho(LinearLayout.LayoutParams.MATCH_PARENT);
+		aperturaDialog.show(fm, "aperturaDialog");
+	}
+
+	private void eliminarDetalle(ModulooIX horario) {
+		dc = new DialogComponent(getActivity(), this, TIPO_DIALOGO.YES_NO,
+				getResources().getString(R.string.app_name),
+				"Esta Seguro que desea Eliminar la información asignada a: "
+						+ horario.nombre + ".\t"
+						+ "Esta Seguro que desea continuar?");
+
+		dc.put("opcion", FragmentForm.OPCION.ONE);
+		dc.put("objeto", horario);
+		dc.showDialog();
+	}
+
+	public class ModulooIX extends Entity implements IDetailEntityComponent {
+		private static final long serialVersionUID = 1L;
+		public int orden;
+		public String nombre;
+		public ModuloIXS detalle;
+
+		public ModulooIX() {
+			// TODO Auto-generated constructor stub
+		}
+
+		public ModulooIX(Integer orden, String nombre, ModuloIXS detalle) {
+			this.orden = orden;
+			this.nombre = nombre;
+			this.detalle = detalle;
+		}
+
+		//
+		public String getNombre() {
+			return nombre == null ? "" : nombre;
+		}
+
+		public Integer getSaldoI() {
+			return detalle.c9p907_1;
+		}
+
+		public Integer getBNuevo() {
+			return detalle.c9p907_2;
+		}
+
+		public Integer getBUsado() {
+			return detalle.c9p907_3;
+		}
+
+		public Integer getVenta() {
+			return detalle.c9p907_4;
+		}
+
+		public Integer getSaldoF() {
+			return detalle.c9p907_5;
+		}
+
+		@Override
+		public boolean isTitle() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public void cleanEntity() {
+			// TODO Auto-generated method stub
+
+		}
+	}
+
+	private void inicio() {
+	}
+
+	@Override
+	public void onCancel() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onAccept() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+
+}

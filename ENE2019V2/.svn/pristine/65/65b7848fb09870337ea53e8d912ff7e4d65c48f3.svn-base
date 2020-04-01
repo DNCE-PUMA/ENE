@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="CapituloV">CAPÍTULO 500. TECNOLOGÍAS DE INFORMACIÓN Y COMUNICACIONES</string>
+    <string name="CapV_SecI">TECNOLOGÍAS DE INFORMACIÓN Y COMUNICACIONES</string>
+    <string name="lbl_modv_preg1_title1_1">EQUIPOS</string>
+    <string name="lbl_modv_preg1_title1_2">¿UTILIZÓ:</string>
+    <string name="lbl_modv_preg1_title1_3">CANTIDAD EN EL 2017</string>
+    <string name="lbl_modv_preg1_title1_4">¿COMENZO A UTILIZARLOS</string>
+    <string name="lbl_modv_preg1_1">1. Computadora de escritorio / PC?</string>
+    <string name="lbl_modv_preg1_2">2. Computadora portátil (laptop, notebook)?</string>
+    <string name="lbl_modv_preg1_3">3. Tablets?</string>
+    <string name="lbl_modv_preg1_4">4. Multifuncional?</string>
+    <string name="lbl_modv_preg1_5">5. Impresora?</string>
+    <string name="lbl_modv_preg1_6">6. Terminal de Pago (POS)?</string>
+    <string name="lbl_modv_preg1_7">7. Teléfono móvil con acceso a internet (Smartphone)?</string>
+    <string name="lbl_modv_preg1_8">8. Otro?</string>
+    <string name="modv_preg3_1">1. Internet? </string>
+    <string name="modv_preg3_2">2. Intranet?</string>
+    <string name="modv_preg3_3">3. Extranet?</string>
+    <string name="modv_preg4_1">1. Página web?</string>
+    <string name="modv_preg4_2">2. Redes sociales (Facebook, Twitter, Whatsapp)?</string>
+    <string name="modv_preg4_3">3. LinkedIn?</string>
+    <string name="lbl_modv_desc">Solo si tiene Internet</string>
+    <string name="lbl_modv_desc1">TERMINAL POS (POINT-OF-SALE TERMINAL) \n El terminal de punto de venta, es un sistema eficaz de cobro y gestión que agiliza el proceso de venta, mediante una interfaz accesible para los vendedores o compradores. Estos aparatos cuentan con un teclado y un lector de tarjetas y están dotados con software de comunicación.</string>
+    <string name="lbl_modv_preg6_title">Servicios</string>
+    <string name="lbl_modv_preg6_1">1. Internet?</string>
+    <string name="lbl_modv_preg6_2">2. Intranet?</string>
+    <string name="lbl_modv_preg6_3">3. Extranet?</string>
+    <string name="lbl_modvii_titlecap_1">CAPÍTULO 700. PRODUCTOS FINANCIEROS</string>
+    <string name="c1c100m7p001_title">701. Respecto a los siguientes productos financieros, indique si su empresa:</string>
+    <string name="lbl_nothing"></string>
+    <string name="lbl_modvii_preg1_1">1. Créditos para capital de trabajo?</string>
+    <string name="lbl_modvii_preg1_2">2. Créditos para inversión en activo fijo?</string>
+    <string name="lbl_modvii_preg1_3">3. Crédito para consumo con tarjeta de crédito (como financiamiento para el negocio)?</string>
+    <string name="lbl_modvii_preg1_3_2">4. Crédito para consumo como préstamo personal (como financiamiento para el negocio)?</string>
+    <string name="lbl_modvii_preg1_4">5. Factoring?</string>
+    <string name="lbl_modvii_preg1_5">6. Descuento de facturas?</string>
+    <string name="lbl_modvii_preg1_6">7. Cartas fianza / Garantía? </string>
+    <string name="lbl_modvii_preg1_7">8. Otro?</string>
+    <string name="lbl_modvii_preg1_3_1">- Con tarjeta de crédito?</string>
+    <string name="lbl_title_modvii_preg1_1"></string>
+    <string name="lbl_title_modvii_preg1_2">¿Conoce el/la:\n(1)</string>
+    <string name="lbl_title_modvii_preg1_3">¿Solicitó en el 2017:</string>
+    <string name="lbl_title_modvii_preg1_4">2. ¿Por qué no solicitó: </string>
+    <string name="lbl_title_modvii_preg1_5">¿Accedió en el 2017:</string>
+    <string name="lbl_title_modvii_preg1_6">3. ¿Por qué no accedió:</string>
+    <string name="lbl_title_modvii_preg1_7">4. ¿A través de qué entidad:</string>
+    <string name="lbl_title_modvii_preg1_8">¿Tuvo algún problema:</string>
+    <string name="lbl_title_modvii_preg1_9">5. ¿Qué problema:</string>
+    <string name="c1c100m7p004_title">4. En el a\u00f1o 2017, \u00bfcu\u00e1les fueron las razones por las que no le brindaron el cr\u00e9dito solicitado? \n(Lea y seleccione una o más alternativas)</string>
+    <string name="c1c100m_cap7p003_1">1. ¿No necesitó?</string>
+    <string name="c1c100m_cap7p003_2">2. ¿Trámites engorrosos?</string>
+    <string name="c1c100m_cap7p003_3">3. ¿Intereses elevados?</string>
+    <string name="c1c100m_cap7p003_4">4. ¿Falta de garantía?</string>
+    <string name="c1c100m_cap7p003_5">5. ¿Por tener deudas pendientes?</string>
+    <string name="c1c100m_cap7p003_6">6. ¿Por no tener título de propiedad?</string>
+    <string name="c1c100m_cap7p003_7">7. ¿Había recibido crédito anteriormente?</string>
+    <string name="c1c100m_cap7p003_8">8. ¿Otro?</string>
+    <string name="c1c100m7p002_title">702. En el año 2017, ¿Su empresa utilizó los siguientes otros productos financieros:\(Lea y seleccione una o más alternativas)</string>
+    <string name="lbl_cap7p2_1">1. Cuenta de ahorros?</string>
+    <string name="lbl_cap7p2_2">2. Cuenta corriente?</string>
+    <string name="lbl_cap7p2_3">3. No utilizó</string>
+    <string name="lbl_modvii_titlesubtitle_1">Sólo si conoce y no solicitó créditos para capital de trabajo, para inversión en activo fijo o para consumo</string>
+    <string name="c1c100m7p703">703. \u00bfCu\u00e1les son los criterios m\u00e1s importantes para su empresa al elegir un cr\u00e9dito o pr\u00e9stamo: \n(Lea y seleccione una o más alternativas)</string>
+    <string name="c1c100m7p005edit_1">1. Tasas de inter\u00e9s?</string>
+    <string name="c1c100m7p004edit_1">1. \u00bfPoco tiempo de funcionamiento de la empresa?</string>
+    <string name="c1c100m7p009_title">705. En el año 2017, ¿Qué tipos de seguro utilizó su empresa:\n(Lea y seleccione una o más alternativas)</string>
+    <string name="lbl_modvii_titlesubtitle_2">
+        Si en P701_ (1) conoce al menos algún tipo de crédito, aplique la P703, de lo contrario pase a P704. \n 
+        Si en P701_ (1) solamente conociera Carta Fianza debe pasar, a P704. .  </string>
+
+</resources>

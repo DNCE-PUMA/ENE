@@ -1,0 +1,785 @@
+package gob.inei.ene2019v2.fragment.ModVI;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.components.DialogComponent;
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.components.Entity.SeccionCapitulo;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.GridComponent;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.MasterActivity;
+import gob.inei.dnce.components.RadioGroupOtherField;
+import gob.inei.dnce.components.RadioGroupOtherField.ORIENTATION;
+import gob.inei.dnce.components.TableComponent;
+import gob.inei.dnce.components.TableComponent.ALIGN;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.interfaces.IDetailEntityComponent;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.model.Modulovi01;
+import gob.inei.ene2019v2.service.CuestionarioService;
+
+import java.lang.reflect.Field;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
+
+public class Mod_VI_Fragment_006 extends FragmentForm  {
+
+	@FieldAnnotation(orderIndex = 1)
+	public RadioGroupOtherField rgC6P615;
+	
+	private TableComponent tcSecIII;
+	private List<String> data = new ArrayList<String>();
+	private List<Map<Field, Object>> lmap;
+	public static int ESPECIFIQUE = 5;
+	private DialogComponent dc;
+	private SeccionCapitulo[] secCap;
+	TC_ClickListener listener;
+	private List<Detalle> lstDetalle;
+	private int cont;
+	private CuestionarioService cuestionarioService;
+	private Modulovi01 bean;
+	private LabelComponent lblTitulo, lblSubTitulo;
+	private GridComponent gridM6P016, gridM6P018;
+	LinearLayout q0, q1, q2, q3, q4, q5;
+	SeccionCapitulo[] seccionesCargado , seccionesGrabado;
+	
+	public Mod_VI_Fragment_006() {
+	}
+
+	public Mod_VI_Fragment_006 parent(MasterActivity parent) {
+		this.parent = parent;
+		return this;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = createUI();
+		initObjectsWithoutXML(this, rootView);
+		enlazarCajas();
+		listening();
+		seccionesCargado = new SeccionCapitulo[] { new SeccionCapitulo(0, -1,
+				-1, "ID", "C6P615", "C6P616A_1", "C6P616A_2", "C6P616A_3",
+				"C6P616A_4", "C6P616A_5", "C6P616A_5ESP", "C6P616B_1",
+				"C6P616B_2", "C6P616B_3", "C6P616B_4", "C6P616B_5",
+				"C6P616C_1_1", "C6P616C_1_2", "C6P616C_1_3", "C6P616C_1_4",
+				"C6P616C_1_5", "C6P616C_1_6", "C6P616C_1_7", "C6P616C_1_7ESP",
+				"C6P616C_2_1", "C6P616C_2_2", "C6P616C_2_3", "C6P616C_2_4",
+				"C6P616C_2_5", "C6P616C_2_6", "C6P616C_2_7", "C6P616C_2_7ESP",
+				"C6P616C_3_1", "C6P616C_3_2", "C6P616C_3_3", "C6P616C_3_4",
+				"C6P616C_3_5", "C6P616C_3_6", "C6P616C_3_7", "C6P616C_3_7ESP",
+				"C6P616C_4_1", "C6P616C_4_2", "C6P616C_4_3", "C6P616C_4_4",
+				"C6P616C_4_5", "C6P616C_4_6", "C6P616C_4_7", "C6P616C_4_7ESP",
+				"C6P616C_5_1", "C6P616C_5_2", "C6P616C_5_3", "C6P616C_5_4",
+				"C6P616C_5_5", "C6P616C_5_6", "C6P616C_5_7", "C6P616C_5_7ESP") };
+		
+		seccionesGrabado = new SeccionCapitulo[] { new SeccionCapitulo(0, -1,
+				-1,  "C6P615", "C6P616A_1", "C6P616A_2", "C6P616A_3",
+				"C6P616A_4", "C6P616A_5", "C6P616A_5ESP", "C6P616B_1",
+				"C6P616B_2", "C6P616B_3", "C6P616B_4", "C6P616B_5",
+				"C6P616C_1_1", "C6P616C_1_2", "C6P616C_1_3", "C6P616C_1_4",
+				"C6P616C_1_5", "C6P616C_1_6", "C6P616C_1_7", "C6P616C_1_7ESP",
+				"C6P616C_2_1", "C6P616C_2_2", "C6P616C_2_3", "C6P616C_2_4",
+				"C6P616C_2_5", "C6P616C_2_6", "C6P616C_2_7", "C6P616C_2_7ESP",
+				"C6P616C_3_1", "C6P616C_3_2", "C6P616C_3_3", "C6P616C_3_4",
+				"C6P616C_3_5", "C6P616C_3_6", "C6P616C_3_7", "C6P616C_3_7ESP",
+				"C6P616C_4_1", "C6P616C_4_2", "C6P616C_4_3", "C6P616C_4_4",
+				"C6P616C_4_5", "C6P616C_4_6", "C6P616C_4_7", "C6P616C_4_7ESP",
+				"C6P616C_5_1", "C6P616C_5_2", "C6P616C_5_3", "C6P616C_5_4",
+				"C6P616C_5_5", "C6P616C_5_6", "C6P616C_5_7", "C6P616C_5_7ESP") };
+		
+
+
+		listener = new TC_ClickListener();
+		tcSecIII.getListView().setOnItemClickListener(listener);
+		return rootView;
+	}
+
+
+	
+	
+	@Override
+	protected void buildFields() {
+		lblTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.moduloVI).textSize(21).centrar().negrita();
+		lblSubTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(MATCH_PARENT, MATCH_PARENT).text(R.string.c1c100m6p_2)
+				.textSize(21).centrar().negrita();
+
+		rgC6P615 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m6p015_1, R.string.c1c100m6p015_2)
+				.size(WRAP_CONTENT, 250).orientation(ORIENTATION.HORIZONTAL)
+				.callback("FuncionRG615");
+		
+		tcSecIII = new TableComponent(getActivity(), this, App.ESTILO)
+		.size(590, 540).headerHeight(100).dataColumHeight(85);
+		tcSecIII.setHeaderTextSize(15);
+		tcSecIII.addHeader(R.string.c1c100m6p016_t1, 2.5f, ALIGN.LEFT);
+		tcSecIII.addHeader(R.string.c1c100m6p016_t2, 1f,
+				RadioGroupOtherField.class, R.string.c2c300inf302_1_1,
+				R.string.c2c300inf302_1_2);
+	//	tcSecIII.setCellColor(-1, 0, true);
+		tcSecIII.addCallback(1, "onSeleccionadoChangeValue");
+	
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+
+		q0 = createQuestionSection(lblTitulo, lblSubTitulo);
+		q1 = createQuestionSection(R.string.c1c100m6p015, rgC6P615);
+		q2 = createQuestionSection(R.string.c1c100m6p016, 	tcSecIII.getTableView());
+		
+		ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+
+		form.addView(q0);
+		form.addView(q1);
+		form.addView(q2);
+
+		return contenedor;
+	}
+
+	@Override
+	public boolean grabar() {
+		uiToEntity(bean);
+		Log.e ("x", "xx");
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals(""))
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				if (view != null)
+					view.requestFocus();
+			}
+			return false;
+		}
+		// SQLiteDatabase dbTX = getCuestionarioService().startTX();
+		boolean flag = true;
+
+
+		try {
+			Modulovi01 tmp = new Modulovi01();
+			if (rgC6P615.isTagSelected(2)) {
+				//2310
+//				tmp.id = bean.id;
+//				tmp.c6p615= bean.c6p615;
+//				tmp.c6p616a_1= null;
+//				tmp.c6p616a_2= null;
+//				tmp.c6p616a_3= null;
+//				tmp.c6p616a_4= null;
+//				tmp.c6p616a_5= null;
+//				tmp.c6p616b_1= null;
+//				tmp.c6p616b_2= null;
+//				tmp.c6p616b_3= null;
+//				tmp.c6p616b_4= null;
+//				tmp.c6p616b_5= null;
+//				tmp.c6p616c_1_1= null;
+//				tmp.c6p616c_1_2= null;
+//				tmp.c6p616c_1_3= null;
+//				tmp.c6p616c_1_4= null;
+//				tmp.c6p616c_1_5= null;
+//				tmp.c6p616c_1_6= null;
+//				tmp.c6p616c_1_7= null;
+//				tmp.c6p616c_1_7esp= null;
+//				tmp.c6p616c_2_1= null;
+//				tmp.c6p616c_2_2= null;
+//				tmp.c6p616c_2_3= null;
+//				tmp.c6p616c_2_4= null;
+//				tmp.c6p616c_2_5= null;
+//				tmp.c6p616c_2_6= null;
+//				tmp.c6p616c_2_7= null;
+//				tmp.c6p616c_2_7esp= null;			
+//				tmp.c6p616c_3_1= null;
+//				tmp.c6p616c_3_2= null;
+//				tmp.c6p616c_3_3= null;
+//				tmp.c6p616c_3_4= null;
+//				tmp.c6p616c_3_5= null;
+//				tmp.c6p616c_3_6= null;
+//				tmp.c6p616c_3_7= null;
+//				tmp.c6p616c_3_7esp= null;
+//				tmp.c6p616c_4_1= null;
+//				tmp.c6p616c_4_2= null;
+//				tmp.c6p616c_4_3= null;
+//				tmp.c6p616c_4_4= null;
+//				tmp.c6p616c_4_5= null;
+//				tmp.c6p616c_4_6= null;
+//				tmp.c6p616c_4_7= null;
+//				tmp.c6p616c_4_7esp= null;
+//				tmp.c6p616c_5_1= null;
+//				tmp.c6p616c_5_2= null;
+//				tmp.c6p616c_5_3= null;
+//				tmp.c6p616c_5_4= null;
+//				tmp.c6p616c_5_5= null;
+//				tmp.c6p616c_5_6= null;
+//				tmp.c6p616c_5_7= null;
+//				tmp.c6p616c_5_7esp= null;
+//				tmp.c6p616a_5esp= null;		
+//				
+				flag = getCuestionarioService().saveOrUpdate(tmp,seccionesGrabado);
+			}else	if (rgC6P615.isTagSelected(1)) {
+			//	llenarBean();
+				Log.e ("grabar" ,"normal");
+				flag = getCuestionarioService().saveOrUpdate(bean,	seccionesGrabado);
+				if (!flag) {
+					throw new SQLException("Los datos no pudieron ser guardados.");
+				}	
+			}
+								
+			
+			// getCuestionarioService().commitTX(dbTX);
+		} catch (SQLException e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+			return false;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
+	private boolean validar() {
+
+		if (!isInRange())
+			return false;
+		String preguntaVacia = this.getResources().getString(
+				R.string.pregunta_no_vacia);
+
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+
+		if (Util.esVacio(rgC6P615)) {
+			mensaje = preguntaVacia.replace("$", "La pregunta P615");
+			view = rgC6P615;
+			error = true;
+			return false;
+		}
+		if (rgC6P615.isTagSelected(1)) {
+			for (int i = 0; i < lstDetalle.size(); i++) {
+				Detalle cc = (Detalle) lstDetalle.get(i);
+				if (Util.esVacio(cc.c6p616a)) {
+					ToastMessage.msgBox(this.getActivity(), "Falta llenar "
+							+ cc.label, ToastMessage.MESSAGE_INFO,
+							ToastMessage.DURATION_LONG);
+					return false;
+				}
+				if (!Util.esDiferente(cc.c6p616a, 1)) {
+					if (Util.esVacio(cc.c6p616b)) {
+						ToastMessage.msgBox(this.getActivity(), "Falta llenar "
+								+ cc.label, ToastMessage.MESSAGE_INFO,
+								ToastMessage.DURATION_LONG);
+						return false;
+					}
+				}
+
+			}		
+		}
+
+		return true;
+	}
+
+
+	
+	private class TC_ClickListener implements OnItemClickListener {
+
+		public TC_ClickListener() {
+		}
+
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+				long arg3) {
+			Detalle det1528 = (Detalle) lstDetalle.get(arg2);
+			// abre solo con 1
+			// if (Util.esDiferente(det1528.p800a_1, 1)) {
+			// return;
+			// }
+			Log.e ("c6p616a",  det1528.c6p616a + "");
+			
+			if (Util.esDiferente(det1528.c6p616a, 1)) {
+				 return;
+			 }
+			abrirDetalle(det1528, arg2);
+		}
+	}
+	
+
+	public void abrirDetalle(Detalle bean, Integer position) {
+		FragmentManager fm = Mod_VI_Fragment_006.this.getFragmentManager();
+		Mod_VI_Fragment_006_01 aperturaDialog = Mod_VI_Fragment_006_01
+				.newInstance(this, bean,position);
+		aperturaDialog.setAncho(LinearLayout.LayoutParams.MATCH_PARENT);
+		aperturaDialog.show(fm, "aperturaDialog");
+	}
+
+	@Override
+	public void cargarDatos() {
+		
+		lstDetalle = new ArrayList<Detalle>();
+		for (cont = 0; cont < 5; cont++) {
+			lstDetalle.add(new Detalle(getResources().getStringArray(
+					R.array.array_616)[cont] ));
+		}
+
+				
+		bean = getCuestionarioService().getModulovi01(
+				App.getInstance().getEmpresa(), seccionesCargado);
+
+		if (bean == null) {
+			bean = new Modulovi01();
+			bean.id =App.getInstance().getEmpresa().id;
+		}
+
+		
+//		bean = getCuestionarioService().getModulovi01(
+//				App.getInstance().getEmpresa(), secCap);
+//
+//		if (bean == null) {
+//			bean = new Modulovi01();
+//			bean.id = App.getInstance().getEmpresa().id;
+//		}
+		
+		//llenarUI();
+		entityToUI(bean);
+		refrescarTabla();
+		inicio();
+		
+		
+	}
+
+
+
+	private void inicio() {
+		rgC6P615.requestFocus();
+		FuncionRG615();
+		rgC6P615.requestFocus();
+		
+	}
+
+
+	public void refrescarTabla() {
+	//	llenarBean();
+	//	llenarUI();
+		tcSecIII.setData(lstDetalle, "label", "c6p616a");
+		for (int row2 = 0; row2 < lstDetalle.size(); row2++) {
+			tcSecIII.setBorderRow(row2, obtenerEstado(lstDetalle.get(row2)));
+		}
+	}
+	
+	
+	public void refreshTabla() {
+		tcSecIII.setData(lstDetalle, "label", "c6p616a");
+		for (int row2 = 0; row2 < lstDetalle.size(); row2++) {
+			tcSecIII.setBorderRow(row2, obtenerEstado(lstDetalle.get(row2)));
+		}
+	}
+	
+	
+	private boolean obtenerEstado(Detalle detalle) {
+		// Azul al completar el No.
+
+		if (!Util.esDiferente(detalle.c6p616a, 1)) {
+			if (detalle.c6p616b != null) {
+				return true;
+			}
+		}
+
+		if (!Util.esDiferente(detalle.c6p616a, 2)) {
+				return true;
+		}
+		return false;
+	}
+	
+//	private void llenarUI() {
+//
+//		lstDetalle = new ArrayList<Detalle>();
+//		Detalle tmp = new Detalle(getResources().getStringArray(
+//				R.array.array_616)[0]);
+//
+//		tmp.c6p616a = bean.c6p616a_1;
+//		tmp.c6p616b = bean.c6p616b_1;
+//		tmp.c6p616c_1 = bean.c6p616c_1_1;
+//		tmp.c6p616c_2 = bean.c6p616c_1_2;
+//		tmp.c6p616c_3 = bean.c6p616c_1_3;
+//		tmp.c6p616c_4 = bean.c6p616c_1_4;
+//		tmp.c6p616c_5 = bean.c6p616c_1_5;
+//		tmp.c6p616c_6 = bean.c6p616c_1_6;
+//		tmp.c6p616c_7 = bean.c6p616c_1_7;
+//		tmp.c6p616c_7esp = bean.c6p616c_1_7esp;		
+//		lstDetalle.add(tmp);
+//
+//		tmp = new Detalle(getResources().getStringArray(
+//				R.array.array_616)[1]);
+//		tmp.c6p616a = bean.c6p616a_2;
+//		tmp.c6p616b = bean.c6p616b_2;
+//		tmp.c6p616c_1 = bean.c6p616c_2_1;
+//		tmp.c6p616c_2 = bean.c6p616c_2_2;
+//		tmp.c6p616c_3 = bean.c6p616c_2_3;
+//		tmp.c6p616c_4 = bean.c6p616c_2_4;
+//		tmp.c6p616c_5 = bean.c6p616c_2_5;
+//		tmp.c6p616c_6 = bean.c6p616c_2_6;
+//		tmp.c6p616c_7 = bean.c6p616c_2_7;
+//		tmp.c6p616c_7esp = bean.c6p616c_1_7esp;
+//		lstDetalle.add(tmp);
+//
+//		tmp = new Detalle(getResources().getStringArray(
+//				R.array.array_616)[2]);
+//		tmp.c6p616a = bean.c6p616a_3;
+//		tmp.c6p616b = bean.c6p616b_3;
+//		tmp.c6p616c_1 = bean.c6p616c_3_1;
+//		tmp.c6p616c_2 = bean.c6p616c_3_2;
+//		tmp.c6p616c_3 = bean.c6p616c_3_3;
+//		tmp.c6p616c_4 = bean.c6p616c_3_4;
+//		tmp.c6p616c_5 = bean.c6p616c_3_5;
+//		tmp.c6p616c_6 = bean.c6p616c_3_6;
+//		tmp.c6p616c_7 = bean.c6p616c_3_7;
+//		tmp.c6p616c_7esp = bean.c6p616c_3_7esp;
+//		lstDetalle.add(tmp);
+//		
+//		tmp = new Detalle(getResources().getStringArray(
+//				R.array.array_616)[3]);
+//		tmp.c6p616a = bean.c6p616a_4;
+//		tmp.c6p616b = bean.c6p616b_4;
+//		tmp.c6p616c_1 = bean.c6p616c_4_1;
+//		tmp.c6p616c_2 = bean.c6p616c_4_2;
+//		tmp.c6p616c_3 = bean.c6p616c_4_3;
+//		tmp.c6p616c_4 = bean.c6p616c_4_4;
+//		tmp.c6p616c_5 = bean.c6p616c_4_5;
+//		tmp.c6p616c_6 = bean.c6p616c_4_6;
+//		tmp.c6p616c_7 = bean.c6p616c_4_7;
+//		tmp.c6p616c_7esp = bean.c6p616c_4_7esp;
+//		lstDetalle.add(tmp);
+//		
+//		tmp = new Detalle(getResources().getStringArray(R.array.array_616)[4] +  bean.c6p616a_5esp == "" ||  bean.c6p616a_5esp == null   ? "5. Otro?"  :    " 5. Otro? [ "	+ bean.c6p616a_5esp + " ]" );
+//		tmp.c6p616a = bean.c6p616a_5;
+//		tmp.c6p616a_5esp = bean.c6p616a_5esp;
+//		tmp.c6p616b = bean.c6p616b_5;
+//		tmp.c6p616c_1 = bean.c6p616c_5_1;
+//		tmp.c6p616c_2 = bean.c6p616c_5_2;
+//		tmp.c6p616c_3 = bean.c6p616c_5_3;
+//		tmp.c6p616c_4 = bean.c6p616c_5_4;
+//		tmp.c6p616c_5 = bean.c6p616c_5_5;
+//		tmp.c6p616c_6 = bean.c6p616c_5_6;
+//		tmp.c6p616c_7 = bean.c6p616c_5_7;
+//		tmp.c6p616c_7esp = bean.c6p616c_5_7esp;
+//		lstDetalle.add(tmp);
+//	}
+
+//	private void llenarBean() {
+//		Detalle tmp;
+//		tmp = (Detalle) lstDetalle.get(0);
+//		bean.c6p616a_1 = tmp.c6p616a;
+//		bean.c6p616b_1 = tmp.c6p616b;
+//		bean.c6p616c_1_1 = tmp.c6p616c_1;
+//		bean.c6p616c_1_2 = tmp.c6p616c_2;
+//		bean.c6p616c_1_3 = tmp.c6p616c_3;
+//		bean.c6p616c_1_4 = tmp.c6p616c_4;
+//		bean.c6p616c_1_5 = tmp.c6p616c_5;
+//		bean.c6p616c_1_6 = tmp.c6p616c_6;
+//		bean.c6p616c_1_7 = tmp.c6p616c_7;
+//		bean.c6p616c_1_7esp = tmp.c6p616c_7esp;		
+//
+//		tmp = (Detalle) lstDetalle.get(1);
+//		bean.c6p616a_2 = tmp.c6p616a;
+//		bean.c6p616b_2 = tmp.c6p616b;
+//		bean.c6p616c_2_1 = tmp.c6p616c_1;
+//		bean.c6p616c_2_2 = tmp.c6p616c_2;
+//		bean.c6p616c_2_3 = tmp.c6p616c_3;
+//		bean.c6p616c_2_4 = tmp.c6p616c_4;
+//		bean.c6p616c_2_5 = tmp.c6p616c_5;
+//		bean.c6p616c_2_6 = tmp.c6p616c_6;
+//		bean.c6p616c_2_7 = tmp.c6p616c_7;
+//		bean.c6p616c_2_7esp = tmp.c6p616c_7esp;
+//
+//		tmp = (Detalle) lstDetalle.get(2);
+//		bean.c6p616a_3 = tmp.c6p616a;
+//		bean.c6p616b_3 = tmp.c6p616b;
+//		bean.c6p616c_3_1 = tmp.c6p616c_1;
+//		bean.c6p616c_3_2 = tmp.c6p616c_2;
+//		bean.c6p616c_3_3 = tmp.c6p616c_3;
+//		bean.c6p616c_3_4 = tmp.c6p616c_4;
+//		bean.c6p616c_3_5 = tmp.c6p616c_5;
+//		bean.c6p616c_3_6 = tmp.c6p616c_6;
+//		bean.c6p616c_3_7 = tmp.c6p616c_7;
+//		bean.c6p616c_3_7esp = tmp.c6p616c_7esp;
+//		
+//		tmp = (Detalle) lstDetalle.get(3);
+//		bean.c6p616a_4 = tmp.c6p616a;
+//		bean.c6p616b_4 = tmp.c6p616b;
+//		bean.c6p616c_4_1 = tmp.c6p616c_1;
+//		bean.c6p616c_4_2 = tmp.c6p616c_2;
+//		bean.c6p616c_4_3 = tmp.c6p616c_3;
+//		bean.c6p616c_4_4 = tmp.c6p616c_4;
+//		bean.c6p616c_4_5 = tmp.c6p616c_5;
+//		bean.c6p616c_4_6 = tmp.c6p616c_6;
+//		bean.c6p616c_4_7 = tmp.c6p616c_7;
+//		bean.c6p616c_4_7esp = tmp.c6p616c_7esp;
+//		
+//		tmp = (Detalle) lstDetalle.get(4);
+//		bean.c6p616a_5 = tmp.c6p616a;
+//		bean.c6p616a_5esp = tmp.c6p616a_5esp;
+//		bean.c6p616b_5 = tmp.c6p616b;
+//		bean.c6p616c_5_1 = tmp.c6p616c_1;
+//		bean.c6p616c_5_2 = tmp.c6p616c_2;
+//		bean.c6p616c_5_3 = tmp.c6p616c_3;
+//		bean.c6p616c_5_4 = tmp.c6p616c_4;
+//		bean.c6p616c_5_5 = tmp.c6p616c_5;
+//		bean.c6p616c_5_6 = tmp.c6p616c_6;
+//		bean.c6p616c_5_7 = tmp.c6p616c_7;
+//		bean.c6p616c_5_7esp = tmp.c6p616c_7esp;
+//	}
+
+	
+	private void limpiarBean() {
+		Detalle tmp;
+		tmp = (Detalle) lstDetalle.get(0);
+//		bean.c6p616a_1 = null;
+//		bean.c6p616b_1 = null;
+//		bean.c6p616c_1_1 = null;
+//		bean.c6p616c_1_2 = null;
+//		bean.c6p616c_1_3 = null;
+//		bean.c6p616c_1_4 = null;
+//		bean.c6p616c_1_5 =null;
+//		bean.c6p616c_1_6 = null;
+//		bean.c6p616c_1_7 = null;
+//		bean.c6p616c_1_7esp = null;		
+		
+	}
+	
+	
+	private void limpiarUI() {
+
+		lstDetalle = new ArrayList<Detalle>();
+		Detalle tmp = new Detalle(getResources().getStringArray(
+				R.array.array_616)[0]);
+		tmp.c6p616a = null;
+		tmp.c6p616b = null;
+		tmp.c6p616c_1 = null;
+		tmp.c6p616c_2 = null;
+		tmp.c6p616c_3 = null;
+		tmp.c6p616c_4 = null;
+		tmp.c6p616c_5 = null;
+		tmp.c6p616c_6 = null;
+		tmp.c6p616c_7 = null;
+		tmp.c6p616c_7esp = null;
+		lstDetalle.add(tmp);
+		
+		tmp = new Detalle(getResources().getStringArray(
+				R.array.array_616)[1]);
+		tmp.c6p616a = null;
+		tmp.c6p616b = null;
+		tmp.c6p616c_1 = null;
+		tmp.c6p616c_2 = null;
+		tmp.c6p616c_3 = null;
+		tmp.c6p616c_4 = null;
+		tmp.c6p616c_5 = null;
+		tmp.c6p616c_6 = null;
+		tmp.c6p616c_7 = null;
+		tmp.c6p616c_7esp = null;
+		lstDetalle.add(tmp);
+
+		tmp = new Detalle(getResources().getStringArray(
+				R.array.array_616)[2]);
+		tmp.c6p616a = null;
+		tmp.c6p616b = null;
+		tmp.c6p616c_1 = null;
+		tmp.c6p616c_2 = null;
+		tmp.c6p616c_3 = null;
+		tmp.c6p616c_4 = null;
+		tmp.c6p616c_5 = null;
+		tmp.c6p616c_6 = null;
+		tmp.c6p616c_7 = null;
+		tmp.c6p616c_7esp = null;
+		lstDetalle.add(tmp);
+		
+		tmp = new Detalle(getResources().getStringArray(
+				R.array.array_616)[3]);
+		tmp.c6p616a = null;
+		tmp.c6p616b = null;
+		tmp.c6p616c_1 = null;
+		tmp.c6p616c_2 = null;
+		tmp.c6p616c_3 = null;
+		tmp.c6p616c_4 = null;
+		tmp.c6p616c_5 = null;
+		tmp.c6p616c_6 = null;
+		tmp.c6p616c_7 = null;
+		tmp.c6p616c_7esp = null;
+		lstDetalle.add(tmp);
+		
+		tmp = new Detalle(getResources().getStringArray(
+				R.array.array_616)[4]);
+		tmp.c6p616a_5esp = null;
+		tmp.c6p616a = null;
+		tmp.c6p616b = null;
+		tmp.c6p616c_1 = null;
+		tmp.c6p616c_2 = null;
+		tmp.c6p616c_3 = null;
+		tmp.c6p616c_4 = null;
+		tmp.c6p616c_5 = null;
+		tmp.c6p616c_6 = null;
+		tmp.c6p616c_7 = null;
+		tmp.c6p616c_7esp = null;
+		lstDetalle.add(tmp);
+
+	}
+
+	
+	public static class Detalle extends Entity implements
+			IDetailEntityComponent {
+		private static final long serialVersionUID = 1L;
+
+		public String label = null;
+		public Integer c6p616a = null;
+		public Integer c6p616b = null;
+		public Integer c6p616c_1 = null;
+		public Integer c6p616c_2 = null;
+		public Integer c6p616c_3 = null;
+		public Integer c6p616c_4 = null;
+		public Integer c6p616c_5 = null;
+		public Integer c6p616c_6 = null;
+		public Integer c6p616c_7 = null;
+		public String c6p616c_7esp = null;
+		public String c6p616a_5esp = null;
+		
+
+		public Detalle(String label) {
+			super();
+			this.label = label;
+		}
+
+		@Override
+		public void cleanEntity() {		
+			c6p616b = null;
+			c6p616c_1 = null;
+			c6p616c_2 = null;
+			c6p616c_3 = null;
+			c6p616c_4 = null;
+			c6p616c_5 = null;
+			c6p616c_6 = null;
+			c6p616c_7 = null;
+			c6p616c_7esp = null;
+			c6p616a_5esp = null;			
+		}
+		
+		public void cleanEntity2() {		
+			c6p616a = null;
+			c6p616b = null;
+			c6p616c_1 = null;
+			c6p616c_2 = null;
+			c6p616c_3 = null;
+			c6p616c_4 = null;
+			c6p616c_5 = null;
+			c6p616c_6 = null;
+			c6p616c_7 = null;
+			c6p616c_7esp = null;
+			c6p616a_5esp = null;			
+		}
+
+		@Override
+		public boolean isTitle() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+	}
+
+//	public void FuncionRG615() {
+//		int x = Integer.parseInt(rgC6P615.getTagSelected("0").toString());
+//		if (x == 2) {
+//			Util.cleanAndLockView(this.getActivity(), tcSecIII);
+//			refreshTabla();
+//
+//		} else {
+//			Util.lockView(this.getActivity(), false, tcSecIII);
+//			tcSecIII.requestFocus();
+//		}
+//	}
+	
+	
+	public void FuncionRG615() {
+		RadioGroupOtherField crg = ((RadioGroupOtherField) rgC6P615);
+		if (crg.getTagSelected("").toString().equals("1")) {
+			Util.lockView(this.getActivity(), false, tcSecIII);
+			tcSecIII.requestFocus();
+		} else if (rgC6P615.getTagSelected("").toString().equals("2")) {
+			Util.cleanAndLockView(this.getActivity(), tcSecIII);
+
+			if (crg.getCheckedRadioButtonId() != -1	&& crg.findViewById(crg.getCheckedRadioButtonId()).isPressed()) {
+				 if (!grabar()) {
+				 return;
+				 }
+				
+			
+			limpiarUI();
+		//	limpiarBean();
+			tcSecIII.reloadData();
+			 refreshTabla();
+			//	parent.nextFragment(CuestionarioFragmentActivity.MODULO_IV + 4);
+			} // bean.p15=null;
+	
+		}
+	}
+
+
+
+	public CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+
+
+	public void onSeleccionadoChangeValue(Object entity, Integer row, Integer opcion) {
+		if (entity != null) {
+			Detalle tmp = (Detalle) entity;
+			tmp.c6p616a = opcion;
+			if (row.intValue() >= 0) {
+
+				Log.e ("opcion",opcion + "");		
+				Log.e ("tmp.c6p616a",tmp.c6p616a + "");
+				
+				tmp.c6p616a = opcion;
+				if (opcion == 2) {
+					tmp.cleanEntity();
+				}
+				refrescarTabla();
+			}
+		}
+	}
+
+	
+	@Override
+	public Entity getEntity() {
+		return bean;
+	}
+}

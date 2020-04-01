@@ -1,0 +1,273 @@
+package gob.inei.ene2019v2.fragment.ModVIII;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.components.CheckBoxField;
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.GridComponent2;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.MasterActivity;
+import gob.inei.dnce.components.RadioGroupOtherField;
+import gob.inei.dnce.components.RadioGroupOtherField.ORIENTATION;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.model.Caratula;
+import gob.inei.ene2019v2.model.Moduloviii;
+import gob.inei.ene2019v2.service.CuestionarioService;
+
+import java.sql.SQLException;
+
+import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
+
+public class Mod_VIII_Fragment_003 extends FragmentForm {
+
+//	@FieldAnnotation(orderIndex = 1)
+//	public RadioGroupOtherField rgC8P809;
+//	@FieldAnnotation(orderIndex = 2)
+//	public CheckBoxField chbC8P809_1;
+//	@FieldAnnotation(orderIndex = 3)
+//	public RadioGroupOtherField rgC8P810;
+//	@FieldAnnotation(orderIndex = 4)
+//	public CheckBoxField chbC8P810_1;
+	@FieldAnnotation(orderIndex = 1)
+	public RadioGroupOtherField rgC8P811;
+	
+
+	private CuestionarioService cuestionarioService;
+	private Moduloviii bean;
+	public GridComponent2 gridpreg809,gridpreg810;
+	private LabelComponent lblTitulo, lblTitulox;
+	private Caratula caratula;
+	LinearLayout q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10;
+
+	public Mod_VIII_Fragment_003() {
+	}
+
+	public Mod_VIII_Fragment_003 parent(MasterActivity parent) {
+		this.parent = parent;
+		return this;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = createUI();
+		initObjectsWithoutXML(this, rootView);
+		enlazarCajas();
+		listening();
+
+		return rootView;
+	}
+
+	@Override
+	protected void buildFields() {
+		lblTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.c2c100m8).textSize(21).centrar().negrita();
+		lblTitulox = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.c2c100m8_sub1).textSize(20).centrar().negrita();
+//		rgC8P809 = new RadioGroupOtherField(this.getActivity(),
+//				R.string.c2c100m8p002_1, R.string.c2c100m8p002_2,
+//				R.string.c2c100m8p002_3, R.string.c2c100m8p002_4,
+//				R.string.c2c100m8p002_5, R.string.c2c100m8p002_6,
+//				R.string.c2c100m8p002_7).size(WRAP_CONTENT, 350).orientation(
+//				ORIENTATION.HORIZONTAL);
+//		chbC8P809_1 = new CheckBoxField(this.getActivity(),
+//				R.string.c2c100m8p002_8, "1:0").size(WRAP_CONTENT, 600).callback("OnChangeCheckP809");
+		
+//		gridpreg809 = new GridComponent2(this.getActivity(),Gravity.CENTER_VERTICAL, 1);
+//		gridpreg809.addComponent(rgC8P809);
+//		gridpreg809.addComponent(chbC8P809_1);
+//		gridpreg809.colorFondo(R.color.WhiteSmoke);
+		
+		
+		
+		
+//		rgC8P810 = new RadioGroupOtherField(this.getActivity(),
+//				R.string.c2c100m8p002_1, R.string.c2c100m8p002_2,
+//				R.string.c2c100m8p002_3, R.string.c2c100m8p002_4,
+//				R.string.c2c100m8p002_5, R.string.c2c100m8p002_6,
+//				R.string.c2c100m8p002_7).size(WRAP_CONTENT, 350).orientation(
+//				ORIENTATION.HORIZONTAL);
+//		chbC8P810_1 = new CheckBoxField(this.getActivity(),
+//				R.string.c2c100m8p002_8, "1:0").size(WRAP_CONTENT, 600).callback("OnChangeCheckP810");
+		
+//		gridpreg810 = new GridComponent2(this.getActivity(),Gravity.CENTER_VERTICAL, 1);
+//		gridpreg810.addComponent(rgC8P810);
+//		gridpreg810.addComponent(chbC8P810_1);
+//		gridpreg810.colorFondo(R.color.WhiteSmoke);
+		
+		
+
+		rgC8P811 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c2c100m8p008_1, R.string.c2c100m8p008_2,
+				R.string.c2c100m8p008_3).size(WRAP_CONTENT, 450).orientation(
+				ORIENTATION.HORIZONTAL);
+
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+
+		q0 = createQuestionSection(lblTitulo, lblTitulox);
+//		q1 = createQuestionSection(R.string.c2c100m8p009, Gravity.CENTER, LinearLayout.HORIZONTAL, gridpreg809.component());
+//		q2 = createQuestionSection(R.string.c2c100m8p010, Gravity.CENTER, LinearLayout.HORIZONTAL, gridpreg810.component());
+		q3 = createQuestionSection(R.string.c2c100m8p811, rgC8P811);
+
+		ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+
+		form.addView(q0);
+//		form.addView(q1);
+//		form.addView(q2);
+		form.addView(q3);
+
+		return contenedor;
+	}
+
+	@Override
+	public boolean grabar() {
+
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals("")) {
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+				if (view != null) {
+					view.requestFocus();
+				}
+			}
+			return false;
+		}
+		uiToEntity(bean);
+		try {
+			if (!getCuestionarioService().saveOrUpdate(bean,
+					bean.getSecCap(getListFields(this)))) {
+				ToastMessage.msgBox(this.getActivity(),
+						"Los datos no se guardaron",
+						ToastMessage.MESSAGE_ERROR, ToastMessage.DURATION_LONG);
+			}
+		} catch (SQLException e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean validar() {
+		String pregunta_no_vacia = getString(R.string.pregunta_no_vacia);
+		String especifique_no_vacio = getString(R.string.pregunta_especifique);
+		error = false;
+
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+
+//		if (Util.esVacio(rgC8P809)) {
+//			if (!chbC8P809_1.isChecked()) {
+//				mensaje = pregunta_no_vacia.replace("$", "La pregunta P809");
+//				view = rgC8P809;
+//				return !(error = true);
+//			}
+//		}
+//		if (Util.esVacio(rgC8P810)) {
+//			if (!chbC8P810_1.isChecked()) {
+//				mensaje = pregunta_no_vacia.replace("$", "La pregunta P810");
+//				view = rgC8P810;
+//				return !(error = true);
+//			}
+//		}
+		if (Util.esVacio(rgC8P811)) {
+			mensaje = pregunta_no_vacia.replace("$", "La pregunta P811");
+			view = rgC8P811;
+			return !(error = true);
+		}
+
+		return true;
+	}
+
+	@Override
+	public void cargarDatos() {
+		bean = getCuestionarioService().getModuloviii(
+				App.getInstance().getEmpresa(),
+				new Moduloviii().getSecCap(getListFields(this)));
+		if (bean == null) {
+			bean = new Moduloviii();
+			bean.id = App.getInstance().getEmpresa().id;
+		}
+
+		caratula = App.getInstance().getEmpresa();
+		if (caratula == null) {
+			caratula = new Caratula();
+			bean.id = App.getInstance().getEmpresa().id;
+		}
+
+		entityToUI(bean);
+		inicio();
+	}
+
+	private void inicio() {
+//		OnChangeCheckP809();
+//		OnChangeCheckP810();
+		rgC8P811.requestFocus();
+
+	}
+//	
+//	public void OnChangeCheckP809(){
+//		if (chbC8P809_1.isChecked()) {
+//			Util.cleanAndLockView(getActivity(), rgC8P809);
+//			rgC8P810.requestFocus();
+//		} else {
+//			Util.lockView(getActivity(), false, rgC8P809);
+//			rgC8P809.requestFocus();
+//		}
+//	}
+//	public void OnChangeCheckP810(){
+//		if (chbC8P810_1.isChecked()) {
+//			Util.cleanAndLockView(getActivity(), rgC8P810);
+//			rgC8P811.requestFocus();
+//		} else {
+//			Util.lockView(getActivity(), false, rgC8P810);
+//			rgC8P810.requestFocus();
+//		}
+//	}
+//	
+	
+	public CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+
+	@Override
+	public Entity getEntity() {
+		return bean;
+	}
+}

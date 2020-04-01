@@ -1,0 +1,516 @@
+package gob.inei.ene2019v2.fragment;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.components.CheckBoxField;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.GridComponent;
+import gob.inei.dnce.components.IntegerField;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.MasterActivity;
+import gob.inei.dnce.components.RadioGroupOtherField;
+import gob.inei.dnce.components.RadioGroupOtherField.ORIENTATION;
+import gob.inei.dnce.components.TextBoxField;
+import gob.inei.dnce.components.TextField;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.interfaces.FieldComponent;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.model.Caratula;
+import gob.inei.ene2019v2.service.CuestionarioService;
+
+import java.sql.SQLException;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
+
+public class Caratula_Fragment_007 extends FragmentForm {
+	@FieldAnnotation(orderIndex = 1)
+	public RadioGroupOtherField rgP30;
+	@FieldAnnotation(orderIndex = 2)
+	public TextField txtP30_ESP;
+	@FieldAnnotation(orderIndex = 3)
+	public TextField txtP31_NOMB;
+	@FieldAnnotation(orderIndex = 4)
+	public TextField txtP31_APAT;
+	@FieldAnnotation(orderIndex = 5)
+	public TextField txtP31_AMAT;
+	@FieldAnnotation(orderIndex = 6)
+	public CheckBoxField chbP31_ELMISMO;
+	@FieldAnnotation(orderIndex = 7)
+	public TextField txtP32_EMAIL;
+	@FieldAnnotation(orderIndex = 8)
+	public CheckBoxField chbP32_EMAIL_NO;
+	@FieldAnnotation(orderIndex = 9)
+	public IntegerField txtP33_CEL;
+	@FieldAnnotation(orderIndex = 10)
+	public CheckBoxField chbP33_CEL_NO;
+	@FieldAnnotation(orderIndex = 11)
+	public IntegerField txtP34_TELFIJO;
+	@FieldAnnotation(orderIndex = 12)
+	public CheckBoxField chbP34_TELFIJO_NO;
+
+	private CuestionarioService cuestionarioService;
+	private Caratula bean;
+	private LabelComponent lblTitulo, lblSec1;
+	private GridComponent grid1, grid2;
+
+	public Caratula_Fragment_007() {
+	}
+
+	public Caratula_Fragment_007 parent(MasterActivity parent) {
+		this.parent = parent;
+		return this;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = createUI();
+		initObjectsWithoutXML(this, rootView);
+		enlazarCajas();
+		listening();
+
+		return rootView;
+	}
+
+	@Override
+	protected void buildFields() {
+		lblTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.c1caratulatit1).textSize(21).centrar().negrita();
+		lblSec1 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text("DEL RESPONSABLE Y EL INFORMANTE").textSize(20).centrar().negrita();
+
+		txtP31_APAT = new TextField(this.getActivity(), false).size(
+				altoComponente, 450);
+		txtP31_AMAT = new TextField(this.getActivity(), false).size(
+				altoComponente, 450);
+		txtP31_NOMB = new TextField(this.getActivity(), false).size(
+				altoComponente, 450);
+		rgP30 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100p16a_1, R.string.c1c100p16a_2,
+				R.string.c1c100p16a_3,  R.string.c1c100p16a_4,  R.string.c1c100p16a_5).size(WRAP_CONTENT, 700)
+				.orientation(ORIENTATION.VERTICAL).callback("P30");
+		txtP30_ESP = new TextField(this.getActivity(), false)
+				.size(altoComponente, 450).hint(R.string.especifique)
+				.soloTextoNumero();
+		rgP30.agregarEspecifique(4, txtP30_ESP);
+
+		LabelComponent lbl1 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100p16_apat).size(altoComponente, 200);
+		LabelComponent lbl2 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100p16_amat).size(altoComponente, 200);
+		LabelComponent lbl3 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100p16_nomb).size(altoComponente, 200);
+
+		chbP31_ELMISMO = new CheckBoxField(this.getActivity(),
+				R.string.c1c100P31, "1:0").size(WRAP_CONTENT, 350).callback("P30");
+		
+		grid1 = new GridComponent(getActivity(), 2)
+				.colorFondo(FragmentForm.COLOR_LINEA_SECCION_PREGUNTA);
+		grid1.addComponent(lbl3);
+		grid1.addComponent(txtP31_NOMB);
+		grid1.addComponent(lbl1);
+		grid1.addComponent(txtP31_APAT);
+		grid1.addComponent(lbl2);
+		grid1.addComponent(txtP31_AMAT);
+		grid1.addComponent(new LabelComponent(getActivity()) );
+		grid1.addComponent(chbP31_ELMISMO);
+		
+		chbP32_EMAIL_NO = new CheckBoxField(this.getActivity(),
+				R.string.c1c100email32_no, "1:0").size(WRAP_CONTENT, 150)
+				.callback("onChbChangeValue");
+		txtP32_EMAIL = new TextField(this.getActivity(), false).size(
+				altoComponente, 250);
+		chbP33_CEL_NO = new CheckBoxField(this.getActivity(),
+				R.string.c1c100cel_no, "1:0").size(WRAP_CONTENT, 150).callback(
+				"onChbChangeValue");
+		txtP33_CEL = new IntegerField(this.getActivity(), false)
+				.size(altoComponente, 250).alinearIzquierda()
+				.hint(R.string.c1c100telnumero);
+		chbP34_TELFIJO_NO = new CheckBoxField(this.getActivity(),
+				R.string.c1c100telfijo_no, "1:0").size(WRAP_CONTENT, 150)
+				.callback("onChbChangeValue");
+		txtP34_TELFIJO = new IntegerField(this.getActivity(), false)
+				.size(altoComponente, 250).alinearIzquierda()
+				.hint(R.string.c1c100telnumero);
+
+		LabelComponent lbl4 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100email_32).size(altoComponente + 5, 220);
+		LabelComponent lbl5 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100cel_33).size(altoComponente, 220);
+		LabelComponent lbl6 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100telfijo_34).size(altoComponente, 220);
+
+		grid2 = new GridComponent(this.getActivity(), 3)
+				.colorFondo(FragmentForm.COLOR_LINEA_SECCION_PREGUNTA);
+		grid2.addComponent(lbl4);
+		grid2.addComponent(txtP32_EMAIL);
+		grid2.addComponent(chbP32_EMAIL_NO);
+		grid2.addComponent(lbl5);
+		grid2.addComponent(txtP33_CEL);
+		grid2.addComponent(chbP33_CEL_NO);
+		grid2.addComponent(lbl6);
+		grid2.addComponent(txtP34_TELFIJO);
+		grid2.addComponent(chbP34_TELFIJO_NO);
+
+		Filtros.setFiltro(txtP32_EMAIL, Filtros.TIPO.EMAIL, 70, null);
+		Filtros.setFiltro(txtP31_APAT, Filtros.TIPO.ALFA_U, 70, null);
+		Filtros.setFiltro(txtP31_AMAT, Filtros.TIPO.ALFA_U, 70, null);
+		Filtros.setFiltro(txtP31_NOMB, Filtros.TIPO.ALFA_U, 70, null);
+		Filtros.setFiltro(txtP30_ESP, Filtros.TIPO.ALFAN_U, 300, null);
+		Filtros.setFiltro(txtP34_TELFIJO, Filtros.TIPO.PATRON, 7, -1, null, -1,
+				-1, -1, -1, -1, -1, -1, "[^(1|8|9)]([0-9]{5,6})");
+		Filtros.setFiltro(txtP33_CEL, Filtros.TIPO.PATRON, 9, -1, null, -1, -1,
+				-1, -1, -1, -1, -1, "[^(0-8)]([0-9]{8})");
+
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+		/* Aca creamos las preguntas */
+
+		LinearLayout q0 = createQuestionSection(lblTitulo /*,lblSec1*/);
+		LinearLayout q1 = createQuestionSection(R.string.c1c100p16a, rgP30);
+		LinearLayout q2 = createQuestionSection(R.string.c1c100p16,
+				grid1.component());
+		LinearLayout q3 = createQuestionSection(grid2.component());
+
+		// ///////////////////////////
+		ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+		/* Aca agregamos las preguntas a la pantalla */
+		form.addView(q0);
+
+		form.addView(q1);
+		form.addView(q2);
+		form.addView(q3);
+
+		return contenedor;
+	}
+
+	@Override
+	public boolean grabar() {
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals("")) {
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+				if (view != null) {
+					view.requestFocus();
+				}
+			}
+			return false;
+		}
+
+		uiToEntity(bean);
+		
+		try {		
+		if (!getCuestionarioService().saveOrUpdate(bean,
+					bean.getSecCap(getListFields(this)))) {
+				ToastMessage.msgBox(this.getActivity(),
+						"Los datos no se guardaron",
+						ToastMessage.MESSAGE_ERROR, ToastMessage.DURATION_LONG);
+			}
+		} catch (SQLException e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean validar() {
+		String pregunta_no_vacia = getString(R.string.pregunta_no_vacia);
+		String especifique_no_vacio = getString(R.string.pregunta_especifique);
+		error = false;
+
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+
+		if (Util.esVacio(rgP30)) {
+			mensaje = pregunta_no_vacia.replace("$", "Preg 30;");
+			view = rgP30;
+			return !(error = true);
+		}
+		if (rgP30.isTagSelected(5) && Util.esVacio(txtP30_ESP)) {
+			mensaje = pregunta_no_vacia
+					.replace("$", "La Preg.30 (Especifique)");
+			view = txtP30_ESP;
+			return !(error = true);
+		}
+
+		if (!rgP30.isTagSelected(1)) {
+			if (Util.esVacio(txtP31_NOMB)) {
+				mensaje = pregunta_no_vacia.replace("$", "Nombres;");
+				view = txtP31_NOMB;
+				return !(error = true);
+			}
+
+			if (Util.esVacio(txtP31_APAT)) {
+				mensaje = pregunta_no_vacia.replace("$", "Apellido Paterno;");
+				view = txtP31_APAT;
+				return !(error = true);
+			}
+			if (Util.esVacio(txtP31_AMAT)) {
+				mensaje = pregunta_no_vacia.replace("$", "Apellido Materno;");
+				view = txtP31_AMAT;
+				return !(error = true);
+			}
+		}
+
+		if (Util.esVacio(txtP32_EMAIL) && !chbP32_EMAIL_NO.isChecked()) {
+			mensaje = pregunta_no_vacia.replace("$", "Preg 32;");
+			view = txtP32_EMAIL;
+			return !(error = true);
+		}
+		if (!chbP32_EMAIL_NO.isChecked()
+				&& txtP32_EMAIL.getCurrentTextColor() == Filtros.ERRORCOLOR) {
+			mensaje = "Error: Debe ingresar información correcta";
+			view = txtP32_EMAIL;
+			return !(error = true);
+		}
+
+		if (Util.esVacio(txtP33_CEL) && !chbP33_CEL_NO.isChecked()) {
+			mensaje = pregunta_no_vacia.replace("$", "Preg 33;");
+			view = txtP33_CEL;
+			return !(error = true);
+		}
+
+		if (!Util.esVacio(txtP33_CEL)) {
+			int size = txtP33_CEL.getText().length();
+			if (size == 9) {
+				int valor = Integer.parseInt(txtP33_CEL.getText().toString()
+						.substring(0, 1));
+				if (valor != 9) {
+					mensaje = "Error; Tel\u00e9fono celular debe iniciar con 9";
+					view = txtP33_CEL;
+					return !(error = true);
+				}
+			}
+
+			if (txtP33_CEL.getText().toString().length() <= 8) {
+				mensaje = "Tel\u00e9fono celular debe contener mínimo de 9 dígitos.";
+				view = txtP33_CEL;
+				return !(error = true);
+			}
+
+			// else
+			// {
+			// String valor = txtP33_CEL.getText().toString()
+			// .substring(1, 2);
+			// Log.e("valor", "cel: "+ valor);
+			// if( Util.getInt(valor) != 9)
+			// {
+			// mensaje = "Error; Tel\u00e9fono celular debe iniciar con 9";
+			// view = txtP33_CEL;
+			// return !(error = true);
+			// }
+			// }
+		}
+
+		if (!chbP34_TELFIJO_NO.isChecked()) {
+
+			if (Util.esVacio(txtP34_TELFIJO)) {
+				mensaje = pregunta_no_vacia.replace("$", "Preg 34;");
+				view = txtP34_TELFIJO;
+				return !(error = true);
+			}
+
+			String text = txtP34_TELFIJO.getText().toString().trim();
+			if (text.length() < 6) {
+				mensaje = "Ingrese numero de telefono correcto";
+				view = txtP34_TELFIJO;
+				return !(error = true);
+			}
+
+			if (txtP34_TELFIJO.getCurrentTextColor() == Filtros.ERRORCOLOR) {
+				mensaje = "Error; Tel\u00e9fono fijo inicia con 2, 3, 4, 5, 6 o 7";
+				view = txtP34_TELFIJO;
+				return !(error = true);
+			}
+
+			Integer teleFijo = Util.getInt(txtP34_TELFIJO.getText().length());
+
+			if ((((Util.getInt(bean.ccdd) == 15 || Util.getInt(bean.ccdd) == 07) && teleFijo < 7))
+					|| (((Util.getInt(bean.ccdd) != 15 && Util
+							.getInt(bean.ccdd) != 07) && teleFijo == 7))) {
+				mensaje = "Error: La cantidad de dígitos del teléfono fijo no se relaciona con la región";
+				view = txtP34_TELFIJO;
+				return !(error = true);
+			}
+
+		}
+		if (chbP32_EMAIL_NO.isChecked() && chbP33_CEL_NO.isChecked()
+				&& chbP34_TELFIJO_NO.isChecked()) {
+			mensaje = "Error: Debe tener algún número para contactar o correo";
+			view = chbP32_EMAIL_NO;
+			return !(error = true);
+		}
+		
+		if(rgP30.isTagSelected(2) || rgP30.isTagSelected(4) || rgP30.isTagSelected(5)  ){
+			if ((txtP31_APAT.getText().toString().equals( Util.getText(bean.p26_apat)))
+					&& (txtP31_AMAT.getText().toString() .equals( Util.getText(bean.p26_amat)))
+					&& (txtP31_NOMB.getText().toString() .equals( Util.getText(bean.p26_nomb) ) )  ) {
+				mensaje = "Error: Si el nombre del gerente y el informante son iguales no debe marcar la opción cargo como 2 ,4 o 5";
+				view = rgP30;
+				return !(error = true);
+			}
+		}
+
+		
+		
+		return true;
+	}
+
+	@Override
+	public void cargarDatos() {
+		// bean =
+		// getCuestionarioService().getCaratula(App.getInstance().getEmpresa(),
+		// new Caratula().getSecCap(getListFields(this)));
+		// if (bean == null) {
+		// bean = new Caratula();
+		// }
+		// bean.id = App.getInstance().getEmpresa().id;
+		bean = App.getInstance().getEmpresa();
+		entityToUI(bean);
+		inicio();
+	}
+
+	private void inicio() {
+		
+		if (rgP30.isTagSelected(1)) {
+			cleanAndLockView(txtP31_NOMB, txtP31_APAT, txtP31_AMAT, chbP31_ELMISMO);
+		//	lockView(false, chbP31_ELMISMO);
+		} else if (rgP30.isTagSelected(3)) {
+			lockView(false, chbP31_ELMISMO);
+			if (chbP31_ELMISMO.isChecked()) {
+				lockView(false, txtP31_NOMB, txtP31_APAT, txtP31_AMAT);
+				txtP31_NOMB.setText(bean.p26_nomb);
+				txtP31_NOMB.readOnly();
+				txtP31_APAT.setText(bean.p26_apat);
+				txtP31_APAT.readOnly();
+				txtP31_AMAT.setText(bean.p26_amat);
+				txtP31_AMAT.readOnly();
+			}else{
+				txtP31_NOMB.readOnly(false);
+				txtP31_NOMB.setText("");
+				txtP31_APAT.readOnly(false);
+				txtP31_APAT.setText("");
+				txtP31_AMAT.readOnly(false);
+				txtP31_AMAT.setText("");
+				txtP31_NOMB.requestFocus();
+			}
+		} else if (rgP30.isTagSelected(2) || rgP30.isTagSelected(4)|| rgP30.isTagSelected(5)) {
+			txtP31_NOMB.readOnly(false);
+			txtP31_NOMB.setText("");
+			txtP31_APAT.readOnly(false);
+			txtP31_APAT.setText("");
+			txtP31_AMAT.readOnly(false);
+			txtP31_AMAT.setText("");
+			txtP31_NOMB.requestFocus();
+			lockView(false, txtP31_NOMB, txtP31_APAT, txtP31_AMAT);
+			cleanAndLockView(chbP31_ELMISMO);
+		}
+		
+		//rgP30();
+		lockP17(chbP32_EMAIL_NO, null, txtP32_EMAIL);
+		lockP17(chbP33_CEL_NO, null, txtP33_CEL);
+		lockP17(chbP34_TELFIJO_NO, null, txtP34_TELFIJO);
+		rgP30.requestFocus();
+	}
+
+	public CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+
+	public void onChbChangeValue(FieldComponent component) {
+		CheckBoxField chb = (CheckBoxField) component;
+		if (chb.isPressed()) {
+			if (chb.equals(chbP32_EMAIL_NO))
+				lockP17(chb, txtP33_CEL, txtP32_EMAIL);
+			else if (chb.equals(chbP33_CEL_NO))
+				lockP17(chb, txtP34_TELFIJO, txtP33_CEL);
+			else if (chb.equals(chbP34_TELFIJO_NO))
+				lockP17(chb, txtP33_CEL, txtP34_TELFIJO);
+		}
+	}
+
+	private void lockP17(CheckBoxField chb, TextBoxField txt, View... views) {
+		if (chb.isChecked()) {
+			cleanAndLockView(views);
+			if (txt != null) {
+				txt.requestFocus();
+			}
+		} else {
+			lockView(false, views);
+		}
+	}
+
+	public void P30() {			
+		if (rgP30.isTagSelected(1)) {
+			cleanAndLockView(txtP31_NOMB, txtP31_APAT, txtP31_AMAT, chbP31_ELMISMO);
+		//	lockView(false, chbP31_ELMISMO);
+			txtP32_EMAIL.requestFocus();
+		} else if (rgP30.isTagSelected(3)) {
+			lockView(false, chbP31_ELMISMO);
+			if (chbP31_ELMISMO.isChecked()) {
+				lockView(false, txtP31_NOMB, txtP31_APAT, txtP31_AMAT);
+				txtP31_NOMB.setText(bean.p26_nomb);
+				txtP31_NOMB.readOnly();
+				txtP31_APAT.setText(bean.p26_apat);
+				txtP31_APAT.readOnly();
+				txtP31_AMAT.setText(bean.p26_amat);
+				txtP31_AMAT.readOnly();
+			}else{
+				txtP31_NOMB.readOnly(false);
+				txtP31_NOMB.setText("");
+				txtP31_APAT.readOnly(false);
+				txtP31_APAT.setText("");
+				txtP31_AMAT.readOnly(false);
+				txtP31_AMAT.setText("");
+				txtP31_NOMB.requestFocus();
+			}
+		} else if (rgP30.isTagSelected(2) || rgP30.isTagSelected(4)|| rgP30.isTagSelected(5)) {
+			lockView(false, txtP31_NOMB, txtP31_APAT, txtP31_AMAT);
+			txtP31_NOMB.readOnly(false);
+			txtP31_NOMB.setText("");
+			txtP31_APAT.readOnly(false);
+			txtP31_APAT.setText("");
+			txtP31_AMAT.readOnly(false);
+			txtP31_AMAT.setText("");
+			txtP31_NOMB.requestFocus();
+			cleanAndLockView(chbP31_ELMISMO);
+		}
+	}	
+		
+	
+	
+}

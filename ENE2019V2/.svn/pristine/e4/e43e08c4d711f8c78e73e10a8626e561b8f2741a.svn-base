@@ -1,0 +1,587 @@
+package gob.inei.ene2019v2.fragment.ModIV;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.RadioGroupOtherField;
+import gob.inei.dnce.components.TextField;
+import gob.inei.dnce.components.IntegerField;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.components.RadioGroupOtherField.ORIENTATION;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.MasterActivity;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.model.Caratula;
+import gob.inei.ene2019v2.model.Moduloiv03;
+import gob.inei.ene2019v2.service.CuestionarioService;
+
+import java.sql.SQLException;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
+
+public class Mod_IV_Fragment_023_OK extends FragmentForm {
+
+	@FieldAnnotation(orderIndex = 1)
+	public RadioGroupOtherField rgM4P076_1;
+	@FieldAnnotation(orderIndex = 2)
+	public RadioGroupOtherField rgM4P077_1;
+	@FieldAnnotation(orderIndex = 3)
+	public RadioGroupOtherField rgM4P078_1;
+	@FieldAnnotation(orderIndex = 4)
+	public TextField txtM4P079_1;
+	@FieldAnnotation(orderIndex = 5)
+	public IntegerField txtM4P080_1;
+	@FieldAnnotation(orderIndex = 6)
+	public RadioGroupOtherField rgM4P081_1;
+	@FieldAnnotation(orderIndex = 7)
+	public RadioGroupOtherField rgM4P082_1;
+	@FieldAnnotation(orderIndex = 8)
+	public RadioGroupOtherField rgM4P083_1;
+	@FieldAnnotation(orderIndex = 9)
+	public RadioGroupOtherField rgM4P076_2;
+	@FieldAnnotation(orderIndex = 10)
+	public RadioGroupOtherField rgM4P077_2;
+	@FieldAnnotation(orderIndex = 11)
+	public RadioGroupOtherField rgM4P078_2;
+	@FieldAnnotation(orderIndex = 12)
+	public TextField txtM4P079_2;
+	@FieldAnnotation(orderIndex = 13)
+	public IntegerField txtM4P080_2;
+	@FieldAnnotation(orderIndex = 14)
+	public RadioGroupOtherField rgM4P081_2;
+	@FieldAnnotation(orderIndex = 15)
+	public RadioGroupOtherField rgM4P082_2;
+	@FieldAnnotation(orderIndex = 16)
+	public RadioGroupOtherField rgM4P083_2;
+	@FieldAnnotation(orderIndex = 17)
+	public RadioGroupOtherField rgM4P076_3;
+	@FieldAnnotation(orderIndex = 18)
+	public RadioGroupOtherField rgM4P077_3;
+	@FieldAnnotation(orderIndex = 19)
+	public RadioGroupOtherField rgM4P078_3;
+	@FieldAnnotation(orderIndex = 20)
+	public TextField txtM4P079_3;
+	@FieldAnnotation(orderIndex = 21)
+	public IntegerField txtM4P080_3;
+	@FieldAnnotation(orderIndex = 22)
+	public RadioGroupOtherField rgM4P081_3;
+	@FieldAnnotation(orderIndex = 23)
+	public RadioGroupOtherField rgM4P082_3;
+	@FieldAnnotation(orderIndex = 24)
+	public RadioGroupOtherField rgM4P083_3;
+	@FieldAnnotation(orderIndex = 25)
+	public RadioGroupOtherField rgM4P076_4;
+	@FieldAnnotation(orderIndex = 26)
+	public RadioGroupOtherField rgM4P077_4;
+	@FieldAnnotation(orderIndex = 27)
+	public RadioGroupOtherField rgM4P078_4;
+	@FieldAnnotation(orderIndex = 28)
+	public TextField txtM4P079_4;
+	@FieldAnnotation(orderIndex = 29)
+	public IntegerField txtM4P080_4;
+	@FieldAnnotation(orderIndex = 30)
+	public RadioGroupOtherField rgM4P081_4;
+	@FieldAnnotation(orderIndex = 31)
+	public RadioGroupOtherField rgM4P082_4;
+	@FieldAnnotation(orderIndex = 32)
+	public RadioGroupOtherField rgM4P083_4;
+	@FieldAnnotation(orderIndex = 33)
+	public RadioGroupOtherField rgM4P076_5;
+	@FieldAnnotation(orderIndex = 34)
+	public RadioGroupOtherField rgM4P077_5;
+	@FieldAnnotation(orderIndex = 35)
+	public RadioGroupOtherField rgM4P078_5;
+	@FieldAnnotation(orderIndex = 36)
+	public TextField txtM4P079_5;
+	@FieldAnnotation(orderIndex = 37)
+	public IntegerField txtM4P080_5;
+	@FieldAnnotation(orderIndex = 38)
+	public RadioGroupOtherField rgM4P081_5;
+	@FieldAnnotation(orderIndex = 39)
+	public RadioGroupOtherField rgM4P082_5;
+	@FieldAnnotation(orderIndex = 40)
+	public RadioGroupOtherField rgM4P083_5;
+	@FieldAnnotation(orderIndex = 41)
+	public RadioGroupOtherField rgM4P076_6;
+	@FieldAnnotation(orderIndex = 42)
+	public RadioGroupOtherField rgM4P077_6;
+	@FieldAnnotation(orderIndex = 43)
+	public RadioGroupOtherField rgM4P078_6;
+	@FieldAnnotation(orderIndex = 44)
+	public TextField txtM4P079_6;
+	@FieldAnnotation(orderIndex = 45)
+	public IntegerField txtM4P080_6;
+	@FieldAnnotation(orderIndex = 46)
+	public RadioGroupOtherField rgM4P081_6;
+	@FieldAnnotation(orderIndex = 47)
+	public RadioGroupOtherField rgM4P082_6;
+	@FieldAnnotation(orderIndex = 48)
+	public RadioGroupOtherField rgM4P083_6;
+
+	private CuestionarioService cuestionarioService;
+	private Moduloiv03 bean;
+	private LabelComponent lblTitulo,lblTitulo1;
+
+	public Mod_IV_Fragment_023_OK() {
+	}
+
+	public Mod_IV_Fragment_023_OK parent(MasterActivity parent) {
+		this.parent = parent;
+		return this;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = createUI();
+		initObjectsWithoutXML(this, rootView);
+		enlazarCajas();
+		listening();
+
+		return rootView;
+	}
+
+	@Override
+	protected void buildFields() {
+		lblTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.c1c100m4p).textSize(21).centrar().negrita();
+		
+		lblTitulo1 = new LabelComponent(this.getActivity(), App.ESTILO)
+		.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+		.text(R.string.c1c100m4p076title).textSize(20).centrar()
+		.negrita();
+
+		rgM4P076_1 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p076_1_1, R.string.c1c100m4p076_1_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		rgM4P077_1 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p077_1_1, R.string.c1c100m4p077_1_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		rgM4P078_1 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p078_1_1, R.string.c1c100m4p078_1_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		txtM4P079_1 = new TextField(this.getActivity(), false).size(
+				altoComponente, 450);
+		txtM4P080_1 = new IntegerField(this.getActivity(), false).size(
+				altoComponente, 150).centrar();
+		rgM4P081_1 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p081_1_1, R.string.c1c100m4p081_1_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		rgM4P082_1 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p082_1_1, R.string.c1c100m4p082_1_2,
+				R.string.c1c100m4p082_1_3).size(WRAP_CONTENT, 600).orientation(
+				ORIENTATION.VERTICAL);
+		rgM4P083_1 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p083_1_1, R.string.c1c100m4p083_1_2,
+				R.string.c1c100m4p083_1_3).size(WRAP_CONTENT, 600).orientation(
+				ORIENTATION.VERTICAL);
+		rgM4P076_2 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p076_2_1, R.string.c1c100m4p076_2_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		rgM4P077_2 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p077_2_1, R.string.c1c100m4p077_2_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		rgM4P078_2 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p078_2_1, R.string.c1c100m4p078_2_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		txtM4P079_2 = new TextField(this.getActivity(), false).size(
+				altoComponente, 450);
+		txtM4P080_2 = new IntegerField(this.getActivity(), false).size(
+				altoComponente, 150).centrar();
+		rgM4P081_2 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p081_2_1, R.string.c1c100m4p081_2_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		rgM4P082_2 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p082_2_1, R.string.c1c100m4p082_2_2,
+				R.string.c1c100m4p082_2_3).size(WRAP_CONTENT, 600).orientation(
+				ORIENTATION.VERTICAL);
+		rgM4P083_2 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p083_2_1, R.string.c1c100m4p083_2_2,
+				R.string.c1c100m4p083_2_3).size(WRAP_CONTENT, 600).orientation(
+				ORIENTATION.VERTICAL);
+		rgM4P076_3 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p076_3_1, R.string.c1c100m4p076_3_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		rgM4P077_3 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p077_3_1, R.string.c1c100m4p077_3_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		rgM4P078_3 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p078_3_1, R.string.c1c100m4p078_3_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		txtM4P079_3 = new TextField(this.getActivity(), false).size(
+				altoComponente, 450);
+		txtM4P080_3 = new IntegerField(this.getActivity(), false).size(
+				altoComponente, 150).centrar();
+		rgM4P081_3 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p081_3_1, R.string.c1c100m4p081_3_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		rgM4P082_3 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p082_3_1, R.string.c1c100m4p082_3_2,
+				R.string.c1c100m4p082_3_3).size(WRAP_CONTENT, 600).orientation(
+				ORIENTATION.VERTICAL);
+		rgM4P083_3 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p083_3_1, R.string.c1c100m4p083_3_2,
+				R.string.c1c100m4p083_3_3).size(WRAP_CONTENT, 600).orientation(
+				ORIENTATION.VERTICAL);
+		rgM4P076_4 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p076_4_1, R.string.c1c100m4p076_4_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		rgM4P077_4 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p077_4_1, R.string.c1c100m4p077_4_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		rgM4P078_4 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p078_4_1, R.string.c1c100m4p078_4_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		txtM4P079_4 = new TextField(this.getActivity(), false).size(
+				altoComponente, 450);
+		txtM4P080_4 = new IntegerField(this.getActivity(), false).size(
+				altoComponente, 150).centrar();
+		rgM4P081_4 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p081_4_1, R.string.c1c100m4p081_4_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		rgM4P082_4 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p082_4_1, R.string.c1c100m4p082_4_2,
+				R.string.c1c100m4p082_4_3).size(WRAP_CONTENT, 600).orientation(
+				ORIENTATION.VERTICAL);
+		rgM4P083_4 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p083_4_1, R.string.c1c100m4p083_4_2,
+				R.string.c1c100m4p083_4_3).size(WRAP_CONTENT, 600).orientation(
+				ORIENTATION.VERTICAL);
+		rgM4P076_5 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p076_5_1, R.string.c1c100m4p076_5_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		rgM4P077_5 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p077_5_1, R.string.c1c100m4p077_5_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		rgM4P078_5 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p078_5_1, R.string.c1c100m4p078_5_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		txtM4P079_5 = new TextField(this.getActivity(), false).size(
+				altoComponente, 450);
+		txtM4P080_5 = new IntegerField(this.getActivity(), false).size(
+				altoComponente, 150).centrar();
+		rgM4P081_5 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p081_5_1, R.string.c1c100m4p081_5_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		rgM4P082_5 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p082_5_1, R.string.c1c100m4p082_5_2,
+				R.string.c1c100m4p082_5_3).size(WRAP_CONTENT, 600).orientation(
+				ORIENTATION.VERTICAL);
+		rgM4P083_5 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p083_5_1, R.string.c1c100m4p083_5_2,
+				R.string.c1c100m4p083_5_3).size(WRAP_CONTENT, 600).orientation(
+				ORIENTATION.VERTICAL);
+		rgM4P076_6 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p076_6_1, R.string.c1c100m4p076_6_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		rgM4P077_6 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p077_6_1, R.string.c1c100m4p077_6_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		rgM4P078_6 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p078_6_1, R.string.c1c100m4p078_6_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		txtM4P079_6 = new TextField(this.getActivity(), false).size(
+				altoComponente, 450);
+		txtM4P080_6 = new IntegerField(this.getActivity(), false).size(
+				altoComponente, 150).centrar();
+		rgM4P081_6 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p081_6_1, R.string.c1c100m4p081_6_2).size(
+				WRAP_CONTENT, 600).orientation(ORIENTATION.VERTICAL);
+		rgM4P082_6 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p082_6_1, R.string.c1c100m4p082_6_2,
+				R.string.c1c100m4p082_6_3).size(WRAP_CONTENT, 600).orientation(
+				ORIENTATION.VERTICAL);
+		rgM4P083_6 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p083_6_1, R.string.c1c100m4p083_6_2,
+				R.string.c1c100m4p083_6_3).size(WRAP_CONTENT, 600).orientation(
+				ORIENTATION.VERTICAL);
+
+		Filtros.setFiltro(txtM4P079_1, Filtros.TIPO.ALFAN_U, 300, null);
+		Filtros.setFiltro(txtM4P080_1, Filtros.TIPO.NUMBER, 4, -1, null, 1900,
+				2016);
+		Filtros.setFiltro(txtM4P079_2, Filtros.TIPO.ALFAN_U, 300, null);
+		Filtros.setFiltro(txtM4P080_2, Filtros.TIPO.NUMBER, 4, -1, null, 1900,
+				2016);
+		Filtros.setFiltro(txtM4P079_3, Filtros.TIPO.ALFAN_U, 300, null);
+		Filtros.setFiltro(txtM4P080_3, Filtros.TIPO.NUMBER, 4, -1, null, 1900,
+				2016);
+		Filtros.setFiltro(txtM4P079_4, Filtros.TIPO.ALFAN_U, 300, null);
+		Filtros.setFiltro(txtM4P080_4, Filtros.TIPO.NUMBER, 4, -1, null, 1900,
+				2016);
+		Filtros.setFiltro(txtM4P079_5, Filtros.TIPO.ALFAN_U, 300, null);
+		Filtros.setFiltro(txtM4P080_5, Filtros.TIPO.NUMBER, 4, -1, null, 1900,
+				2016);
+		Filtros.setFiltro(txtM4P079_6, Filtros.TIPO.ALFAN_U, 300, null);
+		Filtros.setFiltro(txtM4P080_6, Filtros.TIPO.NUMBER, 4, -1, null, 1900,
+				2016);
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+		/* Aca creamos las preguntas */
+
+		LinearLayout q0 = createQuestionSection(lblTitulo,lblTitulo1);
+
+		LinearLayout q1 = createQuestionSection(R.string.c1c100m4p076_1,
+				rgM4P076_1);
+		LinearLayout q2 = createQuestionSection(R.string.c1c100m4p077_1,
+				rgM4P077_1);
+		LinearLayout q3 = createQuestionSection(R.string.c1c100m4p078_1,
+				rgM4P078_1);
+		LinearLayout q4 = createQuestionSection(R.string.c1c100m4p079_1,
+				txtM4P079_1);
+		LinearLayout q5 = createQuestionSection(R.string.c1c100m4p080_1,
+				txtM4P080_1);
+		LinearLayout q6 = createQuestionSection(R.string.c1c100m4p081_1,
+				rgM4P081_1);
+		LinearLayout q7 = createQuestionSection(R.string.c1c100m4p082_1,
+				rgM4P082_1);
+		LinearLayout q8 = createQuestionSection(R.string.c1c100m4p083_1,
+				rgM4P083_1);
+		LinearLayout q9 = createQuestionSection(R.string.c1c100m4p076_2,
+				rgM4P076_2);
+		LinearLayout q10 = createQuestionSection(R.string.c1c100m4p077_2,
+				rgM4P077_2);
+		LinearLayout q11 = createQuestionSection(R.string.c1c100m4p078_2,
+				rgM4P078_2);
+		LinearLayout q12 = createQuestionSection(R.string.c1c100m4p079_2,
+				txtM4P079_2);
+		LinearLayout q13 = createQuestionSection(R.string.c1c100m4p080_2,
+				txtM4P080_2);
+		LinearLayout q14 = createQuestionSection(R.string.c1c100m4p081_2,
+				rgM4P081_2);
+		LinearLayout q15 = createQuestionSection(R.string.c1c100m4p082_2,
+				rgM4P082_2);
+		LinearLayout q16 = createQuestionSection(R.string.c1c100m4p083_2,
+				rgM4P083_2);
+		LinearLayout q17 = createQuestionSection(R.string.c1c100m4p076_3,
+				rgM4P076_3);
+		LinearLayout q18 = createQuestionSection(R.string.c1c100m4p077_3,
+				rgM4P077_3);
+		LinearLayout q19 = createQuestionSection(R.string.c1c100m4p078_3,
+				rgM4P078_3);
+		LinearLayout q20 = createQuestionSection(R.string.c1c100m4p079_3,
+				txtM4P079_3);
+		LinearLayout q21 = createQuestionSection(R.string.c1c100m4p080_3,
+				txtM4P080_3);
+		LinearLayout q22 = createQuestionSection(R.string.c1c100m4p081_3,
+				rgM4P081_3);
+		LinearLayout q23 = createQuestionSection(R.string.c1c100m4p082_3,
+				rgM4P082_3);
+		LinearLayout q24 = createQuestionSection(R.string.c1c100m4p083_3,
+				rgM4P083_3);
+		LinearLayout q25 = createQuestionSection(R.string.c1c100m4p076_4,
+				rgM4P076_4);
+		LinearLayout q26 = createQuestionSection(R.string.c1c100m4p077_4,
+				rgM4P077_4);
+		LinearLayout q27 = createQuestionSection(R.string.c1c100m4p078_4,
+				rgM4P078_4);
+		LinearLayout q28 = createQuestionSection(R.string.c1c100m4p079_4,
+				txtM4P079_4);
+		LinearLayout q29 = createQuestionSection(R.string.c1c100m4p080_4,
+				txtM4P080_4);
+		LinearLayout q30 = createQuestionSection(R.string.c1c100m4p081_4,
+				rgM4P081_4);
+		LinearLayout q31 = createQuestionSection(R.string.c1c100m4p082_4,
+				rgM4P082_4);
+		LinearLayout q32 = createQuestionSection(R.string.c1c100m4p083_4,
+				rgM4P083_4);
+		LinearLayout q33 = createQuestionSection(R.string.c1c100m4p076_5,
+				rgM4P076_5);
+		LinearLayout q34 = createQuestionSection(R.string.c1c100m4p077_5,
+				rgM4P077_5);
+		LinearLayout q35 = createQuestionSection(R.string.c1c100m4p078_5,
+				rgM4P078_5);
+		LinearLayout q36 = createQuestionSection(R.string.c1c100m4p079_5,
+				txtM4P079_5);
+		LinearLayout q37 = createQuestionSection(R.string.c1c100m4p080_5,
+				txtM4P080_5);
+		LinearLayout q38 = createQuestionSection(R.string.c1c100m4p081_5,
+				rgM4P081_5);
+		LinearLayout q39 = createQuestionSection(R.string.c1c100m4p082_5,
+				rgM4P082_5);
+		LinearLayout q40 = createQuestionSection(R.string.c1c100m4p083_5,
+				rgM4P083_5);
+		LinearLayout q41 = createQuestionSection(R.string.c1c100m4p076_6,
+				rgM4P076_6);
+		LinearLayout q42 = createQuestionSection(R.string.c1c100m4p077_6,
+				rgM4P077_6);
+		LinearLayout q43 = createQuestionSection(R.string.c1c100m4p078_6,
+				rgM4P078_6);
+		LinearLayout q44 = createQuestionSection(R.string.c1c100m4p079_6,
+				txtM4P079_6);
+		LinearLayout q45 = createQuestionSection(R.string.c1c100m4p080_6,
+				txtM4P080_6);
+		LinearLayout q46 = createQuestionSection(R.string.c1c100m4p081_6,
+				rgM4P081_6);
+		LinearLayout q47 = createQuestionSection(R.string.c1c100m4p082_6,
+				rgM4P082_6);
+		LinearLayout q48 = createQuestionSection(R.string.c1c100m4p083_6,
+				rgM4P083_6);
+
+		// ///////////////////////////
+		ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+		/* Aca agregamos las preguntas a la pantalla */
+		form.addView(q0);
+
+		form.addView(q1);
+		form.addView(q2);
+		form.addView(q3);
+		form.addView(q4);
+		form.addView(q5);
+		form.addView(q6);
+		form.addView(q7);
+		form.addView(q8);
+		form.addView(q9);
+		form.addView(q10);
+		form.addView(q11);
+		form.addView(q12);
+		form.addView(q13);
+		form.addView(q14);
+		form.addView(q15);
+		form.addView(q16);
+		form.addView(q17);
+		form.addView(q18);
+		form.addView(q19);
+		form.addView(q20);
+		form.addView(q21);
+		form.addView(q22);
+		form.addView(q23);
+		form.addView(q24);
+		form.addView(q25);
+		form.addView(q26);
+		form.addView(q27);
+		form.addView(q28);
+		form.addView(q29);
+		form.addView(q30);
+		form.addView(q31);
+		form.addView(q32);
+		form.addView(q33);
+		form.addView(q34);
+		form.addView(q35);
+		form.addView(q36);
+		form.addView(q37);
+		form.addView(q38);
+		form.addView(q39);
+		form.addView(q40);
+		form.addView(q41);
+		form.addView(q42);
+		form.addView(q43);
+		form.addView(q44);
+		form.addView(q45);
+		form.addView(q46);
+		form.addView(q47);
+		form.addView(q48);
+
+		return contenedor;
+	}
+
+	@Override
+	public boolean grabar() {
+		uiToEntity(bean);
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals("")) {
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+				if (view != null) {
+					view.requestFocus();
+				}
+			}
+			return false;
+		}
+
+		try {
+			if (!getCuestionarioService().saveOrUpdate(bean,
+					bean.getSecCap(getListFields(this)))) {
+				ToastMessage.msgBox(this.getActivity(),
+						"Los datos no se guardaron",
+						ToastMessage.MESSAGE_ERROR, ToastMessage.DURATION_LONG);
+			}
+		} catch (SQLException e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean validar() {
+		String pregunta_no_vacia = getString(R.string.pregunta_no_vacia);
+		String especifique_no_vacio = getString(R.string.pregunta_especifique);
+		error = false;
+
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+
+		/*
+		 * if(Util.esVacio(rgP10_5)){ mensaje = pregunta_no_vacia.replace("$",
+		 * "Material de la Conexi\u00f3n;"); view = rgP10_5; return !(error =
+		 * true); } if(rgP10_5.isTagSelected(4) && Util.esVacio(txtP10_5_O)){
+		 * mensaje = especifique_no_vacio; view = txtP10_5_O; return !(error =
+		 * true); } if(Util.esVacio(rgP10_6)){ mensaje =
+		 * pregunta_no_vacia.replace("$", "Di\u00e1metro de Conexi\u00f3n;");
+		 * view = rgP10_6; return !(error = true); }
+		 * if(rgP10_6.isTagSelected(10) && Util.esVacio(txtP10_6_O)){ mensaje =
+		 * especifique_no_vacio; view = txtP10_6_O; return !(error = true); }
+		 * if(Util.esVacio(rgP10_7)){ mensaje = pregunta_no_vacia.replace("$",
+		 * "LLaves de paso;"); view = rgP10_7; return !(error = true); }
+		 */
+
+		return true;
+	}
+
+	@Override
+	public void cargarDatos() {
+		bean = getCuestionarioService().getModuloiv03(
+				App.getInstance().getEmpresa(),
+				new Moduloiv03().getSecCap(getListFields(this)));
+		if (bean == null) {
+			bean = new Moduloiv03();
+		}
+		bean.id = App.getInstance().getEmpresa().id;
+		entityToUI(bean);
+		inicio();
+	}
+
+	private void inicio() {
+		// rgP10_5.requestFocus();
+	}
+
+	public CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+	
+	@Override
+	public Caratula getEntity() {
+		return App.getInstance().getEmpresa();
+	}
+}

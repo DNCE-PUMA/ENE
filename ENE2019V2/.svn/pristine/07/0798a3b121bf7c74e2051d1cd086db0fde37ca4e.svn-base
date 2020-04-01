@@ -1,0 +1,814 @@
+package gob.inei.ene2019v2.fragment.dialog;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.components.ButtonComponent;
+import gob.inei.dnce.components.DateTimeField;
+import gob.inei.dnce.components.DialogComponent;
+import gob.inei.dnce.components.DialogComponent.TIPO_DIALOGO;
+import gob.inei.dnce.components.DialogFragmentComponent;
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.GridComponent2;
+import gob.inei.dnce.components.IntegerField;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.SpinnerField;
+import gob.inei.dnce.components.TextField;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.components.ui.GPSDialog;
+import gob.inei.dnce.components.ui.SearchDialog;
+import gob.inei.dnce.interfaces.FieldComponent;
+import gob.inei.dnce.interfaces.IDetailEntityComponent;
+import gob.inei.dnce.interfaces.IGPSDialog;
+import gob.inei.dnce.interfaces.Respondible;
+import gob.inei.dnce.interfaces.Searchable1;
+import gob.inei.dnce.util.CapturadorGPS;
+import gob.inei.dnce.util.Caretaker;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.fragment.Visita_Fragment_001;
+import gob.inei.ene2019v2.fragment.Visita_Fragment_001.ACCION;
+import gob.inei.ene2019v2.model.Caratula;
+import gob.inei.ene2019v2.model.Cobertura;
+import gob.inei.ene2019v2.model.Navegation;
+import gob.inei.ene2019v2.model.Visita;
+import gob.inei.ene2019v2.service.CuestionarioService;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+
+public class Visita_Fragment_001_01 extends DialogFragmentComponent implements
+		Respondible, Searchable1, IGPSDialog {
+	public interface C1CAP200_Fragment_201_01Listener {
+		void onFinishEditDialog(String inputText);
+	}
+
+	public DateTimeField txtEFECHA;
+	public IntegerField txtCV_FEC_DIA;
+	public IntegerField txtCV_FEC_MES;
+	public IntegerField txtCV_FEC_ANIO;
+	public DateTimeField txtEHORAI;
+	public IntegerField txtCV_FEC_HIN;
+	public IntegerField txtCV_FEC_MIN;
+	public DateTimeField txtEHORAF;
+	public IntegerField txtCV_FEC_HFI;
+	public IntegerField txtCV_FEC_MFI;
+	@FieldAnnotation(orderIndex = 1)
+	public SpinnerField txtCV_RESVIS;
+	@FieldAnnotation(orderIndex = 2)
+	public TextField txtCV_RESVIS_ESP;
+	public DateTimeField txtEFECHAPROX;
+	public IntegerField txtCV_PROX_DIA;
+	public IntegerField txtCV_PROX_MES;
+	public IntegerField txtCV_PROX_ANIO;
+	public DateTimeField txtEHORAPROXI;
+	public IntegerField txtCV_PROX_HOR;
+	public IntegerField txtCV_PROX_MIN;
+	@FieldAnnotation(orderIndex = 3)
+	public TextField txtGPS_LAT_V;
+	@FieldAnnotation(orderIndex = 4)
+	public TextField txtGPS_LON_V;
+	@FieldAnnotation(orderIndex = 5)
+	public ButtonComponent btnAceptar;
+	@FieldAnnotation(orderIndex = 6)
+	public ButtonComponent btnCancelar;
+	private static Visita_Fragment_001 caller;
+	LinearLayout q0, q1, q2, q3, q4, q5;
+	private Visita detalle;
+	private Caratula caratula;
+	private Navegation nav;
+	private LabelComponent lblTitulo, lblSecProxV;
+	private LabelComponent lblF, lblHD, lblHA, lblR, lblPVF, lblPVH;
+	private GridComponent2 grid_F, grid_PV, grd2;
+	private DialogComponent dlg;
+	private Integer resp;
+	private ACCION accion;
+	private ButtonComponent btnGPS;
+	private CapturadorGPS tracker;
+	private CuestionarioService cuestionarioService;
+	int conteoCobertura = 0;
+
+	private enum ACTION {
+		COBERTURA, VALIDAR
+	}
+
+	private ACTION action;
+	private List<Cobertura> cob;
+
+	public static Visita_Fragment_001_01 newInstance(FragmentForm pagina,
+			Visita detalle, CuestionarioService cuestService,
+			Visita_Fragment_001.ACCION accion) {
+		caller = (Visita_Fragment_001) pagina;
+		Filtros.clear();
+		Visita_Fragment_001_01 f = new Visita_Fragment_001_01();
+		f.setParent(pagina);
+		f.cuestionarioService = cuestService;
+		f.accion = accion;
+		Bundle args = new Bundle();
+		args.putSerializable("detalle", detalle);
+		f.setArguments(args);
+		return f;
+	}
+
+	public Visita_Fragment_001_01() {
+		super();
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		detalle = (Visita) getArguments().getSerializable("detalle");
+		caretaker = new Caretaker<Entity>();
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		final View rootView = createUI();
+		getDialog().setTitle("Visita N\u00B0: " + detalle.cv_id);
+		initObjectsWithoutXML(this, rootView);
+
+		cargarDatos();
+		enlazarCajas(this);
+		listening();
+
+		return rootView;
+
+	}
+
+	private void cargarDatos() {
+		caratula = App.getInstance().getEmpresa();
+		tracker = new CapturadorGPS(getActivity());
+		nav = getCuestionarioService().getNavegacion(caratula);
+		cob = cuestionarioService.getCoberturaXid(App.getInstance().getEmpresa().id);
+		entityToUI(detalle);
+		caretaker.addMemento("antes", detalle.saveToMemento(Visita.class));
+		inicio();
+	}
+
+	private void inicio() {
+		resp = Util.getInt(detalle.cv_resvis);
+		if (accion == ACCION.ADD) {
+			grid_F.hideColumn(2);
+			caller.cleanView(txtEHORAF);
+			q3.setVisibility(View.GONE);
+			q4.setVisibility(View.GONE);
+			q5.setVisibility(View.GONE);
+			btnAceptar.requestFocus();
+		} else if (accion == ACCION.EDIT) {
+			txtCV_RESVIS.requestFocus();
+			q1.setVisibility(View.GONE);
+			if (!(resp == 2 || resp == 6 || resp == 7 )) {
+				q4.setVisibility(View.GONE);
+				q5.setVisibility(View.GONE);
+			}
+			if (Util.esDiferente(resp, Visita_Fragment_001.OTRO))
+				txtCV_RESVIS_ESP.setVisibility(View.GONE);
+		} else if (accion == ACCION.FINISH) {
+			txtCV_RESVIS.requestFocus();
+			txtCV_RESVIS_ESP.setVisibility(View.GONE);
+			q1.setVisibility(View.GONE);
+			q4.setVisibility(View.GONE);
+			q5.setVisibility(View.GONE);
+		}
+		txtEFECHA.readOnly();
+		txtEHORAI.readOnly();
+		txtEHORAF.readOnly();
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+
+		q0 = createQuestionSection(lblTitulo);
+		q2 = createQuestionSection(grid_F.component());
+		q1 = createQuestionSection(grd2.component(), btnGPS);
+		q3 = createQuestionSection(createLayout());
+		q4 = createQuestionSection(lblSecProxV);
+		q5 = createQuestionSection(grid_PV.component());
+
+		LinearLayout botones = createButtonSection(btnAceptar, btnCancelar);
+
+		ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+
+		form.addView(q0);
+		form.addView(q2);
+		form.addView(q1);
+		form.addView(q3);
+		form.addView(q4);
+		form.addView(q5);
+		form.addView(botones);
+
+		return contenedor;
+	}
+
+	private LinearLayout createLayout() {
+		LinearLayout ly = createLy(LinearLayout.HORIZONTAL, Gravity.CENTER,
+				lblR, txtCV_RESVIS);
+		return createLy(LinearLayout.VERTICAL, Gravity.CENTER, ly,
+				txtCV_RESVIS_ESP);
+	}
+
+	@Override
+	protected void buildFields() {
+		int title = (accion == ACCION.ADD ? R.string.lb_V_Iniciar
+				: (accion == ACCION.EDIT ? R.string.lb_V_Editar
+						: R.string.lb_V_Terminar));
+		lblTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(MATCH_PARENT, MATCH_PARENT).text(title).textSize(21)
+				.centrar().negrita();
+		lblSecProxV = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(MATCH_PARENT, MATCH_PARENT).text(R.string.lb_V_Proxima)
+				.textSize(21).centrar().negrita();
+
+		lblF = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.lb_V_Fecha_m).size(altoComponente, 170)
+				.centrar();
+		lblHD = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.lb_V_Hora_m).size(altoComponente, 170).centrar();
+		lblHA = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.lb_V_Hora_m_a).size(altoComponente, 170)
+				.centrar();
+		lblR = new LabelComponent(getActivity(), App.ESTILO).text(
+				R.string.lb_V_Resultado_m).size(altoComponente, 170);
+		lblPVF = new LabelComponent(getActivity(), App.ESTILO).text(
+				R.string.lb_V_Fecha_m).size(altoComponente, 170);
+		lblPVH = new LabelComponent(getActivity(), App.ESTILO).text(
+				R.string.lb_V_Hora_m_p).size(altoComponente, 170);
+
+		txtCV_FEC_DIA = new IntegerField(getActivity());
+		txtCV_FEC_MES = new IntegerField(getActivity());
+		txtCV_FEC_ANIO = new IntegerField(getActivity());
+		txtCV_FEC_HIN = new IntegerField(getActivity());
+		txtCV_FEC_MIN = new IntegerField(getActivity());
+		txtCV_FEC_HFI = new IntegerField(getActivity());
+		txtCV_FEC_MFI = new IntegerField(getActivity());
+
+		txtCV_PROX_DIA = new IntegerField(getActivity());
+		txtCV_PROX_MES = new IntegerField(getActivity());
+		txtCV_PROX_ANIO = new IntegerField(getActivity());
+		txtCV_PROX_HOR = new IntegerField(getActivity());
+		txtCV_PROX_MIN = new IntegerField(getActivity());
+
+		txtGPS_LAT_V = new TextField(this.getActivity(), false).size(
+				altoComponente, 300).readOnly();
+		txtGPS_LON_V = new TextField(this.getActivity(), false).size(
+				altoComponente, 300).readOnly();
+
+		txtEFECHA = new DateTimeField(getActivity(),
+				DateTimeField.TIPO_DIALOGO.FECHA, true)
+				.size(altoComponente, 200)
+				.dateOrhour(txtCV_FEC_DIA, txtCV_FEC_MES, txtCV_FEC_ANIO)
+				.setRangoDate("01/12/2018", "31/12/2020");
+		txtEHORAI = new DateTimeField(getActivity(),
+				DateTimeField.TIPO_DIALOGO.HORA, true)
+				.size(altoComponente, 200).dateOrhour(txtCV_FEC_HIN,
+						txtCV_FEC_MIN, null);
+		txtEHORAF = new DateTimeField(getActivity(),
+				DateTimeField.TIPO_DIALOGO.HORA, true)
+				.size(altoComponente, 200).dateOrhour(txtCV_FEC_HFI,
+						txtCV_FEC_MFI, null);
+		txtEFECHAPROX = new DateTimeField(getActivity(),
+				DateTimeField.TIPO_DIALOGO.FECHA).size(altoComponente, 200)
+				.dateOrhour(txtCV_PROX_DIA, txtCV_PROX_MES, txtCV_PROX_ANIO)
+				.setRangoDate("01/12/2018", "31/12/2020");
+		txtEHORAPROXI = new DateTimeField(getActivity(),
+				DateTimeField.TIPO_DIALOGO.HORA).size(altoComponente, 200)
+				.dateOrhour(txtCV_PROX_HOR, txtCV_PROX_MIN, null);
+		txtCV_RESVIS_ESP = new TextField(getActivity()).size(altoComponente,
+				520);
+
+		grid_F = new GridComponent2(getActivity(), 3)
+				.colorFondo(R.color.blanco);
+		grid_F.addComponent(lblF);
+		grid_F.addComponent(lblHD);
+		grid_F.addComponent(lblHA);
+		grid_F.addComponent(txtEFECHA);
+		grid_F.addComponent(txtEHORAI);
+		grid_F.addComponent(txtEHORAF);
+
+		txtCV_RESVIS = new SpinnerField(getActivity()).size(
+				altoComponente + 15, 350).callback("on_RVISITAChangeValue");
+		Util.llenarItems(getActivity(), txtCV_RESVIS,
+				R.array.arrayResultadosVIS);
+
+		grid_PV = new GridComponent2(getActivity(), 2)
+				.colorFondo(R.color.blanco);
+		grid_PV.addComponent(lblPVF);
+		grid_PV.addComponent(txtEFECHAPROX);
+		grid_PV.addComponent(lblPVH);
+		grid_PV.addComponent(txtEHORAPROXI);
+
+		btnGPS = new ButtonComponent(this.getActivity(), App.ESTILO_BOTON)
+				.text(R.string.btnGPS).size(250, 60);
+
+		btnGPS.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				capturarGPS();
+			}
+		});
+
+		LabelComponent lbl4 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100gps_lon).size(altoComponente, 200);
+		LabelComponent lbl5 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c1c100gps_lat).size(altoComponente, 200);
+
+		grd2 = new GridComponent2(this.getActivity(), 2)
+				.colorFondo(FragmentForm.COLOR_LINEA_SECCION_PREGUNTA);
+		grd2.addComponent(lbl4);
+		grd2.addComponent(txtGPS_LON_V);
+		grd2.addComponent(lbl5);
+		grd2.addComponent(txtGPS_LAT_V);
+
+		btnAceptar = new ButtonComponent(getParent().getActivity(),
+				App.ESTILO_BOTON).text(R.string.btnAceptar).size(200, 60);
+		btnCancelar = new ButtonComponent(getParent().getActivity(),
+				App.ESTILO_BOTON).text(R.string.btnCancelar).size(200, 60);
+		btnCancelar.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Visita_Fragment_001_01.this.dismiss();
+			}
+		});
+		btnAceptar.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				boolean flag = grabar();
+				if (!flag) {
+					return;
+				}
+				Visita_Fragment_001_01.this.dismiss();
+			}
+		});
+
+		txtEFECHAPROX.setFocusOnDissmis(txtEHORAPROXI);
+		txtEHORAPROXI.setFocusOnDissmis(btnAceptar);
+	}
+
+	public void on_RVISITAChangeValue(FieldComponent component) {
+		SpinnerField spn = (SpinnerField) component;
+		int resp = Util.getInt(spn.getSelectedItemKey(), -1);
+		if (resp == Visita_Fragment_001.OTRO) {
+			caller.lockView(false, txtCV_RESVIS_ESP);
+			txtCV_RESVIS_ESP.setVisibility(View.VISIBLE);
+			txtCV_RESVIS_ESP.requestFocus();
+		} else {
+			caller.cleanAndLockView(txtCV_RESVIS_ESP);
+			txtCV_RESVIS_ESP.setVisibility(View.GONE);
+		}
+
+		if (resp == 2 || resp == 6 || resp == 7) {
+			q4.setVisibility(View.VISIBLE);
+			q5.setVisibility(View.VISIBLE);
+			txtEFECHAPROX.requestFocus();
+		} else {
+			if (q4.getVisibility() == View.VISIBLE) {
+				caller.cleanView(txtEFECHAPROX, txtEHORAPROXI);
+				q4.setVisibility(View.GONE);
+				q5.setVisibility(View.GONE);
+			}
+		}
+	}
+
+	private boolean validar() {
+		String pregunta_no_vacia = getString(R.string.pregunta_no_vacia);
+		error = false;
+
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+
+		if (accion == ACCION.ADD) {
+			if (!txtEFECHA.isInRange())
+				return false;
+			if (Util.esVacio(txtGPS_LAT_V) && Util.esVacio(txtGPS_LON_V)) {
+				mensaje = pregunta_no_vacia.replace("$", "GPS;");
+				view = btnGPS;
+				return !(error = true);
+			}
+		} else if (accion != ACCION.ADD) {
+			int _visAnt2 = 0, _viscont6 = 0, _visAnt = 0;
+			if (caller.lstData.size() > 0) {
+				for (Visita _v : caller.lstData) {
+					if (detalle.cv_id != null && detalle.cv_id.equals(_v.cv_id))
+						continue;
+					if (Integer.valueOf(2).equals(_v.cv_resvis))
+						_visAnt2++;
+				}
+			}
+
+			if (txtCV_RESVIS.getSelectedItemKey() == null) {
+				mensaje = "Debe indicar el resultado de la visita";
+				error = true;
+				view = txtCV_RESVIS;
+			}
+			if (!error) {
+				if (caller.lstData.size() > 1)
+					_visAnt = Util.getInt(caller.lstData.get(caller.lstData
+							.size() - 2).cv_resvis);
+				int _res = Integer.parseInt(txtCV_RESVIS.getSelectedItemKey()
+						.toString());
+
+				if (Util.getInt(_visAnt) == 3 && Util.getInt(_res) == 5) {
+					mensaje = "Resultado de Visita no puede ser 5";
+					error = true;
+					view = txtCV_RESVIS;
+				} else if (Util.getInt(_visAnt) == 4 && Util.getInt(_res) == 3) {
+					mensaje = "Resultado de Visita no puede ser 3.";
+					error = true;
+					view = txtCV_RESVIS;
+				} else if (Util.getInt(_visAnt) == 6 && Util.getInt(_res) == 5) {
+					mensaje = "Resultado de Visita no puede ser 5.";
+					error = true;
+					view = txtCV_RESVIS;
+				}
+
+				if (!error) {
+
+					int _resp = Util.getInt(txtCV_RESVIS.getSelectedItemKey()
+							.toString());
+					if (Util.getInt(caratula.res_verif) == 1
+							&& (_resp == 1 || _resp == 2 /*|| _resp == 6*/)) {
+						ToastMessage.msgBox(this.getActivity(),
+								"ERROR: No puede terminar su Visita con Resultado:"
+										+ _resp + "",
+								ToastMessage.MESSAGE_INFO,
+								ToastMessage.DURATION_LONG);
+						view = txtCV_RESVIS;
+						error = true;
+					}
+
+					for (Cobertura co : cob) {
+						if (Util.getInt(co.estado) == 1) {
+							conteoCobertura++;
+						}
+					}
+					if (conteoCobertura == 0 && _resp != 1) {
+						ToastMessage.msgBox(this.getActivity(),
+								"Estado Cobertura COMPLETO: Resultado de Visita debe ser Completo",
+								ToastMessage.MESSAGE_INFO,
+								ToastMessage.DURATION_LONG);
+						view = txtCV_RESVIS;
+					//	error = true;
+					}
+					
+					if (_res == 2  /*&& nav != null*/) {
+//						if (nav.modi == null && nav.modii == null
+//								&& nav.modiii == null && nav.modiv == null
+//								&& nav.modv == null && nav.modvi == null
+//								&& nav.modvii == null && nav.modviii == null
+//								&& nav.modix == null) {
+//							ToastMessage.msgBox(this.getActivity(),
+//									"ERROR: No puede terminar su Visita con Resultado: "
+//											+ _resp+". Incompleto, \n debe tener al menos información en un Capítulo.",
+//									ToastMessage.MESSAGE_INFO,
+//									ToastMessage.DURATION_LONG);
+//							view = txtCV_RESVIS;
+//							error = true;	
+//						}
+					}
+					
+					
+					if (_res == Visita_Fragment_001.OTRO
+							&& Util.esVacio(txtCV_RESVIS_ESP)) {
+						mensaje = "El resultado final debe ser especificado";
+						error = true;
+						view = txtCV_RESVIS_ESP;
+					} else if (_res == Visita_Fragment_001.OTRO
+							&& !Util.esVacio(txtCV_RESVIS_ESP)
+							&& txtCV_RESVIS_ESP.getText().toString().trim()
+									.length() < 5) {
+						mensaje = "El especifique debe tener como minimo 5 caracteres";
+						error = true;
+						view = txtCV_RESVIS_ESP;
+					} else {
+						if (!Util.esVacio(txtCV_FEC_HIN)
+								&& !Util.esVacio(txtCV_FEC_MIN)
+								&& !Util.esVacio(txtCV_FEC_HFI)
+								&& !Util.esVacio(txtCV_FEC_MFI)) {
+							String hora1 = txtEHORAI.getStringValue();
+							String hora2 = txtEHORAF.getStringValue();
+							if (Util.compareTime(hora1, hora2, "HHmm") >= 0) {
+								mensaje = "Hora de Inicio no puede ser menor o igual a la Hora de final de visita.";
+								error = true;
+							}
+						}
+
+						if (!error) {
+							if (_res == 1)
+								return true;
+							int _resF = -1;
+						//	if (_res == 2 || _res == 6) {
+							if (_res == 7) {
+								if (Util.esVacio(txtEFECHAPROX)
+										|| Util.esVacio(txtEHORAPROXI)) {
+									mensaje = "Proxima visita no puede estar vacia.";
+									view = Util.esVacio(txtEFECHAPROX) ? txtEFECHAPROX
+											: txtEHORAPROXI;
+									error = true;
+								} else if ((!Util.esVacio(txtCV_PROX_DIA) && Util
+										.esVacio(txtCV_PROX_HOR))
+										|| (Util.esVacio(txtCV_PROX_DIA) && !Util
+												.esVacio(txtCV_PROX_HOR))) {
+									mensaje = "Si registra una pr\u00f3xima visita entonces debe indicar la fecha y hora";
+									view = txtCV_PROX_DIA;
+									error = true;
+								} else if (!Util.esVacio(txtEFECHAPROX)
+										&& !Util.esVacio(txtEFECHA)) {
+									String fecha1 = txtEFECHAPROX
+											.getStringValue();
+									String fecha2 = txtEFECHA.getStringValue();
+									if ((_resF = Util.compareDate(fecha1,
+											fecha2, "ddMMyyyy")) < 0) {
+										mensaje = "Fecha de PV no puede ser menor a la fecha de inicio de visita.";
+										view = txtEFECHAPROX;
+										error = true;
+									}
+								}
+							}
+							if (!error) {
+								if (_resF == 0 && !Util.esVacio(txtCV_PROX_HOR)
+										&& !Util.esVacio(txtEHORAF)) {
+									String hora1 = txtEHORAPROXI
+											.getStringValue();
+									String hora2 = txtEHORAF.getStringValue();
+									if (Util.compareTime(hora1, hora2, "HHmm") <= 0) {
+										mensaje = "Hora de PV no puede ser menor o igual a la Hora de fin de visita.";
+										view = txtEHORAPROXI;
+										error = true;
+									}
+								}
+							}
+						}
+					
+					}
+				}
+
+				if (!error) {
+					if (Util.esVacio(txtCV_PROX_DIA)
+							&& Util.esVacio(txtCV_PROX_HOR)) {
+						return true;
+					}
+				}
+			}
+		}
+		// else if(accion != ACCION.FINISH){
+		// if( Util.esVacio(txtCV_PROX_DIA) && Util.esVacio(txtCV_PROX_HOR) ){
+		//
+		// }
+		// }
+
+		if (error)
+			return false;
+		return true;
+	}
+
+	private boolean grabar() {
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals("")) {
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+				if (view != null) {
+					view.requestFocus();
+				}
+			}
+			return false;
+		}
+
+		int _msp = 0;
+		if ((_msp = validaData()) != 0) {
+			action = ACTION.VALIDAR;
+			dlg = new DialogComponent(getActivity(), this, TIPO_DIALOGO.YES_NO,
+					getResources().getString(R.string.app_name), getMsg(_msp));
+			dlg.put("clave", _msp);
+			dlg.showDialog();
+		} else {
+			savePag(-1);
+		}
+
+		return true;
+	}
+
+	private boolean getPreg3al11(int _resp) {
+		return !Util.esDiferente(_resp, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+	}
+
+	private void savePag(Integer cod) {
+		uiToEntity(detalle);
+		try {
+			boolean flag = true;
+			if (accion != ACCION.ADD) {
+				action = ACTION.COBERTURA;
+				int _resp = Util.getInt(detalle.cv_resvis);
+
+				if (_resp == 1) {
+
+					for (Cobertura co : cob) {
+						if (Util.getInt(co.estado) == 1) {
+							Log.e("RESULTADO COBERTURA x2: ", "" + co.estado);
+							conteoCobertura++;
+						}
+						Log.e("CONTEO RESULTADO SAVE", "" + conteoCobertura);
+					}
+
+					if (conteoCobertura > 0) {
+						dlg = new DialogComponent(getActivity(), this,
+								DialogComponent.TIPO_DIALOGO.NEUTRAL,
+								getResources().getString(R.string.app_name),
+								"No puede Terminar su visita con Resultado: "
+										+ _resp + ";"
+										+ " Por favor Verifique su Cobertura."
+										+ " Desea Continuar?");
+						dlg.put("objeto", detalle);
+						dlg.showDialog();
+						flag = false;
+					}
+				}
+
+			}
+			if (!flag)
+				detalle.restoreFromMemento(caretaker.get("antes"));
+			if (flag) {
+				saveVisita(detalle);
+			}
+		} catch (Exception e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+		}
+	}
+
+	private void saveVisita(Visita detalle) throws SQLException {
+		if (!cuestionarioService.saveOrUpdate(detalle,
+				detalle.getSecCap(caller.getListFields(this)))) {
+			ToastMessage.msgBox(this.getActivity(),
+					"Los datos no se guardaron", ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+		} else {
+			caller.reloadData(detalle, 1);
+			caller.grabarCaratula();
+		}
+	}
+
+	private int validaData() {
+		if (accion != ACCION.ADD) {
+		}
+		return 0;
+	}
+
+	private void capturarGPS() {
+		if (tracker == null) {
+			ToastMessage.msgBox(this.getActivity(),
+					"No se puede capturar GPS.", ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			return;
+		}
+		tracker.getLocation();
+		Log.e(getClass().getSimpleName(),
+				"GPS: " + Util.getText(tracker.getLatitude()) + " - "
+						+ Util.getText(tracker.getLongitude()) + " - "
+						+ Util.getText(tracker.getAltitude()));
+		FragmentManager fm = this.getFragmentManager();
+		GPSDialog gps = GPSDialog.newInstance(this, tracker)
+				.estilo(App.ESTILO_BOTON).estiloBoton(App.ESTILO_BOTON)
+				.property(IGPSDialog.ACCURACY);
+		gps.setAncho(MATCH_PARENT);
+		gps.show(fm, "gpsDialog");
+	}
+
+	private String getMsg(int cod) {
+		switch (cod) {
+		case 1:
+			return "Tiene informaci\u00f3n en el C\u00e1p. 100; Resultado no puede ser 3, 4, 5, 7, 8, 9, 10 \u00f3 11."
+					+ " Si Usted acepta la informacion del Cap. 100 sera eliminada. Esta seguro que desea continuar?";
+		default:
+			return "";
+		}
+	}
+
+	@Override
+	public void onCancel() {
+		if (action == ACTION.COBERTURA) {
+			Visita c = (Visita) dlg.get("objeto");
+			if (c != null)
+				c.restoreFromMemento(caretaker.get("antes"));
+		}
+	}
+
+	@Override
+	public void onAccept() {
+		if (action == ACTION.COBERTURA) {
+			FragmentManager fm = caller.getFragmentManager();
+			SearchDialog aperturaDialog = SearchDialog.newInstance(this,
+					caller, "Resumen", false);
+			aperturaDialog.setImage(1, R.drawable.yes, R.drawable.delete);
+			aperturaDialog.setEstilo(App.ESTILO, App.ESTILO_BOTON);
+			aperturaDialog.setAncho(LinearLayout.LayoutParams.MATCH_PARENT);
+			aperturaDialog.show(fm, "aperturaDialog");
+		} else if (action == ACTION.VALIDAR) {
+			Integer cod = (Integer) dlg.get("clave");
+
+			savePag(cod);
+		}
+	}
+
+	@Override
+	public <T extends IDetailEntityComponent> void postResultSearch(
+			List<String> resps, T... result) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public <T extends IDetailEntityComponent> List<T> getListData(NIVEL nivel,
+			T selecc) {
+		if (nivel == NIVEL.NIVEL1) {
+			return (List<T>) cob;
+		}
+		return null;
+	}
+
+	@Override
+	public List<Object[]> getFieldsListData(NIVEL nivel) {
+		if (nivel == NIVEL.NIVEL1)
+			return Util
+					.getListList(new Object[] { "NOMBRE", "ESTADO" },
+							new Object[] { R.string.tr_capitulo,
+									R.string.tr_resultado }, new Object[] {
+									1.5f, 0.7f });
+		return null;
+	}
+
+	@Override
+	public <T extends IDetailEntityComponent> boolean getHasEsp(T selecc,
+			NIVEL nivel, KEY key) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public NIVEL getNiveles() {
+		return NIVEL.NIVEL1;
+	}
+
+	@Override
+	public Fragment getForm() {
+		// TODO Auto-generated method stub
+		return this;
+	}
+
+	@Override
+	public void postShow(Map<String, String> properties) {
+		// TODO Auto-generated method stub
+		String longitud;
+		String latitud;
+		String altitud;
+		if (properties != null) {
+			longitud = properties.get(IGPSDialog.LONGITUD);
+			latitud = properties.get(IGPSDialog.LATITUD);
+			altitud = properties.get(IGPSDialog.ALTURA);
+		} else {
+			return;
+		}
+
+		String lon = Util.getText(txtGPS_LON_V.getText());
+		if (!Util.esVacio(lon) && !lon.equals(App.GPS_OMISION)
+				&& (Util.esVacio(longitud) || longitud.equals(App.GPS_OMISION))) {
+			return;
+		}
+		if (!longitud.equals(App.GPS_OMISION)) {
+		}
+
+		txtGPS_LAT_V.setText(latitud);
+		txtGPS_LON_V.setText(longitud);
+	}
+
+	private CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+}

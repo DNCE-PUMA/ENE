@@ -1,0 +1,749 @@
+package gob.inei.ene2019v2.service;
+
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.components.Entity.SeccionCapitulo;
+import gob.inei.dnce.dao.xml.XMLDataObject;
+import gob.inei.ene2019v2.dao.CuestionarioDAO;
+import gob.inei.ene2019v2.dao.CuestionarioDAO.CounterObservable;
+import gob.inei.ene2019v2.model.ActSecDivGrpClase;
+import gob.inei.ene2019v2.model.ActSecDivGrupo;
+import gob.inei.ene2019v2.model.CCPP;
+import gob.inei.ene2019v2.model.Caratula;
+import gob.inei.ene2019v2.model.Cobertura;
+import gob.inei.ene2019v2.model.Marco;
+import gob.inei.ene2019v2.model.ModuloIII_det;
+import gob.inei.ene2019v2.model.ModuloIX14;
+import gob.inei.ene2019v2.model.ModuloIX15;
+import gob.inei.ene2019v2.model.ModuloIXS;
+import gob.inei.ene2019v2.model.ModuloIX_VIII;
+import gob.inei.ene2019v2.model.ModuloIX_XVI;
+import gob.inei.ene2019v2.model.Moduloi;
+import gob.inei.ene2019v2.model.Moduloii;
+import gob.inei.ene2019v2.model.Moduloiii01;
+import gob.inei.ene2019v2.model.Moduloiii02;
+import gob.inei.ene2019v2.model.Moduloiv01;
+import gob.inei.ene2019v2.model.Moduloiv02;
+import gob.inei.ene2019v2.model.Moduloiv03;
+import gob.inei.ene2019v2.model.Moduloix;
+import gob.inei.ene2019v2.model.ModuloixDet01;
+import gob.inei.ene2019v2.model.ModuloixDet011;
+import gob.inei.ene2019v2.model.ModuloixDet012;
+import gob.inei.ene2019v2.model.ModuloixDet013;
+import gob.inei.ene2019v2.model.ModuloixDet02;
+import gob.inei.ene2019v2.model.ModuloixDet03;
+import gob.inei.ene2019v2.model.Modulov01;
+import gob.inei.ene2019v2.model.Modulov02;
+import gob.inei.ene2019v2.model.Modulovi01;
+import gob.inei.ene2019v2.model.Modulovii01;
+import gob.inei.ene2019v2.model.Moduloviii;
+import gob.inei.ene2019v2.model.Navegation;
+//import gob.inei.ene2019v2.model.Marco;
+//import gob.inei.ene2019v2.model.Navegation;
+import gob.inei.ene2019v2.model.Parameter;
+import gob.inei.ene2019v2.model.Visita;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+public class CuestionarioService extends Service {
+	private static CuestionarioService INSTANCE = null;
+
+	private CuestionarioService(Context ctx) {
+		super(ctx);
+	}
+
+	public static CuestionarioService getInstance(Context ctx) {
+		if (INSTANCE == null) {
+			INSTANCE = new CuestionarioService(ctx);
+		}
+		return INSTANCE;
+	}
+
+	private CuestionarioDAO getDao() {
+		if (sqliteDAO == null) {
+			sqliteDAO = CuestionarioDAO.getInstance(this.dbh);
+		}
+		return (CuestionarioDAO) sqliteDAO;
+	}
+
+	public SQLiteDatabase startTX() {
+		return getDao().startTX();
+	}
+
+	public void commitTX(SQLiteDatabase dbTX) {
+		getDao().commitTX(dbTX);
+	}
+
+	public void endTX(SQLiteDatabase dbTX) {
+		getDao().endTX(dbTX);
+	}
+
+	public boolean save(SQLiteDatabase dbTX, XMLDataObject dataObjects,
+			CounterObservable contadorObserver) throws java.sql.SQLException {
+		return getDao().save(dbTX, dataObjects, contadorObserver);
+	}
+
+	public boolean saveM(SQLiteDatabase dbTX, XMLDataObject dataObjects,
+			CounterObservable contadorObserver) throws java.sql.SQLException {
+		return getDao().saveM(dbTX, dataObjects, contadorObserver);
+	}
+
+	public boolean saveOrUpdate(SQLiteDatabase dbTX, XMLDataObject dataObjects,
+			CounterObservable contadorObserver) throws java.sql.SQLException {
+		return getDao().saveOrUpdate(dbTX, dataObjects, contadorObserver);
+	}
+
+	public boolean existeGPS(String latitud, String longitud) {
+		return getDao().existeGPS(latitud, longitud);
+	}
+
+	public boolean saveOrUpdate(Caratula bean, SeccionCapitulo... secciones)
+			throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public Caratula getCaratula(Marco bean, SeccionCapitulo... secciones) {
+		return getDao().getCaratula(bean, secciones);
+	}
+
+	public Caratula getCaratula(Caratula bean, SeccionCapitulo... secciones) {
+		return getDao().getCaratula(bean, secciones);
+	}
+
+	public boolean borrarCaratula(Caratula bean) throws SQLException {
+		return getDao().borrarCaratula(bean);
+	}
+
+	public List<Caratula> getCaratulas(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getCaratulas(bean, secciones);
+	}
+
+	public boolean saveOrUpdate(Visita bean, SeccionCapitulo... secciones)
+			throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public Visita getVisita(Caratula bean, SeccionCapitulo... secciones) {
+		return getDao().getVisita(bean, secciones);
+	}
+
+	public boolean borrarVisita(Caratula bean) throws SQLException {
+		return getDao().borrarVisita(bean);
+	}
+
+	public boolean borrarVisita(Visita bean) throws SQLException {
+		return getDao().borrarVisita(bean);
+	}
+
+	public List<Visita> getVisitas(Marco bean, SeccionCapitulo... secciones) {
+		return getDao().getVisitas(bean, secciones);
+	}
+
+	public List<Visita> getVisitas(Caratula bean, SeccionCapitulo... secciones) {
+		return getDao().getVisitas(bean, secciones);
+	}
+
+	public boolean saveOrUpdate(Moduloi bean, SeccionCapitulo... secciones)
+			throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public Moduloi getModuloi(Caratula bean, SeccionCapitulo... secciones) {
+		return getDao().getModuloi(bean, secciones);
+	}
+
+	public boolean borrarModuloi(Caratula bean) throws SQLException {
+		return getDao().borrarModuloi(bean);
+	}
+
+	public List<Moduloi> getModulois(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getModulois(bean, secciones);
+	}
+
+	public boolean saveOrUpdate(Moduloii bean, SeccionCapitulo... secciones)
+			throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public Moduloii getModuloii(Caratula bean, SeccionCapitulo... secciones) {
+		return getDao().getModuloii(bean, secciones);
+	}
+
+	public boolean borrarModuloii(Caratula bean) throws SQLException {
+		return getDao().borrarModuloii(bean);
+	}
+
+	public List<Moduloii> getModuloiis(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getModuloiis(bean, secciones);
+	}
+
+	public boolean saveOrUpdate(Moduloiii01 bean, SeccionCapitulo... secciones)
+			throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public Moduloiii01 getModuloiii01(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getModuloiii01(bean, secciones);
+	}
+
+	public boolean borrarModuloiii01(Caratula bean) throws SQLException {
+		return getDao().borrarModuloiii01(bean);
+	}
+
+	public List<Moduloiii01> getModuloiii01s(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getModuloiii01s(bean, secciones);
+	}
+	
+    public List<ModuloIII_det> getModuloIII_det(Moduloiii01 bean, SeccionCapitulo... secciones) { 
+        return getDao().getModuloIII_det(bean, secciones); 
+    }
+	
+	public boolean saveOrUpdate(ModuloIII_det bean, SeccionCapitulo... secciones) throws java.sql.SQLException { 
+        return getDao().saveOrUpdate(bean, secciones); 
+    }	
+	
+
+	public boolean saveOrUpdate(Moduloiii02 bean, SeccionCapitulo... secciones)
+			throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public Moduloiii02 getModuloiii02(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getModuloiii02(bean, secciones);
+	}
+
+	public boolean borrarModuloiii02(Integer id) throws SQLException {
+		return getDao().borrarModuloiii02(id);
+	}
+
+	public List<Moduloiii02> getModuloiii02s(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getModuloiii02s(bean, secciones);
+	}
+
+	public boolean saveOrUpdate(Moduloiv01 bean, SeccionCapitulo... secciones)
+			throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public Moduloiv01 getModuloiv01(Caratula bean, SeccionCapitulo... secciones) {
+		return getDao().getModuloiv01(bean, secciones);
+	}
+
+	public boolean borrarModuloiv01(Caratula bean) throws SQLException {
+		return getDao().borrarModuloiv01(bean);
+	}
+
+	public List<Moduloiv01> getModuloiv01s(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getModuloiv01s(bean, secciones);
+	}
+
+	public boolean saveOrUpdate(Moduloiv02 bean, SeccionCapitulo... secciones)
+			throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public Moduloiv02 getModuloiv02(Caratula bean, SeccionCapitulo... secciones) {
+		return getDao().getModuloiv02(bean, secciones);
+	}
+
+	public boolean borrarModuloiv02(Caratula bean) throws SQLException {
+		return getDao().borrarModuloiv02(bean);
+	}
+
+	public List<Moduloiv02> getModuloiv02s(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getModuloiv02s(bean, secciones);
+	}
+
+	public boolean saveOrUpdate(Moduloiv03 bean, SeccionCapitulo... secciones)
+			throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public Moduloiv03 getModuloiv03(Caratula bean, SeccionCapitulo... secciones) {
+		return getDao().getModuloiv03(bean, secciones);
+	}
+
+	public boolean borrarModuloiv03(Caratula bean) throws SQLException {
+		return getDao().borrarModuloiv03(bean);
+	}
+
+	public List<Moduloiv03> getModuloiv03s(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getModuloiv03s(bean, secciones);
+	}
+
+	public boolean saveOrUpdate(Modulov01 bean, SeccionCapitulo... secciones)
+			throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public Modulov01 getModulov01(Caratula bean, SeccionCapitulo... secciones) {
+		return getDao().getModulov01(bean, secciones);
+	}
+
+	public boolean borrarModulov01(Caratula bean) throws SQLException {
+		return getDao().borrarModulov01(bean);
+	}
+
+	public List<Modulov01> getModulov01s(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getModulov01s(bean, secciones);
+	}
+
+	public boolean saveOrUpdate(Modulov02 bean, SeccionCapitulo... secciones)
+			throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public Modulov02 getModulov02(Caratula bean, SeccionCapitulo... secciones) {
+		return getDao().getModulov02(bean, secciones);
+	}
+
+	public boolean borrarModulov02(Caratula bean) throws SQLException {
+		return getDao().borrarModulov02(bean);
+	}
+
+	public List<Modulov02> getModulov02s(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getModulov02s(bean, secciones);
+	}
+
+	public boolean saveOrUpdate(Modulovi01 bean, SeccionCapitulo... secciones)
+			throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public Modulovi01 getModulovi01(Caratula bean, SeccionCapitulo... secciones) {
+		return getDao().getModulovi01(bean, secciones);
+	}
+
+	public boolean borrarModulovi01(Caratula bean) throws SQLException {
+		return getDao().borrarModulovi01(bean);
+	}
+
+	public List<Modulovi01> getModulovi01s(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getModulovi01s(bean, secciones);
+	}
+
+	public boolean saveOrUpdate(Modulovii01 bean, SeccionCapitulo... secciones)
+			throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public Modulovii01 getModulovii01(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getModulovii01(bean, secciones);
+	}
+
+	public boolean borrarModulovii01(Caratula bean) throws SQLException {
+		return getDao().borrarModulovii01(bean);
+	}
+
+	public List<Modulovii01> getModulovii01s(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getModulovii01s(bean, secciones);
+	}
+
+	public boolean saveOrUpdate(Moduloviii bean, SeccionCapitulo... secciones)
+			throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public Moduloviii getModuloviii(Caratula bean, SeccionCapitulo... secciones) {
+		return getDao().getModuloviii(bean, secciones);
+	}
+
+	public boolean borrarModuloviii(Caratula bean) throws SQLException {
+		return getDao().borrarModuloviii(bean);
+	}
+
+	public List<Moduloviii> getModuloviiis(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getModuloviiis(bean, secciones);
+	}
+
+	public boolean saveOrUpdate(ModuloixDet01 bean,
+			SeccionCapitulo... secciones) throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public ModuloixDet01 getDet01(Caratula bean, Integer index,
+			SeccionCapitulo... secciones) {
+		return getDao().getDet01(bean, index, secciones);
+	}
+
+	public boolean borrarDet01(Caratula bean) throws SQLException {
+		return getDao().borrarDet01(bean);
+	}
+
+	public boolean borrarDet01(ModuloixDet01 bean) throws java.sql.SQLException {
+		return getDao().borrarDet01(bean);
+	}
+
+	public List<ModuloixDet01> getDet01s(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getDet01s(bean, secciones);
+	}
+
+	public boolean saveOrUpdate(ModuloixDet02 bean,
+			SeccionCapitulo... secciones) throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public ModuloixDet02 getDet02(Caratula bean, SeccionCapitulo... secciones) {
+		return getDao().getDet02(bean, secciones);
+	}
+
+	public boolean borrarDet02(ModuloixDet02 bean) throws SQLException {
+		return getDao().borrarDet02(bean);
+	}
+
+	public List<ModuloixDet02> getDet02s(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getDet02s(bean, secciones);
+	}
+
+	public boolean saveOrUpdate(ModuloixDet03 bean,
+			SeccionCapitulo... secciones) throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public ModuloixDet03 getDet03(Caratula bean, SeccionCapitulo... secciones) {
+		return getDao().getDet03(bean, secciones);
+	}
+
+	public boolean borrarDet03(ModuloixDet03 bean) throws SQLException {
+		return getDao().borrarDet03(bean);
+	}
+
+	public List<ModuloixDet03> getDet03s(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getDet03s(bean, secciones);
+	}
+
+	public boolean saveOrUpdate(Moduloix bean, SeccionCapitulo... secciones)
+			throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public Moduloix getModuloix(Caratula bean, SeccionCapitulo... secciones) {
+		return getDao().getModuloix(bean, secciones);
+	}
+
+	public boolean borrarModuloix(Caratula bean) throws SQLException {
+		return getDao().borrarModuloix(bean);
+	}
+
+	public List<Moduloix> getModuloixs(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getModuloixs(bean, secciones);
+	}
+
+	public boolean saveOrUpdate(ModuloIXS bean, SeccionCapitulo... secciones)
+			throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public List<ModuloIXS> getListModuloIXS(Caratula bean, Integer pregunta,
+			SeccionCapitulo... secciones) {
+		return getDao().getListModuloIXS(bean, pregunta, secciones);
+	}
+
+	public List<ModuloIX_VIII> getListModuloIX_VIII(Caratula bean, Integer pregunta,
+			SeccionCapitulo... secciones) {
+		return getDao().getListModuloIX_VIII(bean, pregunta, secciones);
+	}
+	
+	public boolean saveOrUpdate(ModuloIX_VIII bean, SeccionCapitulo... secciones)
+			throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+	
+	public boolean saveOrUpdate(ModuloixDet011 bean,
+			SeccionCapitulo... secciones) throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	
+	public ModuloixDet011 getDet011(Caratula bean, Integer index,
+			SeccionCapitulo... secciones) {
+		return getDao().getDet011(bean, index, secciones);
+	}
+
+	
+	public boolean borrarDet011(Caratula bean) throws SQLException {
+		return getDao().borrarDet011(bean);
+	}
+
+	public boolean borrarDet011(ModuloixDet011 bean) throws java.sql.SQLException {
+		return getDao().borrarDet011(bean);
+	}
+	
+
+	public List<ModuloixDet011> getDet011s(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getDet011s(bean, secciones);
+	}	
+	
+	
+	public boolean saveOrUpdate(ModuloixDet012 bean,
+			SeccionCapitulo... secciones) throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public ModuloixDet012 getDet012(Caratula bean, SeccionCapitulo... secciones) {
+		return getDao().getDet012(bean, secciones);
+	}
+
+	public boolean borrarDet012(ModuloixDet012 bean) throws SQLException {
+		return getDao().borrarDet012(bean);
+	}
+
+	public List<ModuloixDet012> getDet012s(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getDet012s(bean, secciones);
+	}
+	
+	
+	public boolean saveOrUpdate(ModuloixDet013 bean,
+			SeccionCapitulo... secciones) throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public ModuloixDet013 getDet013(Caratula bean, SeccionCapitulo... secciones) {
+		return getDao().getDet013(bean, secciones);
+	}
+
+	public boolean borrarDet013(ModuloixDet013 bean) throws SQLException {
+		return getDao().borrarDet013(bean);
+	}
+
+	public List<ModuloixDet013> getDet013s(Caratula bean,
+			SeccionCapitulo... secciones) {
+		return getDao().getDet013s(bean, secciones);
+	}
+
+	
+	public boolean saveOrUpdate(ModuloIX14 bean, SeccionCapitulo... secciones)
+			throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public List<ModuloIX14> getListModuloIX14(Caratula bean, Integer pregunta,
+			SeccionCapitulo... secciones) {
+		return getDao().getListModuloIX14(bean, pregunta, secciones);
+	}
+	
+	public boolean saveOrUpdate(ModuloIX15 bean, SeccionCapitulo... secciones)
+			throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public List<ModuloIX15> getListModuloIX15(Caratula bean, Integer pregunta,
+			SeccionCapitulo... secciones) {
+		return getDao().getListModuloIX15(bean, pregunta, secciones);
+	}
+			
+	
+	public List<ModuloIX_XVI> getListModuloIX_XVI(Caratula bean, Integer pregunta,
+			SeccionCapitulo... secciones) {
+		return getDao().getListModuloIX_XVI(bean, pregunta, secciones);
+	}
+	
+	public boolean saveOrUpdate(ModuloIX_XVI bean, SeccionCapitulo... secciones)
+			throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+	
+	
+	
+	public Navegation getNavegacion(Caratula bean) {
+		return getDao().getNavegacion(bean);
+	}
+
+	public Parameter getParameter(String parameter,
+			SeccionCapitulo... secciones) {
+		return getDao().getParameter(parameter, secciones);
+	}
+
+	public boolean saveOrUpdate(Parameter bean, SeccionCapitulo... secciones)
+			throws java.sql.SQLException {
+		return getDao().saveOrUpdate(bean, secciones);
+	}
+
+	public List<ActSecDivGrpClase> getActividades() {
+		return getDao().getActividades();
+	}
+	
+	public List<CCPP> getCCPP(String ccdd, String ccpp,String ccdi) { 
+		return getDao().getCCPP(ccdd, ccpp, ccdi); 
+	}
+
+	public List<ActSecDivGrupo> getResoluciones() {
+		return getDao().getResoluciones();
+	}
+
+	public List<Cobertura> getCoberturaXid(Integer id) {
+		Log.e ("valor de id", id + "");
+		return getDao().getCoberturaXid(id);
+	}
+
+	public Visita getUltimaVisita(Integer id, String... campos) {
+		return getDao().getUltimaVisita(id, campos);
+	}
+
+	public boolean borrarCapitulos(Integer id, String... capitulos)
+			throws SQLException {
+		return getDao().borrarCapitulos(id, capitulos);
+	}
+
+	public List<Parameter> getParameters(String parameter,
+			SeccionCapitulo... secciones) {
+		return getDao().getParameters(parameter, secciones);
+	}
+	
+	/* CALIFICACION XML */
+
+	public Moduloi getMODI(Integer id) {
+		return getDao().getMODI(id);
+	}
+
+	public Moduloii getMODII(Integer id) {
+		return getDao().getMODII(id);
+	}
+
+	public Moduloiii01 getMODIII_01(Integer id) {
+		return getDao().getMODIII_01(id);
+	}
+
+	public Moduloiii02 getMODIII_02(Integer id) {
+		return getDao().getMODIII_02(id);
+	}
+
+	public Moduloiv01 getMODIV_01(Integer id) {
+		return getDao().getMODIV_01(id);
+	}
+
+	public Moduloiv02 getMODIV_02(Integer id) {
+		return getDao().getMODIV_02(id);
+	}
+
+	public Moduloiv03 getMODIV_03(Integer id) {
+		return getDao().getMODIV_03(id);
+	}
+
+	public Modulov01 getMODV_01(Integer id) {
+		return getDao().getMODV_01(id);
+	}
+
+	public Modulov02 getMODV_02(Integer id) {
+		return getDao().getMODV_02(id);
+	}
+
+	public Modulovi01 getMODVI(Integer id) {
+		return getDao().getMODVI(id);
+	}
+
+	public Modulovii01 getMODVII(Integer id) {
+		return getDao().getMODVII(id);
+	}
+
+	public Moduloviii getMODVIII(Integer id) {
+		return getDao().getMODVIII(id);
+	}
+
+	public Moduloix getMODIX(Integer id) {
+		return getDao().getMODIX(id);
+	}
+
+	public List<ModuloixDet01> getMODIX_01(Integer id) {
+		return getDao().getMODIX_01(id);
+	}
+
+	public List<ModuloixDet02> getMODIX_02(Integer id) {
+		return getDao().getMODIX_02(id);
+	}
+
+	public List<ModuloixDet03> getMODIX_03(Integer id) {
+		return getDao().getMODIX_03(id);
+	}
+
+	public List<ModuloIXS> getMODIX_04(Integer id) {
+		return getDao().getMODIX_04(id);
+	}
+
+	public boolean saveOrUpdate(Entity bean, SQLiteDatabase dbTX)
+			throws SQLException {
+		if (bean instanceof Moduloi) {
+			return getDao().saveOrUpdateCP((Moduloi) bean, dbTX);
+
+		} else if (bean instanceof Moduloii) {
+			return getDao().saveOrUpdateCP((Moduloii) bean, dbTX);
+
+		} else if (bean instanceof Moduloiii01) {
+			return getDao().saveOrUpdateCP((Moduloiii01) bean, dbTX);
+
+		} else if (bean instanceof Moduloiii02) {
+			return getDao().saveOrUpdateCP((Moduloiii02) bean, dbTX);
+
+		} else if (bean instanceof Moduloiv01) {
+			return getDao().saveOrUpdateCP((Moduloiv01) bean, dbTX);
+
+		} else if (bean instanceof Moduloiv02) {
+			return getDao().saveOrUpdateCP((Moduloiv02) bean, dbTX);
+
+		} else if (bean instanceof Moduloiv03) {
+			return getDao().saveOrUpdateCP((Moduloiv03) bean, dbTX);
+
+		} else if (bean instanceof Modulov01) {
+			return getDao().saveOrUpdateCP((Modulov01) bean, dbTX);
+
+		} else if (bean instanceof Modulov02) {
+			return getDao().saveOrUpdateCP((Modulov02) bean, dbTX);
+
+		} else if (bean instanceof Modulovi01) {
+			return getDao().saveOrUpdateCP((Modulovi01) bean, dbTX);
+
+		} else if (bean instanceof Modulovii01) {
+			return getDao().saveOrUpdateCP((Modulovii01) bean, dbTX);
+
+		} else if (bean instanceof Moduloviii) {
+			return getDao().saveOrUpdateCP((Moduloviii) bean, dbTX);
+
+		} else if (bean instanceof Moduloix) {
+			return getDao().saveOrUpdateCP((Moduloix) bean, dbTX);
+
+		} else if (bean instanceof ModuloixDet01) {
+			return getDao().saveOrUpdateCP((ModuloixDet01) bean, dbTX);
+
+		} else if (bean instanceof ModuloixDet02) {
+			return getDao().saveOrUpdateCP((ModuloixDet02) bean, dbTX);
+
+		} else if (bean instanceof ModuloixDet03) {
+			return getDao().saveOrUpdateCP((ModuloixDet03) bean, dbTX);
+
+		} else if (bean instanceof ModuloIXS) {
+			return getDao().saveOrUpdateCP((ModuloIXS) bean, dbTX);
+
+		} else {
+			return false;
+		}
+	}
+
+
+
+}

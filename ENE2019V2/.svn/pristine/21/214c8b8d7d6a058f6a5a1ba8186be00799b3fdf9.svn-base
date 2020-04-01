@@ -1,0 +1,327 @@
+package gob.inei.ene2019v2.fragment.ModIX.dialog;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.components.ButtonComponent;
+import gob.inei.dnce.components.DialogFragmentComponent;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.GridComponent2;
+import gob.inei.dnce.components.IntegerField;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.util.Calculo;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.fragment.ModIX.Mod_IX_Fragment_006;
+import gob.inei.ene2019v2.fragment.ModIX.Mod_IX_Fragment_006.ModulooIX;
+import gob.inei.ene2019v2.model.ModuloIXS;
+import gob.inei.ene2019v2.service.CuestionarioService;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+
+public class Mod_IX_Fragment_006_01 extends DialogFragmentComponent {
+
+	public interface HogarDialogListener {
+		void onFinishEditDialog(String inputText);
+	}
+
+	@FieldAnnotation(orderIndex = 1)
+	public IntegerField txtC9P907_1;
+	@FieldAnnotation(orderIndex = 2)
+	public IntegerField txtC9P907_2;
+	@FieldAnnotation(orderIndex = 3)
+	public IntegerField txtC9P907_3;
+	@FieldAnnotation(orderIndex = 4)
+	public IntegerField txtC9P907_4;
+	@FieldAnnotation(orderIndex = 5)
+	public IntegerField txtC9P907_5;
+	@FieldAnnotation(orderIndex = 6)
+	public ButtonComponent btnAceptar;
+	@FieldAnnotation(orderIndex = 7)
+	public ButtonComponent btnCancelar;
+
+	private static Mod_IX_Fragment_006 caller;
+	ModulooIX detalle;
+	private List<ModuloIXS> lstClone;
+	private GridComponent2 grP906;
+	LinearLayout q0, q1;
+	private CuestionarioService cuestionarioService;
+	private EditText txtOpeTotal1;
+
+	public static Mod_IX_Fragment_006_01 newInstance(FragmentForm pagina,
+			ModulooIX detalle) {
+		caller = (Mod_IX_Fragment_006) pagina;
+		Filtros.clear();
+		Mod_IX_Fragment_006_01 f = new Mod_IX_Fragment_006_01();
+		f.setParent(pagina);
+		Bundle args = new Bundle();
+		args.putSerializable("detalle", detalle);
+		f.setArguments(args);
+		return f;
+	}
+
+	public Mod_IX_Fragment_006_01() {
+		super();
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		detalle = (ModulooIX) getArguments().getSerializable("detalle");
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		getDialog().setTitle(detalle.orden + " - " + detalle.nombre);
+		final View rootView = createUI();
+		initObjectsWithoutXML(this, rootView);
+		setCalculo();
+		cargarDatos();
+		enlazarCajas();
+		listening();
+		return rootView;
+
+	}
+
+	private void setCalculo() {
+		Calculo ops = new Calculo(caller, txtC9P907_5, 0, 0, Util.getListList(
+				txtC9P907_1, txtC9P907_2, txtC9P907_3, txtC9P907_4));
+		ops.setConfOperacion(false, true);
+		ops.setCallback(this, "onResult");
+	}
+
+	public void onResult(Integer result) {
+		long resp = result - 2 * Util.getInt(txtC9P907_4);
+		txtC9P907_5.setText(result == null ? "0" : String.valueOf(resp));
+		txtC9P907_5.setTextColor(resp < 0 ? Color.RED : Color.BLACK);
+	}
+
+	private void nextPage() {
+		FragmentManager fm = caller.getFragmentManager();
+		Mod_IX_Fragment_006_02 aperturaDialog = Mod_IX_Fragment_006_02
+				.newInstance(caller, detalle);
+		aperturaDialog.setAncho(LinearLayout.LayoutParams.MATCH_PARENT);
+		aperturaDialog.show(fm, "aperturaDialog");
+
+	}
+
+	@Override
+	protected void buildFields() {
+
+		txtC9P907_1 = new IntegerField(this.getActivity(), false)
+				.size(altoComponente, 200).centrar().negrita();
+		txtC9P907_2 = new IntegerField(this.getActivity(), false).size(
+				altoComponente, 200).centrar();
+		txtC9P907_3 = new IntegerField(this.getActivity(), false).size(
+				altoComponente, 200).centrar();
+		txtC9P907_4 = new IntegerField(this.getActivity(), false).size(
+				altoComponente, 200).centrar();
+		txtC9P907_5 = new IntegerField(this.getActivity(), false)
+				.size(altoComponente, 200).centrar().negrita().readOnly();
+		LabelComponent lbl1 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c2c100m9p006a_1).size(altoComponente + 5, 400)
+				.centrar();
+		LabelComponent lbl2 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c2c100m9p006a_cab).size(altoComponente + 5, 200);
+		LabelComponent lbl3 = new LabelComponent(getActivity()).text(
+				R.string.c2c100m9p006a_2).size(altoComponente + 5, 200);
+		LabelComponent lbl4 = new LabelComponent(getActivity()).text(
+				R.string.c2c100m9p006a_3).size(altoComponente + 5, 200);
+		LabelComponent lbl5 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c2c100m9p006a_4).size(altoComponente + 5, 400)
+				.centrar();
+		LabelComponent lbl6 = new LabelComponent(getActivity(), App.ESTILO)
+				.text(R.string.c2c100m9p006a_5).size(altoComponente + 5, 400)
+				.centrar();
+
+		grP906 = new GridComponent2(getActivity(), 3);
+		grP906.addComponent(lbl1, 2);
+		grP906.addComponent(txtC9P907_1);
+		grP906.addComponent(lbl2, 1, 2);
+		grP906.addComponent(lbl3);
+		grP906.addComponent(txtC9P907_2);
+		grP906.addComponent(lbl4);
+		grP906.addComponent(txtC9P907_3);
+		grP906.addComponent(lbl5, 2);
+		grP906.addComponent(txtC9P907_4);
+		grP906.addComponent(lbl6, 2);
+		grP906.addComponent(txtC9P907_5);
+
+		btnAceptar = new ButtonComponent(getParent().getActivity(),
+				App.ESTILO_BOTON).text(R.string.btnAceptar).size(200, 60);
+		btnCancelar = new ButtonComponent(getParent().getActivity(),
+				App.ESTILO_BOTON).text(R.string.btnCancelar).size(200, 60);
+		btnCancelar.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Mod_IX_Fragment_006_01.this.dismiss();
+			}
+		});
+		btnAceptar.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				save();
+				caller.recargarLista();
+				//nextPage();
+			}
+		});
+
+		Filtros.setFiltro(txtC9P907_1, Filtros.TIPO.NUMBER, 8, -1, null, 0,
+				99999998);
+		Filtros.setFiltro(txtC9P907_2, Filtros.TIPO.NUMBER, 8, -1, null, 0,
+				99999998);
+		Filtros.setFiltro(txtC9P907_3, Filtros.TIPO.NUMBER, 8, -1, null, 0,
+				99999998);
+		Filtros.setFiltro(txtC9P907_4, Filtros.TIPO.NUMBER, 8, -1, null, 0,
+				99999998);
+		Filtros.setFiltro(txtC9P907_5, Filtros.TIPO.NUMBER, 8, -1,
+				new char[] { '-' }, -99999998, 99999998);
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+
+		q0 = createQuestionSection(grP906.component());
+
+		LinearLayout botones = createButtonSection(btnAceptar, btnCancelar);
+
+		ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+
+		form.addView(q0);
+
+		form.addView(botones);
+
+		return contenedor;
+	}
+
+	private void save() {
+		boolean flag = grabar();
+		if (!flag) {
+			return;
+		}
+		Mod_IX_Fragment_006_01.this.dismiss();
+	}
+
+	private boolean grabar() {
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals("")) {
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+				if (view != null) {
+					view.requestFocus();
+				}
+			}
+			return false;
+		}
+
+		uiToEntity(detalle.detalle);
+		try {
+			if (!getCuestionarioService().saveOrUpdate(detalle.detalle,
+					getSecCap2(new String[] { "C9P907_COD" }))) {
+				ToastMessage.msgBox(this.getActivity(),
+						"Los datos no se guardaron",
+						ToastMessage.MESSAGE_ERROR, ToastMessage.DURATION_LONG);
+			}
+		} catch (SQLException e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+			return false;
+		}
+		return true;
+	}
+
+	private boolean validar() {
+		String pregunta_no_vacia = this.getResources().getString(
+				R.string.pregunta_no_vacia);
+		error = false;
+
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+
+		if (Util.esVacio(txtC9P907_1)) {
+			mensaje = pregunta_no_vacia.replace("$", "Saldos Iniciales, ");
+			view = txtC9P907_1;
+			return !(error = true);
+		}
+		if (Util.esVacio(txtC9P907_2)) {
+			mensaje = pregunta_no_vacia.replace("$", "Bienes nuevos,");
+			view = txtC9P907_2;
+			return !(error = true);
+		}
+		if (Util.esVacio(txtC9P907_3)) {
+			mensaje = pregunta_no_vacia.replace("$", "Bienes usados,");
+			view = txtC9P907_3;
+			return !(error = true);
+		}
+		if (Util.esVacio(txtC9P907_4)) {
+			mensaje = pregunta_no_vacia.replace("$", "Ventanas y/o retiros,");
+			view = txtC9P907_4;
+			return !(error = true);
+		}
+		if (Util.esVacio(txtC9P907_5)) {
+			mensaje = pregunta_no_vacia.replace("$", "Saldos Finales");
+			view = txtC9P907_5;
+			return !(error = true);
+		}
+
+		int c9p907_1 = Util.getInt(txtC9P907_1);
+		int c9p907_2 = Util.getInt(txtC9P907_2);
+		int c9p907_3 = Util.getInt(txtC9P907_3);
+		int c9p907_4 = Util.getInt(txtC9P907_4);
+
+		if ((c9p907_1 + c9p907_2 + c9p907_3) < c9p907_4) {
+			ToastMessage
+					.msgBox(getActivity(),
+							"Verificar: RESUMEN MOVIMIENTO ACTIVO FIJO saldos iniciales + compras no puede ser menor  a las ventas y retiros",
+							ToastMessage.MESSAGE_INFO,
+							ToastMessage.DURATION_LONG);
+		}
+
+		return true;
+	}
+
+	private void cargarDatos() {
+
+		lstClone = new ArrayList<ModuloIXS>();
+		lstClone.add((ModuloIXS) detalle.detalle);
+		entityToUI(detalle.detalle);
+		inicio();
+	}
+
+	private void inicio() {
+		txtC9P907_1.requestFocus();
+	}
+
+	public CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+
+}

@@ -1,0 +1,44 @@
+package gob.inei.ene2019v2.model;
+
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.interfaces.IDetailEntityComponent;
+
+public class ModuloixDet03 extends Entity implements IDetailEntityComponent {
+
+	private static final long serialVersionUID = 1L;
+
+	public Integer c9p903_id = null;
+	public String c9p903_2 = null;
+	public String c9p903_3 = null;
+	public String c903_obs = null;
+	
+	public ModuloixDet03() {
+	}
+
+	public ModuloixDet03(Integer id, Integer c9p903_id) {
+		this.id = id;
+		this.c9p903_id = c9p903_id;
+	}
+
+	@Override
+	public void cleanEntity() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean isTitle() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getPks() {
+		return "ID,C9P903_ID";
+	}
+
+	@Override
+	public String toString() {
+		return super.toString();
+	}
+}

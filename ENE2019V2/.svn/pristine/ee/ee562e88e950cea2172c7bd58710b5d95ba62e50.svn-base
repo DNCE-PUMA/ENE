@@ -1,0 +1,49 @@
+package gob.inei.ene2019v2.model;
+
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.interfaces.IDetailEntityComponent;
+
+public class ModuloIXS extends Entity implements IDetailEntityComponent {
+
+	private static final long serialVersionUID = 1L;
+	public Integer c9p907_id = null;
+	public Integer c9p907_cod = null;
+	public Integer c9p907_1 = null;
+	public Integer c9p907_2 = null;
+	public Integer c9p907_3 = null;
+	public Integer c9p907_4 = null;
+	public Integer c9p907_5 = null;
+	public String c9b_obs = null;
+	public Integer t_c9a = null;
+
+	public ModuloIXS() {
+	}
+
+	public ModuloIXS(Integer id, Integer c9p907_id, Integer c9p907_cod) {
+		this.id = id;
+		this.c9p907_id = c9p907_id;
+		this.c9p907_cod = c9p907_cod;
+	}
+
+	@Override
+	public void cleanEntity() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean isTitle() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getPks() {
+		return "ID, C9P907_ID, C9P907_COD";
+	}
+
+	@Override
+	public String toString() {
+		return super.toString();
+	}
+}

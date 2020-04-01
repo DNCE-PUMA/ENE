@@ -1,0 +1,89 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="gob.inei.ene2016.Principal" >
+
+    <item 
+        android:id="@+id/action_ir_observaciones"
+        android:icon="@drawable/ic_action_chat"
+        android:title="@string/action_observaciones"
+        android:showAsAction="always" />
+    
+    <item
+        android:id="@+id/action_grabar"
+        android:showAsAction="withText|ifRoom"
+        android:title="@string/action_grabar"
+        android:icon="@drawable/grabar24_4"/>
+    
+    <item
+        android:id="@+id/action_ir_marco"     
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_marco"/>
+    
+    <item
+        android:id="@+id/action_caratula"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_caratula"/>
+    
+    <item
+        android:id="@+id/action_visitas"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_visitas"/>
+    
+    <item
+        android:id="@+id/action_modi"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_modi"/>
+    
+    <item
+        android:id="@+id/action_modii"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_modii"/>
+    
+    <item
+        android:id="@+id/action_modiii"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_modiii"/>
+    
+    <item
+        android:id="@+id/action_modiv"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_modiv"/>
+    
+    <item
+        android:id="@+id/action_modv"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_modv"/>
+    
+    <item
+        android:id="@+id/action_modvi"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_modvi"/>
+    
+    <item
+        android:id="@+id/action_modvii"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_modvii"/>
+    
+    <item
+        android:id="@+id/action_modviii"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_modviii"/>
+    
+    <item
+        android:id="@+id/action_modix"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_modix"/>
+
+</menu>

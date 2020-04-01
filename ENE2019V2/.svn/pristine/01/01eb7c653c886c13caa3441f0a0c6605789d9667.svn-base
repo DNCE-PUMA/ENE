@@ -1,0 +1,258 @@
+//package gob.inei.ene2019v2.fragment.ModVIII;
+//
+//import gob.inei.dnce.annotations.FieldAnnotation;
+//import gob.inei.dnce.components.Entity;
+//import gob.inei.dnce.components.FragmentForm;
+//import gob.inei.dnce.components.LabelComponent;
+//import gob.inei.dnce.components.MasterActivity;
+//import gob.inei.dnce.components.RadioGroupOtherField;
+//import gob.inei.dnce.components.RadioGroupOtherField.ORIENTATION;
+//import gob.inei.dnce.components.ToastMessage;
+//import gob.inei.dnce.interfaces.FieldComponent;
+//import gob.inei.dnce.util.Filtros;
+//import gob.inei.dnce.util.Util;
+//import gob.inei.ene2019v2.R;
+//import gob.inei.ene2019v2.common.App;
+//import gob.inei.ene2019v2.model.Caratula;
+//import gob.inei.ene2019v2.model.Moduloviii;
+//import gob.inei.ene2019v2.service.CuestionarioService;
+//
+//import java.sql.SQLException;
+//
+//import android.os.Bundle;
+//import android.view.LayoutInflater;
+//import android.view.View;
+//import android.view.ViewGroup;
+//import android.widget.LinearLayout;
+//import android.widget.LinearLayout.LayoutParams;
+//import android.widget.ScrollView;
+//
+//public class Mod_VIII_Fragment_014 extends FragmentForm {
+//
+//	@FieldAnnotation(orderIndex = 1)
+//	public RadioGroupOtherField rgM8P043;
+//	@FieldAnnotation(orderIndex = 2)
+//	public RadioGroupOtherField rgM8P044;
+//	@FieldAnnotation(orderIndex = 3)
+//	public RadioGroupOtherField rgM8P045;
+//
+//	private CuestionarioService cuestionarioService;
+//	private Moduloviii bean;
+//	private Caratula caratula;
+//	private LabelComponent lblTitulo;
+//	LinearLayout q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10;
+//	private boolean codigo;
+//
+//	public Mod_VIII_Fragment_014() {
+//	}
+//
+//	public Mod_VIII_Fragment_014 parent(MasterActivity parent) {
+//		this.parent = parent;
+//		return this;
+//	}
+//
+//	@Override
+//	public void onCreate(Bundle savedInstanceState) {
+//		super.onCreate(savedInstanceState);
+//	}
+//
+//	@Override
+//	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//			Bundle savedInstanceState) {
+//		rootView = createUI();
+//		initObjectsWithoutXML(this, rootView);
+//		enlazarCajas();
+//		listening();
+//
+//		return rootView;
+//	}
+//
+//	@Override
+//	protected void buildFields() {
+//
+//		lblTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+//				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+//				.text(R.string.c2c100m8).textSize(21).centrar()
+//				.negrita();
+//		
+////		rgM8P043 = new RadioGroupOtherField(this.getActivity(),
+////				R.string.c2c100m8p043_1, R.string.c2c100m8p043_2,
+////				R.string.c2c100m8p043_3).size(WRAP_CONTENT, WRAP_CONTENT)
+////				.orientation(ORIENTATION.VERTICAL).callback("FuncionP43");
+////		rgM8P044 = new RadioGroupOtherField(this.getActivity(),
+////				R.string.c2c100m8p044_1, R.string.c2c100m8p044_2).size(
+////				WRAP_CONTENT, WRAP_CONTENT).orientation(ORIENTATION.HORIZONTAL);
+////		rgM8P045 = new RadioGroupOtherField(this.getActivity(),
+////				R.string.c2c100m8p045_1, R.string.c2c100m8p045_2,
+////				R.string.c2c100m8p045_3, R.string.c2c100m8p045_4,
+////				R.string.c2c100m8p045_5).size(WRAP_CONTENT, WRAP_CONTENT)
+////				.orientation(ORIENTATION.VERTICAL);
+//
+//	}
+//
+//	@Override
+//	protected View createUI() {
+//		buildFields();
+//
+//		q0 = createQuestionSection(lblTitulo);
+////		q1 = createQuestionSection(R.string.c2c100m8p043, rgM8P043);
+////		q2 = createQuestionSection(R.string.c2c100m8p044, rgM8P044);
+////		q3 = createQuestionSection(R.string.c2c100m8p045, rgM8P045);
+//
+//		ScrollView contenedor = createForm();
+//		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+//
+//		form.addView(q0);
+////		form.addView(q1);
+////		form.addView(q2);
+////		form.addView(q3);
+//
+//		return contenedor;
+//	}
+//
+//	@Override
+//	public boolean grabar() {
+//		uiToEntity(bean);
+//		if (!validar()) {
+//			if (error) {
+//				if (!mensaje.equals("")) {
+//					ToastMessage.msgBox(this.getActivity(), mensaje,
+//							ToastMessage.MESSAGE_ERROR,
+//							ToastMessage.DURATION_LONG);
+//				}
+//				if (view != null) {
+//					view.requestFocus();
+//				}
+//			}
+//			return false;
+//		}
+//
+//		try {
+//			if (!getCuestionarioService().saveOrUpdate(bean,
+//					bean.getSecCap(getListFields(this)))) {
+//				ToastMessage.msgBox(this.getActivity(),
+//						"Los datos no se guardaron",
+//						ToastMessage.MESSAGE_ERROR, ToastMessage.DURATION_LONG);
+//			}
+//		} catch (SQLException e) {
+//			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+//					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+//			return false;
+//		}
+//
+//		return true;
+//	}
+//
+//	private boolean validar() {
+//		String pregunta_no_vacia = getString(R.string.pregunta_no_vacia);
+//		String especifique_no_vacio = getString(R.string.pregunta_especifique);
+//		error = false;
+//
+//		if (Filtros.getErrorFiltro() != null) {
+//			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+//					.getValue(), ToastMessage.MESSAGE_ERROR,
+//					ToastMessage.DURATION_LONG);
+//			Filtros.getErrorFiltro().getKey().requestFocus();
+//			return false;
+//		}
+//
+//		if (!Util.esDiferente(bean.m8p040, 1)) {
+//			if (Util.esVacio(rgM8P043)) {
+//				mensaje = pregunta_no_vacia.replace("$", "La pregunta P43");
+//				view = rgM8P043;
+//				error = true;
+//				return false;
+//			}
+//		}
+//		
+//		if(codigo) {
+//			if (Util.esVacio(rgM8P044)) {
+//				mensaje = pregunta_no_vacia.replace("$", "La pregunta P44");
+//				view = rgM8P044;
+//				error = true;
+//				return false;
+//			}
+//			if (Util.esVacio(rgM8P045)) {
+//				mensaje = pregunta_no_vacia.replace("$", "La pregunta P45");
+//				view = rgM8P045;
+//				error = true;
+//				return false;
+//			}
+//		} 
+//		
+//		return true;
+//	}
+//
+//	@Override
+//	public void cargarDatos() {
+//		bean = getCuestionarioService().getModuloviii(
+//				App.getInstance().getEmpresa(),
+//				new Moduloviii().getSecCap(getListFields(this, new String[] {
+//						"M8_OBS", "M8P040" })));
+//		
+//		caratula = App.getInstance().getEmpresa();
+//		if (bean == null) {
+//			bean = new Moduloviii();
+//		}
+//		if (caratula == null) {
+//			caratula = new Caratula();
+//		}
+//		bean.id = App.getInstance().getEmpresa().id;
+//		entityToUI(bean);
+//		inicio();
+//	}
+//
+//	private void inicio() {
+//		int cod = Util.getInt(caratula.ciiu_cd);
+//		codigo = (cod >= 1010 && cod <= 3290 && Util.esDiferente(cod, 1811,1812,1820)); 
+//		
+//		if (Util.getInt(bean.m8p040) == 2){
+//			Util.cleanAndLockView(getActivity(), rgM8P043);
+//			if(codigo) {
+//				Util.lockView(getActivity(), false, rgM8P044, rgM8P045);
+//				rgM8P044.requestFocus();
+//			} else {
+//				Util.cleanAndLockView(getActivity(), rgM8P044, rgM8P045);
+//			}
+//		} else {
+//			Util.lockView(getActivity(), false, rgM8P043, rgM8P044, rgM8P045);
+//			lockP13(rgM8P043, null, -1, rgM8P044, rgM8P045);
+//			rgM8P043.requestFocus();
+//		}
+//	}
+//
+//	public CuestionarioService getCuestionarioService() {
+//		if (cuestionarioService == null) {
+//			cuestionarioService = CuestionarioService
+//					.getInstance(getActivity());
+//		}
+//		return cuestionarioService;
+//	}
+//
+//	@Override
+//	public Entity getEntity() {
+//		return bean;
+//	}
+//	
+//	public void FuncionP43(FieldComponent component) {
+//		RadioGroupOtherField rg = (RadioGroupOtherField) component;
+//		if(rg.isPressed()){
+//			if(rg.equals(rgM8P043)){
+//				lockP13(rg, rgM8P044, parent.getCurPage()+1, rgM8P044, rgM8P045);
+//			}
+//		}
+//	}
+//	
+//	private void lockP13(RadioGroupOtherField rg, View focusSi, int salto, View... views){
+//    	Integer val = rg.getTagSelectedInteger(-1);
+//    	if(val != -1){
+//    		if(codigo){
+//	    		Util.lockView(getActivity(), false, views);
+//				if(focusSi!=null) focusSi.requestFocus();
+//			} else {
+//				Util.cleanAndLockView(getActivity(), views);
+//	    		if(salto!=-1) parent.nextFragment(salto);
+//			}
+//    	}
+//	}
+//}

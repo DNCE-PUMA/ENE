@@ -1,0 +1,533 @@
+package gob.inei.ene2019v2.fragment.ModIV;
+
+import gob.inei.dnce.annotations.FieldAnnotation;
+import gob.inei.dnce.components.Entity;
+import gob.inei.dnce.components.Entity.SeccionCapitulo;
+import gob.inei.dnce.components.RadioGroupOtherField.ORIENTATION;
+import gob.inei.dnce.components.FragmentForm;
+import gob.inei.dnce.components.LabelComponent;
+import gob.inei.dnce.components.MasterActivity;
+import gob.inei.dnce.components.RadioGroupOtherField;
+import gob.inei.dnce.components.TableComponent;
+import gob.inei.dnce.components.ToastMessage;
+import gob.inei.dnce.interfaces.IDetailEntityComponent;
+import gob.inei.dnce.util.Filtros;
+import gob.inei.dnce.util.Util;
+import gob.inei.ene2019v2.R;
+import gob.inei.ene2019v2.common.App;
+import gob.inei.ene2019v2.fragment.ModIV.Dialog.Mod_IV_Fragment_023_01;
+import gob.inei.ene2019v2.model.Caratula;
+import gob.inei.ene2019v2.model.Moduloiv03;
+import gob.inei.ene2019v2.service.CuestionarioService;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
+
+public class Mod_IV_Fragment_023 extends FragmentForm {
+	@FieldAnnotation(orderIndex = 1)
+	public RadioGroupOtherField rgC4P476;
+	@FieldAnnotation(orderIndex = 2)
+	public RadioGroupOtherField rgC4P476A;
+	public TableComponent tcM4P76;
+	private CuestionarioService cuestionarioService;
+	private Moduloiv03 bean;
+	private LabelComponent lblTitulo, lblTitulo1;
+	private List<P3Det> detalles;
+	P3_1ClickListener adapter;
+	LinearLayout q0, q1, q2, q3, q4, q5;
+	private int cont, conteo = 0;
+	SeccionCapitulo[] campos;
+
+	public Mod_IV_Fragment_023() {
+	}
+
+	public Mod_IV_Fragment_023 parent(MasterActivity parent) {
+		this.parent = parent;
+		return this;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		rootView = createUI();
+		initObjectsWithoutXML(this, rootView);
+		enlazarCajas();
+		listening();
+		campos = new SeccionCapitulo[] { new SeccionCapitulo(1, 1, 1,
+				"ID", "NIVEL_ID") };
+		adapter = new P3_1ClickListener();
+		tcM4P76.getListView().setOnItemClickListener(adapter);
+		return rootView;
+	}
+
+	@Override
+	protected void buildFields() {
+		lblTitulo = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.c1c100m400p).textSize(21).centrar().negrita();
+		lblTitulo1 = new LabelComponent(this.getActivity(), App.ESTILO)
+				.size(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+				.text(R.string.c1c100m4p076title).textSize(21).centrar()
+				.negrita();
+
+		rgC4P476 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p476_1, R.string.c1c100m4p476_2,
+				R.string.c1c100m4p476_3).size(WRAP_CONTENT, WRAP_CONTENT)
+				.orientation(ORIENTATION.HORIZONTAL).callback("FuncionP476");
+		rgC4P476A = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m4p476_1, R.string.c1c100m4p476_2,
+				R.string.c1c100m4p476_3).size(WRAP_CONTENT, WRAP_CONTENT)
+				.orientation(ORIENTATION.HORIZONTAL).callback("FuncionP476A");
+
+		tcM4P76 = new TableComponent(getActivity(), this, App.ESTILO).size(530,
+				400).dataColumHeight(70);
+
+		tcM4P76.addHeader(R.string.mod04_procesos, 5f,
+				TableComponent.ALIGN.LEFT);
+		tcM4P76.setHeaderHeight(70);
+
+	}
+
+	@Override
+	protected View createUI() {
+		buildFields();
+
+		q0 = createQuestionSection(lblTitulo, lblTitulo1);
+		q1 = createQuestionSection(R.string.c1c100m4p476, rgC4P476);
+		q2 = createQuestionSection(R.string.c1c100m4p476A, rgC4P476A);
+		q3 = createQuestionSection(tcM4P76.getTableView());
+
+		ScrollView contenedor = createForm();
+		LinearLayout form = (LinearLayout) contenedor.getChildAt(0);
+
+		form.addView(q0);
+		form.addView(q1);
+		form.addView(q2);
+		form.addView(q3);
+
+		return contenedor;
+	}
+
+	@Override
+	public boolean grabar() {
+
+		if (!validar()) {
+			if (error) {
+				if (!mensaje.equals("")) {
+					ToastMessage.msgBox(this.getActivity(), mensaje,
+							ToastMessage.MESSAGE_ERROR,
+							ToastMessage.DURATION_LONG);
+				}
+				if (view != null) {
+					view.requestFocus();
+				}
+			}
+			return false;
+		}
+		uiToEntity(bean);
+		llenarBean();
+		
+		
+		String[] extras = null;
+		extras = new String[] { "C4P484", "C4P484A" };		
+		
+		try {
+			
+			if (rgC4P476.isTagSelectedBetween(2,3)  ||   rgC4P476A.isTagSelectedBetween(2,3)   ) {			
+				if (!getCuestionarioService()
+						.saveOrUpdate(bean, getSecCap2(extras))) {
+					ToastMessage.msgBox(this.getActivity(),
+							"Los datos no se guardaron X",
+							ToastMessage.MESSAGE_ERROR, ToastMessage.DURATION_LONG);
+				}
+			}
+			
+			if (!getCuestionarioService().saveOrUpdate(bean, campos)) {
+				ToastMessage.msgBox(this.getActivity(),
+						"Los datos no se guardaron",
+						ToastMessage.MESSAGE_ERROR, ToastMessage.DURATION_LONG);
+			}
+		} catch (SQLException e) {
+			ToastMessage.msgBox(this.getActivity(), e.getMessage(),
+					ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean validar() {
+		String pregunta_no_vacia = getString(R.string.pregunta_no_vacia);
+		String especifique_no_vacio = getString(R.string.pregunta_especifique);
+		error = false;
+
+		if (Filtros.getErrorFiltro() != null) {
+			ToastMessage.msgBox(getActivity(), Filtros.getErrorFiltro()
+					.getValue(), ToastMessage.MESSAGE_ERROR,
+					ToastMessage.DURATION_LONG);
+			Filtros.getErrorFiltro().getKey().requestFocus();
+			return false;
+		}
+
+		if (Util.esVacio(rgC4P476)) {
+			mensaje = pregunta_no_vacia.replace("$", "La pregunta P476");
+			view = rgC4P476;
+			error = true;
+			return false;
+		}
+
+		if (rgC4P476.isTagSelected(1)) {
+			if (Util.esVacio(rgC4P476A)) {
+				mensaje = pregunta_no_vacia.replace("$", "La pregunta P476A");
+				view = rgC4P476A;
+				error = true;
+				return false;
+			}
+
+			if (rgC4P476A.isTagSelected(1)) {
+				for (int i = 0; i < detalles.size(); i++) {
+					if (Util.esVacio(detalles.get(i).m4p076)
+							&& rgC4P476.isTagSelected(1)) {
+						ToastMessage.msgBox(
+								this.getActivity(),
+								pregunta_no_vacia.replace("$", "Pregunta "
+										+ "“ " + detalles.get(i).label + " ”"),
+								ToastMessage.MESSAGE_INFO,
+								ToastMessage.DURATION_LONG);
+						error = true;
+						return false;
+					}
+
+					int Suma = Util.getInt(detalles.get(0).m4p076)
+							+ Util.getInt(detalles.get(1).m4p076)
+							+ Util.getInt(detalles.get(2).m4p076)
+							+ Util.getInt(detalles.get(3).m4p076)
+							+ Util.getInt(detalles.get(4).m4p076)
+							+ Util.getInt(detalles.get(5).m4p076);
+					if (Suma >= 12) {
+						mensaje = "SI CUENTA CON PROCESOS DEBE SELECCIONAR LA OPCIÓN “SI” EN AL MENOS UNA ALTERNATIVA";
+						view = tcM4P76;
+						error = true;
+						return false;
+					}
+
+				}
+			}
+		}
+
+		return true;
+	}
+
+	@Override
+	public void cargarDatos() {
+
+		Moduloiv03 mod03 = new Moduloiv03();
+		campos = mod03.getSecCap(
+				getListFields(mod03, "(76|76A_|77_|78_|79_|80_|81_|82_|83_)",
+						"c4p4", null), false);
+		bean = getCuestionarioService().getModuloiv03(
+				App.getInstance().getEmpresa(), campos);
+
+		detalles = new ArrayList<P3Det>();
+		for (cont = 0; cont < 6; cont++) {
+			detalles.add(new P3Det(getResources().getStringArray(
+					R.array.ModIV_detalleP76)[cont]));
+		}
+
+		// bean = getCuestionarioService().getModuloiv03(
+		// App.getInstance().getEmpresa(),
+		// new Moduloiv03().getSecCap(getListFields(this)));
+		if (bean == null) {
+			bean = new Moduloiv03();
+			bean.id = App.getInstance().getEmpresa().id;
+		}
+		llenarUI();
+		entityToUI(bean);
+		refrescarTabla();
+		inicio();
+	}
+
+	private void inicio() {
+		FuncionP476();
+		rgC4P476.requestFocus();
+	}
+
+	public CuestionarioService getCuestionarioService() {
+		if (cuestionarioService == null) {
+			cuestionarioService = CuestionarioService
+					.getInstance(getActivity());
+		}
+		return cuestionarioService;
+	}
+
+	private void llenarUI() {
+		detalles = new ArrayList<Mod_IV_Fragment_023.P3Det>();
+		P3Det tmp = new P3Det(getResources().getStringArray(
+				R.array.ModIV_detalleP76)[0]);
+
+		tmp.m4p076 = bean.c4p476a_1;
+		tmp.m4p077 = bean.c4p477_1;
+		tmp.m4p078 = bean.c4p478_1;
+		tmp.m4p079 = bean.c4p479_1;
+		tmp.m4p080 = bean.c4p480_1;
+		tmp.m4p081 = bean.c4p481_1;
+		tmp.m4p082 = bean.c4p482_1;
+		tmp.m4p083 = bean.c4p483_1;
+		detalles.add(tmp);
+
+		tmp = new P3Det(
+				getResources().getStringArray(R.array.ModIV_detalleP76)[1]);
+
+		tmp.m4p076 = bean.c4p476a_2;
+		tmp.m4p077 = bean.c4p477_2;
+		tmp.m4p078 = bean.c4p478_2;
+		tmp.m4p079 = bean.c4p479_2;
+		tmp.m4p080 = bean.c4p480_2;
+		tmp.m4p081 = bean.c4p481_2;
+		tmp.m4p082 = bean.c4p482_2;
+		tmp.m4p083 = bean.c4p483_2;
+		detalles.add(tmp);
+
+		tmp = new P3Det(
+				getResources().getStringArray(R.array.ModIV_detalleP76)[2]);
+
+		tmp.m4p076 = bean.c4p476a_3;
+		tmp.m4p077 = bean.c4p477_3;
+		tmp.m4p078 = bean.c4p478_3;
+		tmp.m4p079 = bean.c4p479_3;
+		tmp.m4p080 = bean.c4p480_3;
+//		tmp.m4p081 = bean.c4p481_3;
+//		tmp.m4p082 = bean.c4p482_3;
+//		tmp.m4p083 = bean.c4p483_3;
+		detalles.add(tmp);
+
+		tmp = new P3Det(
+				getResources().getStringArray(R.array.ModIV_detalleP76)[3]);
+
+		tmp.m4p076 = bean.c4p476a_4;
+		tmp.m4p077 = bean.c4p477_4;
+		tmp.m4p078 = bean.c4p478_4;
+		tmp.m4p079 = bean.c4p479_4;
+		tmp.m4p080 = bean.c4p480_4;
+//		tmp.m4p081 = bean.c4p481_4;
+//		tmp.m4p082 = bean.c4p482_4;
+//		tmp.m4p083 = bean.c4p483_4;
+		detalles.add(tmp);
+
+		tmp = new P3Det(
+				getResources().getStringArray(R.array.ModIV_detalleP76)[4]);
+
+		tmp.m4p076 = bean.c4p476a_5;
+		tmp.m4p077 = bean.c4p477_5;
+		tmp.m4p078 = bean.c4p478_5;
+		tmp.m4p079 = bean.c4p479_5;
+		tmp.m4p080 = bean.c4p480_5;
+//		tmp.m4p081 = bean.c4p481_5;
+//		tmp.m4p082 = bean.c4p482_5;
+//		tmp.m4p083 = bean.c4p483_5;
+		detalles.add(tmp);
+
+		tmp = new P3Det(
+				getResources().getStringArray(R.array.ModIV_detalleP76)[5]);
+
+		tmp.m4p076 = bean.c4p476a_6;
+		tmp.m4p077 = bean.c4p477_6;
+		tmp.m4p078 = bean.c4p478_6;
+		tmp.m4p079 = bean.c4p479_6;
+		tmp.m4p080 = bean.c4p480_6;
+//		tmp.m4p081 = bean.c4p481_6;
+//		tmp.m4p082 = bean.c4p482_6;
+//		tmp.m4p083 = bean.c4p483_6;
+		detalles.add(tmp);
+
+	}
+
+	private void llenarBean() {
+		P3Det tmpP1;
+
+		tmpP1 = (P3Det) detalles.get(0);
+		bean.c4p476a_1 = tmpP1.m4p076;
+		bean.c4p477_1 = tmpP1.m4p077;
+		bean.c4p478_1 = tmpP1.m4p078;
+		bean.c4p479_1 = tmpP1.m4p079;
+		bean.c4p480_1 = tmpP1.m4p080;
+		bean.c4p481_1 = tmpP1.m4p081;
+		bean.c4p482_1 = tmpP1.m4p082;
+		bean.c4p483_1 = tmpP1.m4p083;
+
+		tmpP1 = (P3Det) detalles.get(1);
+		bean.c4p476a_2 = tmpP1.m4p076;
+		bean.c4p477_2 = tmpP1.m4p077;
+		bean.c4p478_2 = tmpP1.m4p078;
+		bean.c4p479_2 = tmpP1.m4p079;
+		bean.c4p480_2 = tmpP1.m4p080;
+		bean.c4p481_2 = tmpP1.m4p081;
+		bean.c4p482_2 = tmpP1.m4p082;
+		bean.c4p483_2 = tmpP1.m4p083;
+
+		tmpP1 = (P3Det) detalles.get(2);
+		bean.c4p476a_3 = tmpP1.m4p076;
+		bean.c4p477_3 = tmpP1.m4p077;
+		bean.c4p478_3 = tmpP1.m4p078;
+		bean.c4p479_3 = tmpP1.m4p079;
+		bean.c4p480_3 = tmpP1.m4p080;
+//		bean.c4p481_3 = tmpP1.m4p081;
+//		bean.c4p482_3 = tmpP1.m4p082;
+//		bean.c4p483_3 = tmpP1.m4p083;
+
+		tmpP1 = (P3Det) detalles.get(3);
+		bean.c4p476a_4 = tmpP1.m4p076;
+		bean.c4p477_4 = tmpP1.m4p077;
+		bean.c4p478_4 = tmpP1.m4p078;
+		bean.c4p479_4 = tmpP1.m4p079;
+		bean.c4p480_4 = tmpP1.m4p080;
+//		bean.c4p481_4 = tmpP1.m4p081;
+//		bean.c4p482_4 = tmpP1.m4p082;
+//		bean.c4p483_4 = tmpP1.m4p083;
+
+		tmpP1 = (P3Det) detalles.get(4);
+		bean.c4p476a_5 = tmpP1.m4p076;
+		bean.c4p477_5 = tmpP1.m4p077;
+		bean.c4p478_5 = tmpP1.m4p078;
+		bean.c4p479_5 = tmpP1.m4p079;
+		bean.c4p480_5 = tmpP1.m4p080;
+//		bean.c4p481_5 = tmpP1.m4p081;
+//		bean.c4p482_5 = tmpP1.m4p082;
+//		bean.c4p483_5 = tmpP1.m4p083;
+
+		tmpP1 = (P3Det) detalles.get(5);
+		bean.c4p476a_6 = tmpP1.m4p076;
+		bean.c4p477_6 = tmpP1.m4p077;
+		bean.c4p478_6 = tmpP1.m4p078;
+		bean.c4p479_6 = tmpP1.m4p079;
+		bean.c4p480_6 = tmpP1.m4p080;
+//		bean.c4p481_6 = tmpP1.m4p081;
+//		bean.c4p482_6 = tmpP1.m4p082;
+//		bean.c4p483_6 = tmpP1.m4p083;
+	}
+
+	public void refrescarTabla() {
+		tcM4P76.setData(detalles, "label");
+		for (int row = 0; row < detalles.size(); row++) {
+			tcM4P76.setBorderRow(row, obtenerEstado(detalles.get(row)));
+		}
+	}
+
+	private boolean obtenerEstado(P3Det detalle) {
+		if (Util.esVacio(detalle.m4p076)) {
+			return false;
+		}
+		return true;
+	}
+
+	public void abrirDetalle(int index) {
+		FragmentManager fm = Mod_IV_Fragment_023.this.getFragmentManager();
+		Mod_IV_Fragment_023_01 aperturaDialog = Mod_IV_Fragment_023_01
+				.newInstance(Mod_IV_Fragment_023.this,
+						(P3Det) detalles.get(index), detalles, index);
+		aperturaDialog.show(fm, "aperturaDialog");
+	}
+
+	private class P3_1ClickListener implements OnItemClickListener {
+		public P3_1ClickListener() {
+		}
+
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+				long arg3) {
+			P3Det c = (P3Det) detalles.get(arg2);
+			abrirDetalle(arg2);
+		}
+	}
+
+	public static class P3Det extends Entity implements IDetailEntityComponent {
+		public String label = null;
+		public Integer m4p076 = null;
+		public Integer m4p077 = null;
+		public Integer m4p078 = null;
+		public String m4p079 = null;
+		public Integer m4p080 = null;
+		public Integer m4p081 = null;
+		public Integer m4p082 = null;
+		public Integer m4p083 = null;
+
+		public P3Det(String label) {
+			super();
+			this.label = label;
+		}
+
+		@Override
+		public void cleanEntity() {
+			m4p076 = null;
+			m4p077 = null;
+			m4p078 = null;
+			m4p079 = null;
+			m4p080 = null;
+			m4p081 = null;
+			m4p082 = null;
+			m4p083 = null;
+		}
+
+		@Override
+		public boolean isTitle() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+	}
+
+	public void FuncionP476() {
+		if (rgC4P476.isTagSelected(2) || rgC4P476.isTagSelected(3)) {
+			Util.cleanAndLockView(getActivity(), rgC4P476A, tcM4P76);
+			LimpiarTCP476();
+		} else {
+			Util.lockView(getActivity(), false, rgC4P476A);
+			FuncionP476A();
+			rgC4P476A.requestFocus();
+		}
+	}
+
+	public void FuncionP476A() {
+		Integer valor = Integer.parseInt(rgC4P476A.getTagSelected("0")
+				.toString());
+		if (Util.between(valor, 2, 3)) {
+			Util.cleanAndLockView(getActivity(), tcM4P76);
+			LimpiarTCP476();
+		} else {
+			Util.lockView(getActivity(), false, tcM4P76);
+		}
+	}
+
+	public void LimpiarTCP476() {
+		for (int row = 0; row < detalles.size(); row++) {
+			// detalles.get(row).m4p076 = 0;
+			detalles.get(row).cleanEntity();
+		}
+		// tcMP334.setEnabled(false);
+		Util.cleanAndLockView(getActivity(), tcM4P76);
+		refrescarTabla();
+	}
+
+	@Override
+	public Caratula getEntity() {
+		return App.getInstance().getEmpresa();
+	}
+
+}

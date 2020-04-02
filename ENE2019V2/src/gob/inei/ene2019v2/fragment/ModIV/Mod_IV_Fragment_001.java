@@ -134,9 +134,8 @@ public class Mod_IV_Fragment_001 extends FragmentForm {
 				R.string.c1c100m4p402_7, "1:0").size(WRAP_CONTENT, WRAP_CONTENT).callback("onC3P401A_10ChangeValue");
 		chbC4P401A_8 = new CheckBoxField(this.getActivity(),
 				R.string.c1c100m4p402_8, "1:0").size(WRAP_CONTENT, WRAP_CONTENT).callback("onC3P401A_10ChangeValue");
-		chbC4P401A_9 = new CheckBoxField(this.getActivity(),
-				R.string.c1c100m4p402_9, "1:0").size(altoComponente, 145)
-				.callback("onC3P401A_9ChangeValue").callback("onC3P401A_10ChangeValue");
+		chbC4P401A_9 = new CheckBoxField(this.getActivity(),R.string.c1c100m4p402_9, "1:0").size(altoComponente, 145)
+				.callback("C3P401A_9Especifique").callback("onC3P401A_10ChangeValue");
 		chbC4P401A_10 = new CheckBoxField(this.getActivity(),
 				R.string.c1c100m4p402_10, "1:0").size(WRAP_CONTENT, WRAP_CONTENT)
 				.callback("onC3P401A_10ChangeValue");
@@ -154,7 +153,7 @@ public class Mod_IV_Fragment_001 extends FragmentForm {
 				R.string.c1c100C4P402_1, R.string.c1c100C4P402_2,
 				R.string.c1c100C4P402_3, R.string.c1c100C4P402_4,
 				R.string.c1c100C4P402_5, R.string.c1c100C4P402_6).size(
-				WRAP_CONTENT, WRAP_CONTENT).orientation(ORIENTATION.VERTICAL).callback("onC3P401A_saltoChangeValue");
+				WRAP_CONTENT, WRAP_CONTENT).orientation(ORIENTATION.VERTICAL).callback("C3P401A_9Especifique");
 		txtC4P402A_ESP = new TextField(this.getActivity(), false)
 				.size(altoComponente, 450).hint(R.string.especifique)
 				.soloTextoNumero();
@@ -331,10 +330,10 @@ public class Mod_IV_Fragment_001 extends FragmentForm {
 	}
 
 	private void inicio() {
+		C3P401A_9Especifique();
 	//	onRgChangedValue(rgC4P401);
 		if (rgC4P401.isTagSelected(1) || rgC4P401.isTagSelected(2)){
-			onC3P401A_saltoChangeValue();
-			onC3P401A_9ChangeValue();
+		
 			onC3P401A_10ChangeValue();
 	
 		}
@@ -352,7 +351,7 @@ public class Mod_IV_Fragment_001 extends FragmentForm {
 		return cuestionarioService;
 	}
 
-	 public void onC3P401A_9ChangeValue() {
+	 public void C3P401A_9Especifique() {
 		if (chbC4P401A_9.isChecked()) {
 			Util.lockView(getActivity(), false, txtC4P401A_9ESP);
 			txtC4P401A_9ESP.requestFocus();
@@ -362,6 +361,17 @@ public class Mod_IV_Fragment_001 extends FragmentForm {
 	}
 
 	public void onC3P401A_10ChangeValue() {
+
+		if (chbC4P401A_10.isChecked()) {
+			Util.cleanAndLockView(getActivity(), chbC4P401A_1, chbC4P401A_2,
+					chbC4P401A_3, chbC4P401A_4, chbC4P401A_5, chbC4P401A_6,
+					chbC4P401A_7, chbC4P401A_8, chbC4P401A_9,txtC4P401A_9ESP);
+		} else {
+			Util.lockView(getActivity(), false, chbC4P401A_1, chbC4P401A_2,
+					chbC4P401A_3, chbC4P401A_4, chbC4P401A_5, chbC4P401A_6,
+					chbC4P401A_7, chbC4P401A_8, chbC4P401A_9);
+			       C3P401A_9Especifique();
+		}
 
 		       if (chbC4P401A_1.isChecked() || chbC4P401A_2.isChecked()
 				|| chbC4P401A_3.isChecked() || chbC4P401A_4.isChecked()
@@ -373,56 +383,41 @@ public class Mod_IV_Fragment_001 extends FragmentForm {
 			Util.lockView(getActivity(), false, chbC4P401A_10);
 		}
 
-		if (chbC4P401A_10.isChecked()) {
-			Util.cleanAndLockView(getActivity(), chbC4P401A_1, chbC4P401A_2,
-					chbC4P401A_3, chbC4P401A_4, chbC4P401A_5, chbC4P401A_6,
-					chbC4P401A_7, chbC4P401A_8, chbC4P401A_9/*,txtC4P401A_9ESP*/);
-		} else {
-			Util.lockView(getActivity(), false, chbC4P401A_1, chbC4P401A_2,
-					chbC4P401A_3, chbC4P401A_4, chbC4P401A_5, chbC4P401A_6,
-					chbC4P401A_7, chbC4P401A_8, chbC4P401A_9);
-		}
 	}
- //Si C4P401A_9 = 1 AND C4P401A_2=1  Pase a C4P401A_9ESP, luego a C4P402A
-// Si C4P401A_9 = 1 AND C4P401A_2=0  Pase a C4P401A_9ESP, luego a C4P403
-//	Si C4P401A_9 = 0 AND C4P401A_2=1  Pase a C4P402A
-//	Si C4P401A_9 = 0 AND C4P401A_2=0  Pase a C4P403
-	
-//	VERIFICACIÓN	:	Si C4P402A = 6  Pase a C4P402A_ESP, luego C4P403
-//	Si C4P402A <> 6  Pase a C4P403
-
-	public void onC3P401A_saltoChangeValue() {
-		if (chbC4P401A_1.isChecked()||chbC4P401A_2.isChecked()) {
-		     Util.lockView(getActivity(), false, rgC4P402A);
-		     rgC4P402A.requestFocus();
-	} else {
-		Util.cleanAndLockView(getActivity(), rgC4P402A);
-		rgC4P403.requestFocus();
-		
-	}
-		
-//	if ((chbC4P401A_2.isChecked()&& chbC4P401A_9.isChecked())||(chbC4P401A_2.isChecked()&& !chbC4P401A_9.isChecked())) {
-//		Util.lockView(getActivity(), false, rgC4P402A);
-//		rgC4P402A.requestFocus();
+//	public void onC3P401A_saltoChangeValue() {
+//		if (chbC4P401A_1.isChecked()||chbC4P401A_2.isChecked()) {
+//		     Util.lockView(getActivity(), false, rgC4P402A);
+//		     rgC4P402A.requestFocus();
 //	} else {
 //		Util.cleanAndLockView(getActivity(), rgC4P402A);
+//		rgC4P403.requestFocus();
 //		
 //	}
+ //Si C4P401A_9 = 1 AND C4P401A_2=1  Pase a C4P401A_9ESP, luego a C4P402A
+//	Si C4P401A_9 = 0 AND C4P401A_2=1  Pase a C4P402A
+	
+// Si C4P401A_9 = 1 AND C4P401A_2=0  Pase a C4P401A_9ESP, luego a C4P403
+//	Si C4P401A_9 = 0 AND C4P401A_2=0  Pase a C4P403
+	
+
+
+	public void onC3P401A_saltoChangeValue() {
+		
+	if ((chbC4P401A_2.isChecked()&& chbC4P401A_9.isChecked())||(chbC4P401A_2.isChecked()&& !chbC4P401A_9.isChecked())) {
+		Util.lockView(getActivity(), false, rgC4P402A);
+		//rgC4P402A.requestFocus();
+	} else {
+		Util.cleanAndLockView(getActivity(), rgC4P402A);
+		  rgC4P403.requestFocus();
+	}
 //	if ((!chbC4P401A_2.isChecked()&& chbC4P401A_9.isChecked())||(!chbC4P401A_2.isChecked()&& !chbC4P401A_9.isChecked())) {
 //		     Util.cleanAndLockView(getActivity(), rgC4P402A);
 //		     Util.lockView(getActivity(), false, rgC4P403);
 //		     rgC4P403.requestFocus();
-//	} else {
-//		if( (rgC4P402A.getTagSelected("").toString().equals("6"))||(!rgC4P402A.getTagSelected("").toString().equals("6")) ) {
-//		Util.lockView(getActivity(), false, rgC4P403);
-//		 rgC4P403.requestFocus();
-//	} else {
-//		Util.cleanAndLockView(getActivity(), rgC4P403);
-//		
-//	    }
-//	}
-}
+//		     
+//	} 
 
+	}
 	@Override
 	public Caratula getEntity() {
 		return App.getInstance().getEmpresa();

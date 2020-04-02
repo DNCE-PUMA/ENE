@@ -424,34 +424,42 @@ public class Mod_III_Fragment_01_det  extends DialogFragmentComponent {
 		}
 		
 		
-		if (index <5){			
-		 if (index ==0 ){
-				if (Util.getInt(txtC3P301E_1) < 2500) {
+//		VERIFICACIÓN	:	Si C3P301E_1=0  Error
+//				MENSAJE	:	“Error: La remuneración promedio mensual no puede ser 0”
+
+				if (Util.getInt(txtC3P301E_1)==0) {
 					ToastMessage.msgBox(this.getActivity(),
-							"Verificar: El promedio de remuneración mensual ",
+							"Error: La remuneración promedio mensual no puede ser 0 ",
 							ToastMessage.MESSAGE_INFO,
 							ToastMessage.DURATION_LONG);
 				}
-		 }		
-		 
-		 if (index ==1 || index ==2 ||  index ==3 || index ==4  ){
-				if (Util.getInt(txtC3P301E_1) < 930) {
-					 ToastMessage.msgBox(this.getActivity(),
+		if (index <5){			
+			 if (index ==0 ){
+					if (Util.getInt(txtC3P301E_1) < 2500) {
+						ToastMessage.msgBox(this.getActivity(),
 								"Verificar: El promedio de remuneración mensual ",
 								ToastMessage.MESSAGE_INFO,
 								ToastMessage.DURATION_LONG);
-				}			
-		 }
-		 
-			
-			if (Util.esVacio(txtC3P301E_1) ) {
-				mensaje = preguntaVacia.replace("$", "Remuneracion promedio mensual");
-				view = txtC3P301E_1;
-				error = true;
-				return false;
-			}	
-		}
-
+					}
+			 }		
+			 
+			 if (index ==1 || index ==2 ||  index ==3 || index ==4  ){
+					if (Util.getInt(txtC3P301E_1) < 930) {
+						 ToastMessage.msgBox(this.getActivity(),
+									"Verificar: El promedio de remuneración mensual ",
+									ToastMessage.MESSAGE_INFO,
+									ToastMessage.DURATION_LONG);
+					}			
+			 }
+			 
+				
+				if (Util.esVacio(txtC3P301E_1) ) {
+					mensaje = preguntaVacia.replace("$", "Remuneracion promedio mensual");
+					view = txtC3P301E_1;
+					error = true;
+					return false;
+				}	
+			}
 		return true;
 	}
 

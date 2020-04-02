@@ -342,9 +342,10 @@ import android.widget.ScrollView;
 				if (Util.esDiferente(lstData.get(x).detalle.c3p301a, 1)) {
 					valor1++;
 				}
-
+            
 	//		}
 		}
+
 		
 		int Total301 = Integer.parseInt(txtC3P301.getText().toString());
 		if (Util.getInt(bean.c3p301_omi) ==1 ){

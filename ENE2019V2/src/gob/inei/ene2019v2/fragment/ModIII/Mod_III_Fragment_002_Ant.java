@@ -1263,18 +1263,16 @@ Respondible {
 		int SumGeneA = p301_12 + p301_13;
 		int SumGeneB = p301_12h + p301_13h;
 		int SumGeneC = p301_12m + p301_13m;
-		
-		if (Util.getInt(bean.c3p302_omi )==1){					
-
-						
-			if ( Util.getInt(Total) != Total302) {
-			//	mensaje = "Error: Número de personas que laboran en la empresa debe coincidir a la suma de trabajadores por NIVEL EDUCATIVO";
-				ToastMessage.msgBox(this.getActivity(), "Verificar: Número de personas que laboran en la empresa debe coincidir a la suma de trabajadores por NIVEL EDUCATIVO",
-						ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);	
-				//view = txtC3P302A_8;
-				//return !(error = true);
-			}		
-		}		
+		//RETIRADO
+//		if (Util.getInt(bean.c3p302_omi )==1){								
+//			if ( Util.getInt(Total) != Total302) {
+//			//	mensaje = "Error: Número de personas que laboran en la empresa debe coincidir a la suma de trabajadores por NIVEL EDUCATIVO";
+//				ToastMessage.msgBox(this.getActivity(), "Verificar: Número de personas que laboran en la empresa debe coincidir a la suma de trabajadores por NIVEL EDUCATIVO",
+//						ToastMessage.MESSAGE_INFO, ToastMessage.DURATION_LONG);	
+//				//view = txtC3P302A_8;
+//				//return !(error = true);
+//			}		
+//		}		
 		
 		if (Util.getInt(bean.c3p301_omi )==1  &&  Util.getInt(bean.c3p302_omi )==1){			
 			if ( Util.getInt(Total302) != SumGeneA) {
@@ -1284,7 +1282,7 @@ Respondible {
 			//	view = txtC3P302A_8;
 			//	return !(error = true);	
 			}	
-			
+			//RETIRADO
 //			if ( Util.getInt(Total302) != SumGeneA) {
 //				ToastMessage.msgBox(this.getActivity(),
 //						"VERIFICAR: No concuerda total de trabajadores P301 Y P302",

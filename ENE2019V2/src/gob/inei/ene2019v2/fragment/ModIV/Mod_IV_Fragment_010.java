@@ -258,7 +258,7 @@ public class Mod_IV_Fragment_010 extends FragmentForm {
 	}
 
 	private void inicio() {
-
+		
 //		int valor = Integer.parseInt(caratula.ciiu_cd.toString()
 //				.substring(0, 2));
 		FuncionCheckP33();

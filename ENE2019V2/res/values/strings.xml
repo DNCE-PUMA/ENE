@@ -657,7 +657,7 @@
     <string name="c1c100m2p006_5">5. Minuta de compra-venta?</string>
     <string name="c1c100m2p006_6">6. Documento de posesión?</string>
     <string name="c1c100m2p006_7">7. Ninguno</string>
-    <string name="c1c100m2p006_8">8. Otro?</string>
+    <string name="c1c100m2p006_8">7. Otro?</string>
     <string name="c1c100m2p006_esp">6. \u00bfQu\u00e9 tipo de documento acredita el derecho de propiedad o posesi\u00f3n del local principal?_Especifique</string>
     <string name="c1c100m2p006_esp_1">Especifique</string>
     <string name="c1c100m2p006_esp_2">7</string>
@@ -1425,8 +1425,9 @@
     <string name="c1c100m4p421_1">1. Tarjeta de crédito por medio de la página?</string>
     <string name="c1c100m4p421_2">2. Transferencia en línea?</string>
     <string name="c1c100m4p421_3">3. Monedero o billetera electrónica (E-Wallet / PayPal)?</string>
-    <string name="c1c100m4p421_4">4. Contra entrega en efectivo o terminal de pago (POS)?</string>
-    <string name="c1c100m4p421_5">5. Otro?</string>
+    <string name="c1c100m4p421_4">4. En efectivo?</string>
+    <string name="c1c100m4p421_5">5. Terminal de pago (POS)?</string>
+    <string name="c1c100m4p421_6">6. Otro?</string>
     <string name="c1c100m4p020_5esp">5. \u00bfOtro?_Especifique</string>
     <string name="c1c100m4p422">422.	En el año 2018 ¿la empresa realizó compras por internet al exterior?</string>
     <string name="c1c100m4p422_1">1. S\u00ed</string>

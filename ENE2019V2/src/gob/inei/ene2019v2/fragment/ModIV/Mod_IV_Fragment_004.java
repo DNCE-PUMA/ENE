@@ -234,8 +234,9 @@ public class Mod_IV_Fragment_004 extends FragmentForm {
 		}
 
 	//	if ( ( rgC4P415.isTagSelected(2) || rgC4P415.isTagSelected(3)  ) || rgC4P415A.isTagSelected(2)) {
-			if ( rgC4P415.isTagSelected(1)) {
-			if (!chbC4P415B_1.isChecked() && !chbC4P415B_2.isChecked()
+			if ( rgC4P415.isTagSelected(1)&& rgC4P415A.isTagSelected(2)) {
+				
+		    	if (!chbC4P415B_1.isChecked() && !chbC4P415B_2.isChecked()
 					&&/* !chbC4P415B_3.isChecked() && */!chbC4P415B_4.isChecked()
 					&& !chbC4P415B_5.isChecked() && !chbC4P415B_6.isChecked()&& !chbC4P415B_7.isChecked() ) {
 				

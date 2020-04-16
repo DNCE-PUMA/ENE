@@ -351,19 +351,36 @@ public class Mod_IV_Fragment_014 extends FragmentForm {
 
 	public void FUNCION_PASE() {
 		Integer valor = Integer.parseInt(rgC4P445.getTagSelected("0").toString());
-		if (valor == 1) {
-			Util.lockView(getActivity(), false, rgC4P446_1, rgC4P446_2,rgC4P446_4);
-			Util.cleanAndLockView(getActivity(), rgC4P448, txtC4P448_ESP);
+		if (valor == 3) {
+			Util.cleanAndLockView(getActivity(), rgC4P446_1, rgC4P446_2,rgC4P446_4 , rgC4P447_1,rgC4P447_2, rgC4P447_4,rgC4P448, txtC4P448_ESP);
+		}else{
+			Util.lockView(getActivity(), false,rgC4P446_1, rgC4P446_2,rgC4P446_4 , rgC4P447_1,rgC4P447_2, rgC4P447_4,rgC4P448);
+		   if (valor == 2) {	
+			Util.cleanAndLockView(getActivity(), rgC4P446_1, rgC4P446_2,rgC4P446_4, rgC4P447_1,rgC4P447_2, rgC4P447_4);
+			rgC4P448.requestFocus();
+		   } else {
+			   Util.lockView(getActivity(), false, rgC4P446_1, rgC4P446_2,rgC4P446_4 , rgC4P447_1,rgC4P447_2, rgC4P447_4,rgC4P448);
 			FUNCION_1();
 			FUNCION_2();
 			FUNCION_3();
 			rgC4P446_1.requestFocus();
-		}else if (valor == 2) {	
-			Util.cleanAndLockView(getActivity(), rgC4P446_1, rgC4P446_2,rgC4P446_4, rgC4P447_1,rgC4P447_2, rgC4P447_4);
-			rgC4P448.requestFocus();
-		} else {
-			Util.cleanAndLockView(getActivity(), rgC4P446_1, rgC4P446_2,rgC4P446_4 , rgC4P447_1,rgC4P447_2, rgC4P447_4,rgC4P448, txtC4P448_ESP);
 		}
+	}
+//		Integer valor = Integer.parseInt(rgC4P445.getTagSelected("0").toString());
+//		if (valor == 1) {
+//			Util.lockView(getActivity(), false, rgC4P446_1, rgC4P446_2,rgC4P446_4);
+//			Util.cleanAndLockView(getActivity(), rgC4P448, txtC4P448_ESP);
+//			FUNCION_1();
+//			FUNCION_2();
+//			FUNCION_3();
+//			rgC4P446_1.requestFocus();
+//		}else if (valor == 2) {	
+//			Util.cleanAndLockView(getActivity(), rgC4P446_1, rgC4P446_2,rgC4P446_4, rgC4P447_1,rgC4P447_2, rgC4P447_4);
+//			rgC4P448.requestFocus();
+//		} else {
+//			Util.cleanAndLockView(getActivity(), rgC4P446_1, rgC4P446_2,rgC4P446_4 , rgC4P447_1,rgC4P447_2, rgC4P447_4,rgC4P448, txtC4P448_ESP);
+//		
+//		}
 	}
 
 	public void FUNCION_1() {

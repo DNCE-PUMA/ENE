@@ -67,7 +67,9 @@ public class Moduloiv01 extends Entity implements IDetailEntityComponent, Serial
 	public Integer c4p421_3 = null;
 	public Integer c4p421_4 = null;
 	public Integer c4p421_5 = null;
-	public String c4p421_5esp = null;
+	//NEW
+	public Integer c4p421_6 = null;
+	public String c4p421_6esp = null;
 	public Integer c4p422 = null;
 	public Integer c4p423 = null;
 	public Integer c4p424 = null;

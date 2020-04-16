@@ -46,12 +46,14 @@ public class Mod_IV_Fragment_006 extends FragmentForm {
 	@FieldAnnotation(orderIndex = 6)
 	public CheckBoxField chbC4P421_5;
 	@FieldAnnotation(orderIndex = 7)
-	public TextField txtC4P421_5ESP;
+	public CheckBoxField chbC4P421_6;
 	@FieldAnnotation(orderIndex = 8)
-	public RadioGroupOtherField rgC4P422;
+	public TextField txtC4P421_6ESP;
 	@FieldAnnotation(orderIndex = 9)
-	public RadioGroupOtherField rgC4P423;
+	public RadioGroupOtherField rgC4P422;
 	@FieldAnnotation(orderIndex = 10)
+	public RadioGroupOtherField rgC4P423;
+	@FieldAnnotation(orderIndex = 11)
 	public RadioGroupOtherField rgC4P424;
 
 	private CuestionarioService cuestionarioService;
@@ -109,15 +111,17 @@ public class Mod_IV_Fragment_006 extends FragmentForm {
 		chbC4P421_4 = new CheckBoxField(this.getActivity(),
 				R.string.c1c100m4p421_4, "1:0").size(WRAP_CONTENT, 590);
 		chbC4P421_5 = new CheckBoxField(this.getActivity(),
-				R.string.c1c100m4p421_5, "1:0").callback("bloqueo_M4P020")
+				R.string.c1c100m4p421_5, "1:0").size(LayoutParams.WRAP_CONTENT, 590);
+		chbC4P421_6 = new CheckBoxField(this.getActivity(),
+				R.string.c1c100m4p421_6, "1:0").callback("bloqueo_M4P020")
 				.size(LayoutParams.WRAP_CONTENT, 140);
-		txtC4P421_5ESP = new TextField(this.getActivity(), false)
+		txtC4P421_6ESP = new TextField(this.getActivity(), false)
 				.size(altoComponente, 400).hint(R.string.especifique)
 				.soloTextoNumero();
 		grEspe01 = new GridComponent(this.getActivity(), 2);
 		grEspe01.colorFondo(android.R.color.transparent);
-		grEspe01.addComponent(chbC4P421_5);
-		grEspe01.addComponent(txtC4P421_5ESP);
+		grEspe01.addComponent(chbC4P421_6);
+		grEspe01.addComponent(txtC4P421_6ESP);
 
 		rgC4P422 = new RadioGroupOtherField(this.getActivity(),
 				R.string.c1c100m4p422_1, R.string.c1c100m4p422_2)
@@ -134,7 +138,7 @@ public class Mod_IV_Fragment_006 extends FragmentForm {
 				R.string.c1c100m4p424_5).size(WRAP_CONTENT, 250).orientation(
 				ORIENTATION.VERTICAL);
 
-		Filtros.setFiltro(txtC4P421_5ESP, Filtros.TIPO.ALFAN_U, 300, null);
+		Filtros.setFiltro(txtC4P421_6ESP, Filtros.TIPO.ALFAN_U, 300, null);
 	}
 
 	@Override
@@ -144,7 +148,7 @@ public class Mod_IV_Fragment_006 extends FragmentForm {
 		q0 = createQuestionSection(lblTitulo);
 		q1 = createQuestionSection(R.string.c1c100m4p420, Gravity.START, rgC4P420);
 		q2 = createQuestionSection(R.string.c1c100m4p421, Gravity.START, chbC4P421_1, chbC4P421_2,
-				chbC4P421_3, chbC4P421_4, grEspe01.component());
+				chbC4P421_3, chbC4P421_4,chbC4P421_5, grEspe01.component());
 		q3 = createQuestionSection(R.string.c1c100m4p422, rgC4P422);
 		q4 = createQuestionSection(R.string.c1c100m4p423, rgC4P423);
 		q5 = createQuestionSection(R.string.c1c100m4p424, Gravity.START, rgC4P424);
@@ -218,24 +222,24 @@ public class Mod_IV_Fragment_006 extends FragmentForm {
 		}
 
 		if (!chbC4P421_1.isChecked() && !chbC4P421_2.isChecked()
-				&& !chbC4P421_3.isChecked() && !chbC4P421_4.isChecked()
-				&& !chbC4P421_5.isChecked()) {
+				&& !chbC4P421_3.isChecked() && !chbC4P421_4.isChecked()&& !chbC4P421_5.isChecked()
+				&& !chbC4P421_6.isChecked()) {
 			mensaje = "DEBE MARCAR AL MENOS UNA ALTERNATIVA EN P421";
 			view = chbC4P421_1;
 			error = true;
 			return false;
 		}
-		if (chbC4P421_5.isChecked()) {
-			if (Util.esVacio(txtC4P421_5ESP)) {
+		if (chbC4P421_6.isChecked()) {
+			if (Util.esVacio(txtC4P421_6ESP)) {
 				mensaje = preguntaVacia.replace("$",
 						"La Preg.421 (Especifique)");
-				view = txtC4P421_5ESP;
+				view = txtC4P421_6ESP;
 				error = true;
 				return false;
 			} else {
-				if (txtC4P421_5ESP.getText().length() < 3) {
+				if (txtC4P421_6ESP.getText().length() < 3) {
 					mensaje = "Ingrese la información correcta";
-					view = txtC4P421_5ESP;
+					view = txtC4P421_6ESP;
 					error = true;
 					return false;
 				}
@@ -303,11 +307,11 @@ public class Mod_IV_Fragment_006 extends FragmentForm {
 	}
 
 	public void bloqueo_M4P020() {
-		if (chbC4P421_5.isChecked()) {
-			Util.lockView(getActivity(), false, txtC4P421_5ESP);
-			txtC4P421_5ESP.requestFocus();
+		if (chbC4P421_6.isChecked()) {
+			Util.lockView(getActivity(), false, txtC4P421_6ESP);
+			txtC4P421_6ESP.requestFocus();
 		} else {
-			Util.cleanAndLockView(getActivity(), txtC4P421_5ESP);
+			Util.cleanAndLockView(getActivity(), txtC4P421_6ESP);
 		}
 	}
 

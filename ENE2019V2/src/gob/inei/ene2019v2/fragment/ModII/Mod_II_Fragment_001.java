@@ -113,42 +113,6 @@ public class Mod_II_Fragment_001 extends FragmentForm {
 		.size(altoComponente + 50, 100)
 		.text("C. Cuántos niveles construidos tiene?").textSize(16).centrar();
 
-		rgC2P201 = new RadioGroupOtherField(this.getActivity(),
-				R.string.mod02_SI, R.string.mod02_NO)
-				.size(WRAP_CONTENT, WRAP_CONTENT)
-				.orientation(ORIENTATION.HORIZONTAL).callback("FuncionP1");
-				
-
-//		label1 = new LabelComponent(this.getActivity())
-//				.size(altoComponente + 10, 100)
-//				.text(R.string.mod02_local).textSize(16).centrar().negrita();
-//		
-//		label2 = new LabelComponent(this.getActivity())
-//				.size(altoComponente + 10, 100)
-//				.text(R.string.mod02_lugar).textSize(16).centrar().negrita();
-		
-		
-		rgC2P202 = new RadioGroupOtherField(this.getActivity(),
-				R.string.c1c100m2p002_1, R.string.c1c100m2p002_2,
-				R.string.c1c100m2p002_3, R.string.c1c100m2p002_4,
-				R.string.c1c100m2p002_5, R.string.c1c100m2p002_6,
-				R.string.c1c100m2p002_7, R.string.c1c100m2p002_8,
-				R.string.c1c100m2p002_9,R.string.c1c100m2p002_10).size(
-				WRAP_CONTENT, 500).orientation(ORIENTATION.VERTICAL).callback("FuncionP202");
-	
-//		rgC2P202.agregarTitle(0, label1);
-//		rgC2P202.agregarTitle(9, label2);		
-
-		txtC2P202_ESP_A = new TextField(this.getActivity(), false)
-				.size(altoComponente, 300).hint(R.string.especifique)
-				.soloTextoNumero();
-		
-		rgC2P202.agregarEspecifique(8, txtC2P202_ESP_A);
-		
-	
-		
-//		rgC2P202.agregarEspecifique(9, txtC2P202_ESP_A);
-//		rgC2P202.agregarEspecifique(11, txtC2P202_ESP_A);
 
 		lbl1 = new LabelComponent(this.getActivity())
 				.size(altoComponente , 100).text(R.string.mod02_)
@@ -174,9 +138,24 @@ public class Mod_II_Fragment_001 extends FragmentForm {
 		lbl8 = new LabelComponent(this.getActivity())
 		.size(110 , 100).text(R.string.mod02_)
 		.textSize(16).centrar().negrita();
+		rgC2P201 = new RadioGroupOtherField(this.getActivity(),
+				R.string.mod02_SI, R.string.mod02_NO)
+				.size(WRAP_CONTENT, WRAP_CONTENT)
+				.orientation(ORIENTATION.HORIZONTAL).callback("FuncionP201");
 		
+		rgC2P202 = new RadioGroupOtherField(this.getActivity(),
+				R.string.c1c100m2p002_1, R.string.c1c100m2p002_2,
+				R.string.c1c100m2p002_3, R.string.c1c100m2p002_4,
+				R.string.c1c100m2p002_5, R.string.c1c100m2p002_6,
+				R.string.c1c100m2p002_7, R.string.c1c100m2p002_8,
+				R.string.c1c100m2p002_9,R.string.c1c100m2p002_10).size(
+				WRAP_CONTENT, 500).orientation(ORIENTATION.VERTICAL).callback("FuncionP202");	
 
+		txtC2P202_ESP_A = new TextField(this.getActivity(), false)
+				.size(altoComponente, 300).hint(R.string.especifique)
+				.soloTextoNumero();
 		
+		rgC2P202.agregarEspecifique(8, txtC2P202_ESP_A);	
 		txtC2P203_2 = new IntegerField(this.getActivity(), false)
 				.size(altoComponente, 200).centrar()
 				.hint(R.string.metroscuadrados);
@@ -346,7 +325,85 @@ public class Mod_II_Fragment_001 extends FragmentForm {
 			error = true;
 			return false;
 		}
-
+		//////
+	if (rgC2P201.isTagSelected(1)) {
+			
+			 if (Util.esVacio(txtC2P203_2)) {
+				mensaje = pregunta_no_vacia.replace("$",
+						"La pregunta P203.B (Área construida)");
+				view = txtC2P203_2;
+				error = true;
+				return false;
+			}
+			
+			if (Util.esVacio(rgC2P204)) {
+				mensaje = pregunta_no_vacia.replace("$", "La pregunta P204");
+				view = rgC2P204;
+				error = true;
+				return false;
+			}
+			
+			if (rgC2P204.isTagSelected(4)) {
+				if (Util.esVacio(txtC2P204_ESP)) {
+					mensaje = pregunta_no_vacia.replace("$",
+							"La Preg.204 (Especifique)");
+					view = txtC2P204_ESP;
+					error = true;
+					return false;
+				} else {
+					if (txtC2P204_ESP.getText().length() < 3) {
+						mensaje = "Ingrese la información correcta";
+						view = txtC2P204_ESP;
+						error = true;
+						return false;
+					}
+				}
+			}
+	if (rgC2P204.isTagSelected(1)) {
+			 if (Util.esVacio(rgC2P205)) {
+				mensaje = pregunta_no_vacia.replace("$", "La pregunta P205");
+				view = rgC2P205;
+				error = true;
+				return false;
+			 }
+			}
+	if (rgC2P205.isTagSelected(1)) {
+			  if (Util.esVacio(rgC2P206)) {
+				mensaje = pregunta_no_vacia
+						.replace("$", "La pregunta P206");
+				view = rgC2P206;
+				error = true;
+				return false;
+			}
+			if (rgC2P206.isTagSelected(8)) {
+				if (Util.esVacio(txtC2P206_ESP)) {
+					mensaje = pregunta_no_vacia.replace("$",
+							"La Preg.206 (Especifique)");
+					view = txtC2P206_ESP;
+					error = true;
+					return false;
+				} else {
+					if (txtC2P206_ESP.getText().length() < 3) {
+						mensaje = "Ingrese la información correcta";
+						view = txtC2P206_ESP;
+						error = true;
+						return false;
+					}
+				}
+			}
+			//206
+		if (rgC2P206.isTagSelected(1)&&rgC2P206.isTagSelected(6)&&rgC2P206.isTagSelected(7)) {
+			if (Util.esVacio(rgC2P207)) {
+				mensaje = pregunta_no_vacia
+						.replace("$", "La pregunta P207");
+				view = rgC2P207;
+				error = true;
+				return false;
+			}
+		  }
+		 }
+		}
+		////////
 		if (rgC2P201.isTagSelected(2)) {
 			if (Util.esVacio(rgC2P202)) {
 				mensaje = pregunta_no_vacia.replace("$", "La pregunta P202");
@@ -372,9 +429,8 @@ public class Mod_II_Fragment_001 extends FragmentForm {
 				}
 			}
 		}
-		Integer valor1 = Integer.parseInt(rgC2P202.getTagSelected("0").toString());
-		
-		if (valor1 != 10 && valor1 != 8) {
+	Integer valor1 = Integer.parseInt(rgC2P202.getTagSelected("0").toString());	
+	     if(!Util.esDiferente(valor1,1,2,3,4,5,6,7,9)){
 			 if (Util.esVacio(txtC2P203_2)) {
 				mensaje = pregunta_no_vacia.replace("$",
 						"La pregunta P203.B (Área construida)");
@@ -382,16 +438,10 @@ public class Mod_II_Fragment_001 extends FragmentForm {
 				error = true;
 				return false;
 			}
-			if (Util.esVacio(txtC2P203_3)) {
-				mensaje = pregunta_no_vacia.replace("$",
-						"La pregunta P203.C (Niveles  construidos)");
-				view = txtC2P203_3;
-				error = true;
-				return false;
-			  }
+
 	     	}
 
-		if (valor1 != 8) {
+		if (valor1 == 10) {
 		
 		if (Util.esVacio(txtC2P203_1)) {
 			mensaje = pregunta_no_vacia.replace("$",
@@ -400,96 +450,16 @@ public class Mod_II_Fragment_001 extends FragmentForm {
 			error = true;
 			return false;
 	 	}
-//		 if (Util.esVacio(txtC2P203_2)) {
-//			mensaje = pregunta_no_vacia.replace("$",
-//					"La pregunta P203.B (Área construida)");
+	}
+//		VERIFICACIÓN   :  Si C2P203_2 > C2P203_1 si C2P203_3>1 Error           
+//		MENSAJE            :  “Error: El área construida no puede ser superior al terreno cuando tiene un solo nivel”
+	if(!Util.esDiferente(valor1,1,2,3,4,5,6,7,9)){
+//		if (Util.getInt(txtC2P203_2) > Util.getInt(txtC2P203_1)&& Util.getInt(txtC2P203_3)==1 ) {
+//			mensaje = "El área construida no puede ser superior al terreno cuando tiene un solo nivel";
 //			view = txtC2P203_2;
 //			error = true;
 //			return false;
 //		}
-//		if (Util.esVacio(txtC2P203_3)) {
-//			mensaje = pregunta_no_vacia.replace("$",
-//					"La pregunta P203.C (Niveles  construidos)");
-//			view = txtC2P203_3;
-//			error = true;
-//			return false;
-//		  }
-		if (Util.esVacio(rgC2P204)) {
-			mensaje = pregunta_no_vacia.replace("$", "La pregunta P204");
-			view = rgC2P204;
-			error = true;
-			return false;
-		}
-		
-		if (rgC2P204.isTagSelected(4)) {
-			if (Util.esVacio(txtC2P204_ESP)) {
-				mensaje = pregunta_no_vacia.replace("$",
-						"La Preg.204 (Especifique)");
-				view = txtC2P204_ESP;
-				error = true;
-				return false;
-			} else {
-				if (txtC2P204_ESP.getText().length() < 3) {
-					mensaje = "Ingrese la información correcta";
-					view = txtC2P204_ESP;
-					error = true;
-					return false;
-				}
-			}
-		}
-		if (rgC2P204.isTagSelected(1)) {
-			if (Util.esVacio(rgC2P205)) {
-				mensaje = pregunta_no_vacia.replace("$", "La pregunta P205");
-				view = rgC2P205;
-				error = true;
-				return false;
-			}
-
-			if (rgC2P205.isTagSelected(1)) {
-				if (Util.esVacio(rgC2P206)) {
-					mensaje = pregunta_no_vacia
-							.replace("$", "La pregunta P206");
-					view = rgC2P206;
-					error = true;
-					return false;
-				}
-				if (rgC2P206.isTagSelected(8)) {
-					if (Util.esVacio(txtC2P206_ESP)) {
-						mensaje = pregunta_no_vacia.replace("$",
-								"La Preg.206 (Especifique)");
-						view = txtC2P206_ESP;
-						error = true;
-						return false;
-					} else {
-						if (txtC2P206_ESP.getText().length() < 3) {
-							mensaje = "Ingrese la información correcta";
-							view = txtC2P206_ESP;
-							error = true;
-							return false;
-						}
-					}
-				}
-
-			}
-			if (rgC2P206.isTagSelected(1) || rgC2P206.isTagSelected(6) || rgC2P206.isTagSelected(7)) {
-				if (Util.esVacio(rgC2P207)) {
-					mensaje = pregunta_no_vacia
-							.replace("$", "La pregunta P207");
-					view = rgC2P207;
-					error = true;
-					return false;
-				}
-			}
-		}
-//		VERIFICACIÓN   :  Si C2P203_2 > C2P203_1 si C2P203_3>1 Error           
-//		MENSAJE            :  “Error: El área construida no puede ser superior al terreno cuando tiene un solo nivel”
-
-		if (Util.getInt(txtC2P203_2) > Util.getInt(txtC2P203_1)&& Util.getInt(txtC2P203_3)==1 ) {
-			mensaje = "El área construida no puede ser superior al terreno cuando tiene un solo nivel";
-			view = txtC2P203_2;
-			error = true;
-			return false;
-		}
 		
 		if (rgC2P201.isTagSelected(2) && Util.getInt(caratula.p22,0) ==2) {
 			ToastMessage.msgBox(this.getActivity(),
@@ -524,11 +494,35 @@ public class Mod_II_Fragment_001 extends FragmentForm {
 	private void inicio() {
 		rgC2P201.requestFocus();
 		
-		FuncionP1();
-		FuncionP202();
-		FuncionP4();
+    	FuncionP201();
+    	//FuncionP202();
+
+		Integer valor = Integer.parseInt(rgC2P202.getTagSelected("0").toString());
+		if (valor == 8) { 
+			Util.cleanAndLockView(getActivity(),txtC2P203_1,txtC2P203_2,txtC2P203_3,rgC2P204,rgC2P205,rgC2P206,rgC2P206,rgC2P207);
+		
+		 } else {
+			Util.lockView(getActivity(), false,txtC2P203_1,txtC2P203_2,txtC2P203_3,rgC2P204,rgC2P205,rgC2P206,rgC2P206,rgC2P207);
+			
+			if (valor == 10) {
+				Util.cleanAndLockView(getActivity(),txtC2P203_2,txtC2P203_3);
+			
+			} else {
+				Util.lockView(getActivity(), false,txtC2P203_2,txtC2P203_3);
+				txtC2P203_1.requestFocus();	
+				
+				if(!Util.esDiferente(valor,1,2,3,4,5,6,7,9)){	
+					Util.cleanAndLockView(getActivity(),txtC2P203_1,txtC2P203_3);
+				}else{
+					Util.lockView(getActivity(), false,txtC2P203_1,txtC2P203_3);
+				}
+			}
+			rgC2P202.requestFocus();
+		}
+
+		 FuncionP4();
 		 FuncionP5();
-		FuncionP6();
+		 FuncionP6();
 		rgC2P201.requestFocus();
 
 	}
@@ -540,16 +534,16 @@ public class Mod_II_Fragment_001 extends FragmentForm {
 		}
 		return cuestionarioService;
 	}
-
-
-	public void FuncionP1() {
+	public void FuncionP201() {
 		Integer valor = Integer.parseInt(rgC2P201.getTagSelected("0").toString());
 
 		if (valor == 1) {
-			Util.cleanAndLockView(getActivity(), rgC2P202);
-			txtC2P203_1.requestFocus();
-		} else if (valor == 2) {
-			Util.lockView(getActivity(), false, rgC2P202);
+			Util.cleanAndLockView(getActivity(), rgC2P202,txtC2P203_1,txtC2P203_3);
+		//	Util.lockView(getActivity(), false, txtC2P203_2,rgC2P204,rgC2P205,rgC2P206,rgC2P206,rgC2P207);
+			txtC2P203_2.requestFocus();
+		} else{
+//			Util.lockView(getActivity(), false, rgC2P202);
+//			Util.cleanAndLockView(getActivity(),txtC2P203_2,rgC2P204,rgC2P205,rgC2P206,rgC2P206,rgC2P207);
 			rgC2P202.requestFocus();
 		}
 	}
@@ -569,9 +563,14 @@ public class Mod_II_Fragment_001 extends FragmentForm {
 			
 			} else {
 				Util.lockView(getActivity(), false,txtC2P203_2,txtC2P203_3);
-				txtC2P203_1.requestFocus();
+				txtC2P203_1.requestFocus();	
+				
+				if(!Util.esDiferente(valor,1,2,3,4,5,6,7,9)){	
+					Util.cleanAndLockView(getActivity(),txtC2P203_1,txtC2P203_3);
+				}else{
+					Util.lockView(getActivity(), false,txtC2P203_1,txtC2P203_3);
+				}
 			}
-			
 			rgC2P202.requestFocus();
 		}
 

@@ -536,9 +536,14 @@ public class Mod_IV_Fragment_015 extends FragmentForm {
 			txtC4P450.requestFocus();
 		}
 	}
+//VERIFICACIÓN	:	Si C4P454_15= 1 and (C4P454_1=1  Pase a C4P454_15ESP, luego a C4P455
+//                  Si C4P454_15 = 0 and (C4P454_1=1   Pase a C4P454_16, luego a C4P455
+	
+//                  Si C4P454_15= 1 and C4P454_1=0  Pase a C4P454_15ESP, luego a C4P455A_1
+//                  Si C4P454_15 = 0 and C4P454_1=0   Pase a C4P454_16, luego a C4P455A_1
 
 	public void FUNCION454() {
-		if (chbC4P454_1.isChecked() || chbC4P454_2.isChecked()) {
+		if (chbC4P454_1.isChecked()/* || chbC4P454_2.isChecked()*/) {
 			Util.lockView(getActivity(), false, rgC4P455);
 			rgC4P455.requestFocus();
 		} else {
